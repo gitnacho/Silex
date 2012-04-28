@@ -15,4 +15,4 @@ Si tienes un gran cambio o te gustaría hablar de algo, por favor, únete a nues
 
 .. note::
 
-    Cualquier aportación de código se debe autorizar bajo la Licencia *MIT*.
+    Cualquier aportación de código se debe liberar bajo la Licencia *MIT*.
