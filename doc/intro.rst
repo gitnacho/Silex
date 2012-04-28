@@ -34,6 +34,6 @@ A continuación defines una ruta a ``/hello/{name}`` que corresponde con las pet
 Por último, se ejecuta la aplicación. Visita ``/hello/world`` para ver el resultado.
 ¡Así de fácil!
 
-Instalar *Silex* es tan fácil como lo puedas obtener. ¡Descarga el archivo `silex.phar`_ y listo!
+Instalar Silex es tan fácil como lo puedas obtener. ¡Descarga el archivo `silex.phar`_ y listo!
 
 .. _`silex.phar`: http://silex.sensiolabs.org/get/silex.phar

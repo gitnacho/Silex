@@ -1,8 +1,8 @@
-Silex, una sencilla plataforma *Web*
+Silex, una sencilla plataforma Web
 ====================================
 
-Silex es una sencilla plataforma *web* para desarrollar sencillos sitios *web* basados en componentes de
-[Symfony2][1]:
+Silex es una sencilla plataforma web para desarrollar sencillos sitios
+web basados en componentes de [Symfony2][1]:
 
 
 ```php
@@ -16,15 +16,15 @@ $app->get('/hello/{name}', function ($name) use ($app) {
 });
 
 $app->run();
- 
+```
 
 Silex trabaja con PHP 5.3.2 o más reciente.
 
 ## Instalando
 
-Instalar *Silex* es tan fácil como lo puedas obtener. ¡Descarga el archivo [`silex.phar`][2] y listo!
+Instalar Silex es tan fácil como lo puedas obtener. ¡Descarga el archivo [`silex.phar`][2] y listo!
 
-Más Información
+## Más Información
 
 Lee la [documentación][3] para más información.
 
@@ -37,7 +37,7 @@ Para ejecutar el banco de pruebas necesitas [composer](http://getcomposer.org) y
 
 ## Licencia
 
-Silex se libera bajo la licencia *MIT*.
+Silex se libera bajo la licencia MIT.
 
 [1]: http://symfony.com
 [2]: http://silex.sensiolabs.org/get/silex.phar
