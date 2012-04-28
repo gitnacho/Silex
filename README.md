@@ -1,8 +1,8 @@
 Silex, una sencilla plataforma Web
 ====================================
 
-Silex es una sencilla plataforma web para desarrollar sencillos sitios
-web basados en componentes de [Symfony2][1]:
+Silex es una sencilla plataforma web para desarrollar sencillos
+sitios web basados en componentes de [Symfony2][1]:
 
 
 ```php
@@ -30,7 +30,9 @@ Lee la [documentación][3] para más información.
 
 ## Pruebas
 
-Para ejecutar el banco de pruebas necesitas [composer](http://getcomposer.org) y [PHPUnit](https://github.com/sebastianbergmann/phpunit).
+Para ejecutar el banco de pruebas necesitas
+[composer](http://getcomposer.org) y
+[PHPUnit](https://github.com/sebastianbergmann/phpunit).
 
     $ php composer.phar install --dev
     $ phpunit
