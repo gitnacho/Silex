@@ -1,0 +1,72 @@
+``TwigServiceProvider``
+=======================
+
+El ``TwigServiceProvider`` proporciona integración con el motor de plantillas `Twig <http://http://gitnacho.github.com/Twig/intro.html>`_.
+
+Parámetros
+----------
+
+* **twig.path** (opcional): Ruta al directorio que contiene archivos de plantilla *Twig* (también puede ser un arreglo de rutas).
+
+* **twig.templates** (opcional): Se trata de una matriz asociativa de nombres de plantilla para el contenido de la plantilla. Usa esta opción si deseas definir tus plantillas en línea.
+
+* **twig.options** (opcional): Una matriz asociativa de opciones *Twig*. Echa un vistazo a la documentación de *Twig* para más información.
+
+* **twig.class_path** (opcional): Ruta a dónde se encuentra la biblioteca *Twig*.
+
+* **twig.form.templates** (opcional): Una matriz de plantillas utilizada para reproducir formularios (disponible únicamente cuando está habilitado el ``FormServiceProvider``).
+
+Servicios
+---------
+
+* **twig**: La instancia de ``Twig_Environment``. La principal forma de interactuar con *Twig*.
+
+* **twig.configure**: :ref:`Cierre protegido <cierres-protegidos>` que toma el entorno *Twig* como argumento. Lo puedes utilizar para agregar más globales personalizadas.
+
+* **twig.loader**: El cargador de plantillas *Twig* que utilizan las opciones ``twig.path`` y ``twig.templates``. También puedes reemplazar el cargador completamente.
+
+Registrando
+-----------
+
+Asegúrate de colocar una copia de *Twig* en el directorio ``vendor/twig``::
+
+    $app->register(new Silex\Provider\TwigServiceProvider(), array(
+        'twig.path'       => __DIR__.'/views',
+        'twig.class_path' => __DIR__.'/vendor/twig/lib',
+    ));
+
+.. note::
+
+    *Twig* no está compilado en el archivo ``silex.phar``. Tienes que añadir tu propia copia de *Twig* a tu aplicación.
+
+Uso
+---
+
+El proveedor *Twig* ofrece un servicio ``twig``::
+
+    $app->get('/hello/{name}', function ($name) use ($app) {
+        return $app['twig']->render('hello.twig', array(
+            'name' => $name,
+        ));
+    });
+
+Esto reproducirá un archivo llamado ``views/hola.twig``.
+
+En cualquier plantilla de *Twig*, la variable ``app`` se refiere al objeto ``Aplicación``.
+Para que puedas acceder a cualquier servicio desde tu vista. Por ejemplo, para acceder a ``$app['request']->getHost()``, sólo tienes que poner esto en tu plantilla:
+
+.. code-block:: jinja
+
+    {{ app.request.host }}
+
+También se registra una función ``render`` para ayudarte a reproducir otro controlador desde una plantilla:
+
+.. code-block:: jinja
+
+    {{ render('/sidebar') }}
+
+    {# o si también estás usando UrlGeneratorServiceProvider con el SymfonyBridgesServiceProvider #}
+    {{ render(path('sidebar')) }}
+
+Para más información, consulta la `documentación de
+Twig <http://gitnacho.github.com/Twig/index.html>`_.

@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>MonologServiceProvider &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="../_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="../index.html" />
+    <link rel="up" title="Silex" href="index.html" />
+    <link rel="next" title="SessionServiceProvider" href="session.html" />
+    <link rel="prev" title="DoctrineServiceProvider" href="doctrine.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="../search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="session.html" title="SessionServiceProvider"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="doctrine.html" title="DoctrineServiceProvider"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U"><em>Silex</em></a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="monologserviceprovider">
+<h1><tt class="docutils literal"><span class="pre">MonologServiceProvider</span></tt><a class="headerlink" href="#monologserviceprovider" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>El proveedor <tt class="docutils literal"><span class="pre">MonologServiceProvider</span></tt> proporciona un mecanismo de registro predeterminado a través de la biblioteca <a class="reference external" href="https://github.com/Seldaek/monolog">Monolog</a> de Jordi Boggiano&#8217;s.</p>
+<p>Esta registrará las peticiones y errores y te permite añadir a tu aplicación el registro de depuración, para que no tengas que usar <tt class="docutils literal"><span class="pre">var_dump</span></tt> mucho más. Puedes utilizar la versión madura llamada <tt class="docutils literal"><span class="pre">tail-f</span></tt>.</p>
+<div class="section" id="parametros">
+<h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
+<ul class="simple">
+<li><strong>monolog.logfile</strong>: Archivo donde escribir los registros.</li>
+<li><strong>monolog.class_path</strong> (opcional): Ruta a la biblioteca donde se encuentra <em>Monolog</em>.</li>
+<li><strong>monolog.level</strong> (opcional): El nivel de registro por omisión es <tt class="docutils literal"><span class="pre">DEBUG</span></tt>. Debe ser uno de <tt class="docutils literal"><span class="pre">Logger::DEBUG</span></tt>, <tt class="docutils literal"><span class="pre">Logger::INFO</span></tt>,
+<tt class="docutils literal"><span class="pre">Logger::WARNING</span></tt>, <tt class="docutils literal"><span class="pre">Logger::ERROR</span></tt>. <tt class="docutils literal"><span class="pre">DEBUG</span></tt> registra todo, <tt class="docutils literal"><span class="pre">INFO</span></tt> registrará todo excepto <tt class="docutils literal"><span class="pre">DEBUG</span></tt>, etc.</li>
+<li><strong>monolog.name</strong> (opcional): Nombre del canal de <em>Monplog</em>, por omisión es <tt class="docutils literal"><span class="pre">myapp</span></tt>.</li>
+</ul>
+</div>
+<div class="section" id="servicios">
+<h2>Servicios<a class="headerlink" href="#servicios" title="Enlazar permanentemente con este título">¶</a></h2>
+<ul>
+<li><p class="first"><strong>monolog</strong>: La instancia del notario de <em>Monolog</em>.</p>
+<p>Ejemplo de uso:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;monolog&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">addDebug</span><span class="p">(</span><span class="s1">&#39;Probando el notario de Monolog.&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>monolog.configure</strong>: Cierre protegido que toma al notario como argumento. Lo puedes modificar si no deseas el comportamiento por omisión.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="registrando">
+<h2>Registrando<a class="headerlink" href="#registrando" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Asegúrate de colocar una copia de <em>Monolog</em> en el directorio <tt class="docutils literal"><span class="pre">vendor/monolog</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\MonologServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;monolog.logfile&#39;</span>       <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/development.log&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;monolog.class_path&#39;</span>    <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/vendor/monolog/src&#39;</span><span class="p">,</span>
+<span class="p">));</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last"><em>Monolog</em> no está compilado en el archivo <tt class="docutils literal"><span class="pre">silex.phar</span></tt>. Tienes que añadir tu propia copia de <em>Monolog</em> a tu aplicación.</p>
+</div>
+</div>
+<div class="section" id="uso">
+<h2>Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El proveedor <tt class="docutils literal"><span class="pre">MonologServiceProvider</span></tt> ofrece un servicio <tt class="docutils literal"><span class="pre">monolog</span></tt>. Lo puedes utilizar para agregar entradas al registro para cualquier nivel de registro a través de <tt class="docutils literal"><span class="pre">addDebug()</span></tt>, <tt class="docutils literal"><span class="pre">addInfo()</span></tt>, <tt class="docutils literal"><span class="pre">addWarning()</span></tt> y <tt class="docutils literal"><span class="pre">addError()</span></tt>.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/user&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;monolog&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">addInfo</span><span class="p">(</span><span class="nb">sprintf</span><span class="p">(</span><span class="s2">&quot;User &#39;%s&#39; registered.&quot;</span><span class="p">,</span> <span class="nv">$username</span><span class="p">));</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">201</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Para más información, consulta la <a class="reference external" href="https://github.com/Seldaek/monolog">documentación de Monolog</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="session.html" title="SessionServiceProvider"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="doctrine.html" title="DoctrineServiceProvider"
+             >anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" ><em>Silex</em></a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

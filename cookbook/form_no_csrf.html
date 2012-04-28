@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Desactivando la protección CSRF en un formulario utilizando la FormExtension &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="../_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="../index.html" />
+    <link rel="up" title="Recetario" href="index.html" />
+    <link rel="next" title="Funcionamiento interno" href="../internals.html" />
+    <link rel="prev" title="Cómo utilizar PdoSessionStorage para almacenar sesiones en la base de datos" href="session_storage.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="../search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../internals.html" title="Funcionamiento interno"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="session_storage.html" title="Cómo utilizar PdoSessionStorage para almacenar sesiones en la base de datos"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="desactivando-la-proteccion-csrf-en-un-formulario-utilizando-la-formextension">
+<h1>Desactivando la protección <em>CSRF</em> en un formulario utilizando la <tt class="docutils literal"><span class="pre">FormExtension</span></tt><a class="headerlink" href="#desactivando-la-proteccion-csrf-en-un-formulario-utilizando-la-formextension" title="Enlazar permanentemente con este título">¶</a></h1>
+<p><em>FormExtension</em> ofrece un servicio para construir formularios en tu aplicación con el componente <tt class="docutils literal"><span class="pre">Form</span></tt> de <em>Symfony2</em>. Por omisión, <em>FormExtension</em> utiliza la protección <em>CSRF</em> para evitar la falsificación de peticiones en sitios cruzados, un método por el cual un usuario malintencionado intenta hacer que tus usuarios legítimos envíen datos que no tienen la intención de presentar.</p>
+<p>Puedes encontrar más detalles sobre la Protección <em>CSRF</em> y el fragmento <em>CSRF</em> en el <cite>Libro de Symfony2:
+&lt;http://gitnacho.github.com/symfony-docs-es/book/forms.html#proteccion-csrf&gt;</cite></p>
+<p>En algunos casos (por ejemplo, al incrustar un formulario en un mensaje de correo <em>html</em>) es posible que no quieras utilizar esta protección. La forma más sencilla de evitarlo es entender que es posible dar opciones específicas a tu creador de formularios a través de la función <tt class="docutils literal"><span class="pre">createBuilder()</span></tt>.</p>
+<div class="section" id="ejemplo">
+<h2>Ejemplo<a class="headerlink" href="#ejemplo" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$form</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;form.factory&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">createBuilder</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;csrf_protection&#39;</span> <span class="o">=&gt;</span> <span class="k">false</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>Eso es todo, tu formulario se puede enviar desde cualquier parte sin protección <em>CSRF</em>.</p>
+</div>
+<div class="section" id="avanzando-un-poco-mas">
+<h2>Avanzando un poco más...<a class="headerlink" href="#avanzando-un-poco-mas" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Este ejemplo concreto muestra cómo cambiar la <tt class="docutils literal"><span class="pre">csrf_protection</span></tt> en el parámetro <tt class="docutils literal"><span class="pre">$options</span></tt> de la función <tt class="docutils literal"><span class="pre">createBuilder()</span></tt>. Podrías pasar más de dos a través de este parámetro, es tan simple como usar el método <tt class="docutils literal"><span class="pre">getDefaultOptions()</span></tt> en tus clases formulario de <em>Symfony2</em>. <cite>Ve más aquí &lt;http://gitnacho.github.com/symfony-docs-es/book/forms.html#creando-clases-form&gt;</cite>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../internals.html" title="Funcionamiento interno"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="session_storage.html" title="Cómo utilizar PdoSessionStorage para almacenar sesiones en la base de datos"
+             >anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>
