@@ -1,55 +1,43 @@
-TranslationServiceProvider
-==========================
+``TranslationServiceProvider``
+==============================
 
-The *TranslationServiceProvider* provides a service for translating your
-application into different languages.
+El ``TranslationServiceProvider`` provee un servicio para traducir tu aplicación a diferentes idiomas.
 
-Parameters
+Parámetros
 ----------
 
-* **translator.messages**: A mapping of locales to message arrays. This
-  parameter contains the translation data in all languages.
+* **translator.messages**: Una asignación de regiones para los arreglos de mensajes. Este parámetro contiene los datos de traducción en todos los idiomas.
 
-* **locale** (optional): The locale for the translator. You will most likely
-  want to set this based on some request parameter. Defaults to ``en``.
+* **locale** (opcional): La región para el traductor. Lo más probable es que desees establecer este basándote en algún parámetro de la petición. Predeterminada a ``en``.
 
-* **locale_fallback** (optional): Fallback locale for the translator. It will
-  be used when the current locale has no messages set.
+* **locale_fallback** (opcional): La región de reserva para el traductor. Esta se utiliza cuando la configuración regional actual no tiene ningún conjunto de mensajes.
 
-* **translation.class_path** (optional): Path to where
-  the Symfony2 Translation component is located.
+* **translation.class_path** (opcional): Ruta a donde se encuentra el componente ``Translation`` de *Symfony2*.
 
-Services
---------
+Servicios
+---------
 
-* **translator**: An instance of `Translator
-  <http://api.symfony.com/master/Symfony/Component/Translation/Translator.html>`_,
-  that is used for translation.
+* **translator**: Una instancia de `Translator <http://api.symfony.com/master/Symfony/Component/Translation/Translator.html>`_, utilizada para traducir.
 
-* **translator.loader**: An instance of an implementation of the translation
-  `LoaderInterface <http://api.symfony.com/master/Symfony/Component/Translation/Loader/LoaderInterface.html>`_,
-  defaults to an `ArrayLoader
-  <http://api.symfony.com/master/Symfony/Component/Translation/Loader/ArrayLoader.html>`_.
+* **translator.loader**: Una instancia de una implementación de la
+  `LoaderInterface <http://api.symfony.com/master/Symfony/Component/Translation/Loader/LoaderInterface.html>`_ del traductor, predeterminada a un `ArrayLoader <http://api.symfony.com/master/Symfony/Component/Translation/Loader/ArrayLoader.html>`_.
 
-* **translator.message_selector**: An instance of `MessageSelector
-  <http://api.symfony.com/master/Symfony/Component/Translation/MessageSelector.html>`_.
+* **translator.message_selector**: Una instancia de `MessageSelector <http://api.symfony.com/master/Symfony/Component/Translation/MessageSelector.html>`_.
 
-Registering
+Registrando
 -----------
 
-Make sure you place a copy of the Symfony2 Translation component in
-``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor::
+Asegúrate de colocar una copia del componente de traducción de *Symfony2* en ``vendor/symfony/src``. Puedes simplemente clonar todo *Symfony2* en ``vendor``::
 
     $app->register(new Silex\Provider\TranslationServiceProvider(), array(
         'locale_fallback'           => 'en',
         'translation.class_path'    => __DIR__.'/vendor/symfony/src',
     ));
 
-Usage
------
+Uso
+---
 
-The Translation provider provides a ``translator`` service and makes use of
-the ``translator.messages`` parameter::
+El proveedor ``Translation`` ofrece un servicio ``traductor`` y usa el parámetro ``translator.messages``::
 
     $app['translator.messages'] = array(
         'en' => array(
@@ -76,41 +64,38 @@ the ``translator.messages`` parameter::
         return $app['translator']->trans($message, array('%name%' => $name));
     });
 
-The above example will result in following routes:
+El ejemplo anterior se traducirá en las siguientes rutas:
 
-* ``/en/hello/igor`` will return ``Hello igor``.
+* ``/en/hello/igor`` regresará ``Hello igor``.
 
-* ``/de/hello/igor`` will return ``Hallo igor``.
+* ``/de/hello/igor`` regresará ``Hallo igor``.
 
-* ``/fr/hello/igor`` will return ``Bonjour igor``.
+* ``/fr/hello/igor`` regresará ``Bonjour igor``.
 
-* ``/it/hello/igor`` will return ``Hello igor`` (because of the fallback).
+* ``/it/hello/igor`` regresará ``Hello igor`` (debido a la reserva).
 
-Recipes
+Recetas
 -------
 
-YAML-based language files
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Archivos de idioma basados en *YAML*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Having your translations in PHP files can be inconvenient. This recipe will
-show you how to load translations from external YAML files.
+Tener tu traducción en archivos *PHP* puede ser un inconveniente. Esta receta te muestra cómo cargar traducciones de archivos *YAML* externos.
 
-First you will need the ``Config`` and ``Yaml`` components from Symfony2. Also
-make sure you register them with the autoloader. You can just clone the entire
-Symfony2 repository into ``vendor/symfony``::
+En primer lugar necesitas los componentes ``Config`` y ``Yaml`` de *Symfony2*. Además, asegúrate de registrarlos en el cargador automático. Puedes clonar el repositorio de *Symfony2* completo en ``vendor/symfony``::
 
     $app['autoloader']->registerNamespace('Symfony', __DIR__.'/vendor/symfony/src');
 
-Next, you have to create the language mappings in YAML files. A naming you can
-use is ``locales/en.yml``. Just do the mapping in this file as follows:
+A continuación, debes crear las asignaciones de idioma en los archivos *YAML*. Un nombre que puedes utilizar es ``locales/en.yml``. Sólo haz la asignación en este archivo de la siguiente manera:
 
 .. code-block:: yaml
 
     hello: Hello %name%
     goodbye: Goodbye %name%
 
-Repeat this for all of your languages. Then set up the ``translator.messages``
-to map languages to files::
+Repite esto para todos tus idiomas. A continuación, configura el ``translator.messages`` para asignar archivos a los idiomas:
+
+.. code-block:: php
 
     $app['translator.messages'] = array(
         'en' => __DIR__.'/locales/en.yml',
@@ -118,8 +103,9 @@ to map languages to files::
         'fr' => __DIR__.'/locales/fr.yml',
     );
 
-Finally override the ``translator.loader`` to use a ``YamlFileLoader`` instead
-of the default ``ArrayLoader``::
+Finalmente sobrescribe el ``translator.loader`` para utilizar ``YamlFileLoader`` en lugar del ``ArrayLoader`` predeterminado:
+
+.. code-block:: php
 
 
     use Symfony\Component\Translation\Loader\YamlFileLoader;
@@ -128,18 +114,16 @@ of the default ``ArrayLoader``::
         return new YamlFileLoader();
     });
 
-That's all you need to load translations from YAML files.
+Y eso es todo lo que necesitas para cargar traducciones desde archivos *YAML*.
 
-XLIFF-based language files
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Archivos de idioma basados en *YAML*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Just as you would do with YAML translation files, you first need to make
-sure you have the ``Config`` component from Symfony2, and that it is
-registered with the autoloader. See above for details.
+Al igual que lo harías con los archivos de traducción *YAML*, primero tienes que asegurarte de que tienes el componente ``Config`` de *Symfony2*, y haberlo registrado en el cargador automático. Ve arriba para más detalles.
 
-Then, similarly, create XLIFF files in your locales directory and setup the ``translator.messages`` to map to them.
+Luego, del mismo modo, crea los archivos *XLIFF* en tu directorio de regiones y configurar la opción ``translator.messages`` para asignarlos.
 
-Finally override the ``translator.loader`` to use a ``XliffFileLoader``::
+Finalmente redefine el ``translator.loader`` para utilizar un ``XliffFileLoader``::
 
     use Symfony\Component\Translation\Loader\XliffFileLoader;
 
@@ -147,19 +131,17 @@ Finally override the ``translator.loader`` to use a ``XliffFileLoader``::
         return new XliffFileLoader();
     });
 
-That's it.
+¡Eso es todo!
 
-Accessing translations in Twig templates
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Accediendo a las traducciones en las plantillas *Twig*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Once loaded, the translation service provider is available from within Twig templates:
+Una vez cargado, el proveedor del servicio de traducción está disponible desde las plantillas *Twig*:
 
 .. code-block:: jinja
     {{ app.translator.trans('translation_key') }}
 
-Even better: register the :doc:`SymfonyBridgesServiceProvider <providers/symfony_bridges>` and you will get
-the TranslationExtension of the bridge allowing you to translate strings in
-the Twig way:
+Aún mejor: registra el :doc:`SymfonyBridgesServiceProvider <providers/symfony_bridges>` y obtendrás la ``TranslationExtension`` del puente, misma que te permite traducir cadenas a la manera de *Twig*:
 
 .. code-block:: jinja
     {{ 'translation_key'|trans }}

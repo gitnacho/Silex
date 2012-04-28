@@ -1,32 +1,21 @@
-Testing
-=======
+Probando
+========
 
-Because Silex is built on top of Symfony2, it is very easy to write functional
-tests for your application. Functional tests are automated software tests that
-ensure that your code is working correctly. They go through the user interface,
-using a fake browser, and mimic the actions a user would do.
+Debido a que *Silex* está construido en la cima de *Symfony2*, es muy fácil escribir pruebas funcionales para tu aplicación. Las pruebas funcionales son pruebas automatizadas de software que garantizan que el código funciona correctamente. Estas van a través de la interfaz de usuario, utilizando un navegador simulado, e imitan las acciones que un usuario podría llevar a cabo.
 
-Why
----
+¿Por qué?
+---------
 
-If you are not familiar with software tests, you may be wondering why you would
-need this. Every time you make a change to your application, you have to test
-it. This means going through all the pages and making sure they are still
-working. Functional tests save you a lot of time, because they enable you to
-test your application in usually under a second by running a single command.
+Si no estás familiarizado con las pruebas de software, puedes preguntarte por qué tendrías que necesitarlas. Cada vez que haces un cambio a tu aplicación, tienes que probarlo. Esto significa recorrer todas las páginas y asegurarte de que todavía están trabajando. Las pruebas funcionales te ahorran un montón de tiempo, ya que te permiten probar la aplicación en general, en menos de un segundo ejecutando una única orden.
 
-For more information on functional testing, unit testing, and automated
-software tests in general, check out `PHPUnit <https://github.com/sebastianbergmann/phpunit>`_
-and `Bulat Shakirzyanov's talk on Clean Code <http://www.slideshare.net/avalanche123/clean-code-5609451>`_.
+Para más información sobre las pruebas funcionales, pruebas unitarias y pruebas automatizadas de software en general, consulta `PHPUnit <https://github.com/sebastianbergmann/phpunit>`_ y `Bulat Shakirzyanov habla en código limpio <http://www.slideshare.net/avalanche123/clean-code-5609451>`_.
 
-PHPUnit
--------
+*PHPUnit*
+---------
 
 `PHPUnit <https://github.com/sebastianbergmann/phpunit>`_
-is the de-facto standard testing framework for PHP. It was built for
-writing unit tests, but it can be used for functional tests too. You write
-tests by creating a new class, that extends the ``PHPUnit_Framework_TestCase``.
-Your test cases are methods prefixed with ``test``::
+Es de facto la plataforma de pruebas estándar para *PHP*. Fue construido para escribir pruebas unitarias, pero también lo puedes utilizar para pruebas funcionales. Escribes tus pruebas creando una nueva clase, que extienda a ``PHPUnit_Framework_TestCase``.
+Tus casos de prueba son los métodos prefijados con ``test``::
 
     class ContactFormTest extends PHPUnit_Framework_TestCase
     {
@@ -36,9 +25,7 @@ Your test cases are methods prefixed with ``test``::
         }
     }
 
-In your test cases, you do assertions on the state of what you are testing. In
-this case we are testing a contact form, so we would want to assert that the
-page loaded correctly and contains our form::
+En tus casos de prueba, haces afirmaciones sobre el estado de lo que estás probando. En este caso estamos probando un formulario de contacto, por lo tanto se quiere acertar que la página se ha cargado correctamente y contiene nuestro formulario::
 
         public function testInitialPage()
         {
@@ -50,17 +37,12 @@ page loaded correctly and contains our form::
             $this->assertContains('<form', $pageContent);
         }
 
-Here you see some of the available assertions. There is a full list available
-in the `Writing Tests for PHPUnit
-<http://www.phpunit.de/manual/current/en/writing-tests-for-phpunit.html>`_
-section of the PHPUnit documentation.
+Aquí puedes ver algunas de las aserciones disponibles. Hay una lista completa en la sección `Escribiendo pruebas para PHPUnit <http://www.phpunit.de/manual/current/en/writing-tests-for-phpunit.html>`_ de la documentación de *PHPUnit*.
 
-WebTestCase
------------
+``WebTestCase``
+---------------
 
-Symfony2 provides a WebTestCase class that can be used to write functional
-tests. The Silex version of this class is ``Silex\WebTestCase``, and you can
-use it by making your test extend it::
+*Symfony2* proporciona una clase ``WebTestCase`` que puedes utilizar para escribir pruebas funcionales. La versión ``Silex`` de esta clase es ``Silex\WebTestCase``, y la puedes utilizar haciendo que tu prueba la extienda::
 
     use Silex\WebTestCase;
 
@@ -71,27 +53,20 @@ use it by making your test extend it::
 
 .. note::
 
-    To make your application testable, you need to make sure you follow "Reusing
-    applications" instructions from :doc:`usage`.
+    Para hacer comprobable tu aplicación, es necesario asegurarte de que sigue las instrucciones de "reutilización de aplicaciones" de :doc:`usage`.
 
-For your WebTestCase, you will have to implement a ``createApplication``
-method, which returns your application. It will probably look like this::
+Para tu ``WebTestCase``, tendrás que implementar un método ``createApplication``, el cual devuelve tu aplicación. Este, probablemente, se verá así::
 
         public function createApplication()
         {
             return require __DIR__.'/path/to/app.php';
         }
 
-Make sure you do **not** use ``require_once`` here, as this method will be
-executed before every test.
+Asegúrate de **no** usar ``require_once`` aquí, ya que este método se ejecutará antes de cada prueba.
 
 .. tip::
 
-    By default, the application behaves in the same way as when using it from
-    a browser. But when an error occurs, it is sometimes easier to get raw
-    exceptions instead of HTML pages. It is rather simple if you tweak the
-    application configuration in the ``createApplication()`` method like
-    follows::
+    De manera predeterminada, la aplicación se comporta de la misma manera que cuando se utiliza desde un navegador. Pero cuando se produce un error, a veces es más fácil obtener excepciones en lugar de páginas *HTML*. Es bastante simple si ajustas la configuración de la aplicación en el método ``createApplication()`` como sigue::
 
         public function createApplication()
         {
@@ -104,8 +79,7 @@ executed before every test.
 
 .. tip::
 
-    If your application use sessions, you have to use ``FilesystemSessionStorage``
-    to store sessions::
+    Si tu aplicación usa sesiones, tienes que usar ``FilesystemSessionStorage`` para guardar las sesiones::
 
         // ...
         use Symfony\Component\HttpFoundation\SessionStorage\FilesystemSessionStorage;
@@ -120,8 +94,7 @@ executed before every test.
             // ...
         }
 
-The WebTestCase provides a ``createClient`` method. A client acts as a browser,
-and allows you to interact with your application. Here's how it works::
+El ``WebTestCase`` proporciona un método ``createClient``. Un cliente actúa como un navegador, y te permite interactuar con tu aplicación. Así es como funciona::
 
         public function testInitialPage()
         {
@@ -134,42 +107,33 @@ and allows you to interact with your application. Here's how it works::
             ...
         }
 
-There are several things going on here. You have both a ``Client`` and a
-``Crawler``.
+Aquí suceden varias cosas. Tienes tanto un ``Cliente`` como un ``Rastreador``.
 
-You can also access the application through ``$this->app``.
+También puedes acceder a la aplicación a través de ``$this->app``.
 
-Client
-------
-
-The client represents a browser. It holds your browsing history, cookies and
-more. The ``request`` method allows you to make a request to a page on your
-application.
-
-.. note::
-
-    You can find some documentation for it in `the client section of the testing
-    chapter of the Symfony2 documentation
-    <http://symfony.com/doc/current/book/testing.html#the-test-client>`_.
-
-Crawler
+Cliente
 -------
 
-The crawler allows you to inspect the content of a page. You can filter it
-using CSS expressions and lots more.
+El cliente representa un navegador. Este mantiene tu historial de navegación, ``cookies`` y mucho más. El método ``request`` te permite hacer una petición a una página en tu aplicación.
 
 .. note::
 
-    You can find some documentation for it in `the crawler section of the testing
-    chapter of the Symfony2 documentation
-    <http://symfony.com/doc/current/book/testing.html#the-test-client>`_.
+    Puedes encontrar alguna documentación para esto en la sección `cliente del capítulo de pruebas de la documentación de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/testing.html#el-cliente-de-pruebas>`_.
 
-Configuration
--------------
+``Rastreador``
+--------------
 
-The suggested way to configure PHPUnit is to create a ``phpunit.xml.dist``
-file, a ``tests`` folder and your tests in ``tests/YourApp/Tests/YourTest.php``.
-The ``phpunit.xml.dist`` file should look like this:
+El ``rastreador`` te permite inspeccionar el contenido de una página. Lo puedes filtrar usando expresiones *CSS* y mucho más.
+
+.. note::
+
+    Puedes encontrar alguna documentación para este en la sección `rastreador del capítulo de pruebas de la documentación de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/testing.html#el-cliente-de-pruebas>`_.
+
+Configurando
+------------
+
+La forma sugerida para configurar *PHPUnit* es crear un archivo ``phpunit.xml.dist``, un directorio ``tests`` y tus pruebas en ``tests/TuAp/Tests/TuPruebaTest.php``.
+El archivo ``phpunit.xml.dist`` debe tener este aspecto:
 
 .. code-block:: xml
 
@@ -191,10 +155,9 @@ The ``phpunit.xml.dist`` file should look like this:
         </testsuites>
     </phpunit>
 
-You can also configure a bootstrap file for autoloading and whitelisting for
-code coverage reports.
+También puedes configurar un archivo de arranque para cargar tus clases y listas blancas automáticamente para los informes de cobertura de código.
 
-Your ``tests/YourApp/Tests/YourTest.php`` should look like this::
+Tu ``tests/YourApp/Tests/YourTest.php`` debería tener este aspecto::
 
     namespace YourApp\Tests;
 
@@ -213,4 +176,4 @@ Your ``tests/YourApp/Tests/YourTest.php`` should look like this::
         }
     }
 
-Now, when running ``phpunit`` on the command line, your tests should run.
+Ahora, cuando ejecutes ``phpunit`` en la línea de ordenes, se deben ejecutar tus pruebas.

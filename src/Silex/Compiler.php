@@ -1,12 +1,15 @@
-<?php
+
+.. code-block:: php
+
+    <?php
 
 /*
- * This file is part of the Silex framework.
+ * Este archivo es parte de la plataforma Silex.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Para información completa sobre los derechos de autor y licencia, por
+ * favor, ve el archivo LICENSE que viene con este código fuente.
  */
 
 namespace Silex;
@@ -16,7 +19,7 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Process\Process;
 
 /**
- * The Compiler class compiles the Silex framework.
+ * La clase Compiler compila la plataforma Silex.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -25,9 +28,9 @@ class Compiler
     protected $version;
 
     /**
-     * Compiles the Silex source code into one single Phar file.
+     * Compila el código fuente de Silex en un único archivo Phar.
      *
-     * @param string $pharFile Name of the output Phar file
+     * @param string $pharFile Nombre del archivo Phar producido
      */
     public function compile($pharFile = 'silex.phar')
     {
@@ -37,7 +40,7 @@ class Compiler
 
         $process = new Process('git log --pretty="%h %ci" -n1 HEAD');
         if ($process->run() > 0) {
-            throw new \RuntimeException('The git binary cannot be found.');
+            throw new \RuntimeException('No puedo encontrar el binario de git.');
         }
         $this->version = trim($process->getOutput());
 
@@ -74,7 +77,7 @@ class Compiler
         $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../vendor/autoload_namespaces.php'));
         $this->addFile($phar, new \SplFileInfo(__DIR__.'/../../vendor/autoload_classmap.php'));
 
-        // Stubs
+        // Cooperantes
         $phar->setStub($this->getStub());
 
         $phar->stopBuffering();
@@ -102,12 +105,12 @@ class Compiler
         return <<<'EOF'
 <?php
 /*
- * This file is part of the Silex framework.
+ * Este archivo es parte de la plataforma Silex.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ * Este archivo fuente está sujeto a la licencia MIT incluida con
+ * este código fuente en el archivo LICENSE.
  */
 
 Phar::mapPhar('silex.phar');
@@ -127,18 +130,18 @@ if ('cli' === php_sapi_name() && basename(__FILE__) === basename($_SERVER['argv'
             $latest = trim(file_get_contents('http://silex.sensiolabs.org/get/version'));
 
             if ($latest != Silex\Application::VERSION) {
-                printf("A newer Silex version is available (%s).\n", $latest);
+                printf("Hay disponible una nueva versión de Silex (%s).\n", $latest);
             } else {
-                print("You are using the latest Silex version.\n");
+                print("Estás usando la versión más reciente de Silex.\n");
             }
             break;
 
         case 'version':
-            printf("Silex version %s\n", Silex\Application::VERSION);
+            printf("Silex versión %s\n", Silex\Application::VERSION);
             break;
 
         default:
-            printf("Unknown command '%s' (available commands: version, check, and update).\n", $_SERVER['argv'][1]);
+            printf("Orden desconocida '%s' (ordenes disponibles: version, check y update).\n", $_SERVER['argv'][1]);
     }
 
     exit(0);
@@ -149,13 +152,14 @@ EOF;
     }
 
     /**
-     * Removes whitespace from a PHP source string while preserving line numbers.
+     * Quita espacios en blanco de una cadena fuente PHP mientras
+     * preserva los números de línea.
      *
-     * Based on Kernel::stripComments(), but keeps line numbers intact.
+     * Basado en Kernel::stripComments(), pero deja intactos los números de línea.
      *
-     * @param string $source A PHP string
+     * @param string $source Una cadena PHP
      *
-     * @return string The PHP string with the whitespace removed
+     * @return string La cadena PHP sin espacios en blanco
      */
     static public function stripWhitespace($source)
     {
@@ -170,11 +174,11 @@ EOF;
             } elseif (in_array($token[0], array(T_COMMENT, T_DOC_COMMENT))) {
                 $output .= str_repeat("\n", substr_count($token[1], "\n"));
             } elseif (T_WHITESPACE === $token[0]) {
-                // reduce wide spaces
+                // reduce espacios amplios
                 $whitespace = preg_replace('{[ \t]+}', ' ', $token[1]);
-                // normalize newlines to \n
+                // normaliza nuevas línea a \n
                 $whitespace = preg_replace('{(?:\r\n|\r|\n)}', "\n", $whitespace);
-                // trim leading spaces
+                // recorta espacios en los extremos
                 $whitespace = preg_replace('{\n +}', "\n", $whitespace);
                 $output .= $whitespace;
             } else {

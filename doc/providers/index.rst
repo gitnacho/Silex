@@ -1,5 +1,5 @@
-Silex
-=====
+*Silex*
+=======
 
 .. toctree::
     :maxdepth: 1

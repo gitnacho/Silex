@@ -1,54 +1,42 @@
-ValidatorServiceProvider
-========================
+``ValidatorServiceProvider``
+============================
 
-The *ValidatorServiceProvider* provides a service for validating data. It is
-most useful when used with the *FormServiceProvider*, but can also be used
-standalone.
+El ``ValidatorServiceProvider`` ofrece un servicio de validación de datos. Es más útil cuando lo utilizas con ``FormServiceProvider``, pero también se puede utilizar de manera independiente.
 
-Parameters
+Parámetros
 ----------
 
-* **validator.class_path** (optional): Path to where
-  the Symfony2 Validator component is located.
+* **validator.class_path** (opcional): Ruta a donde se encuentra el componente ``Validator`` de *Symfony2*.
 
-Services
---------
+Servicios
+---------
 
-* **validator**: An instance of `Validator
-  <http://api.symfony.com/master/Symfony/Component/Validator/Validator.html>`_.
+* **validator**: Una instancia del `Validador <http://api.symfony.com/master/Symfony/Component/Validator/Validator.html>`_.
 
-* **validator.mapping.class_metadata_factory**: Factory for metadata loaders,
-  which can read validation constraint information from classes. Defaults to
-  StaticMethodLoader--ClassMetadataFactory.
+* **validator.mapping.class_metadata_factory**: Fábrica de cargadores de metadatos, que pueden leer la información de validación desde la restricción de las clases. El valor predeterminado es ``StaticMethodLoader--ClassMetadataFactory``.
 
-  This means you can define a static ``loadValidatorMetadata`` method on your
-  data class, which takes a ClassMetadata argument. Then you can set
-  constraints on this ClassMetadata instance.
+  Esto significa que puedes definir un método estático ``loadValidatorMetadata`` en tu clase de datos, que tenga un argumento ``ClassMetadata``. Entonces puedes establecer restricciones en esta instancia de ``ClassMetadata``.
 
-* **validator.validator_factory**: Factory for ConstraintValidators. Defaults
-  to a standard ``ConstraintValidatorFactory``. Mostly used internally by the
-  Validator.
+* **validator.validator_factory**: Fábrica de ``ConstraintValidators``. De manera predeterminada a un ``ConstraintValidatorFactory`` estándar. Generalmente lo utiliza internamente el validador.
 
-Registering
+Registrando
 -----------
 
-Make sure you place a copy of the Symfony2 Validator component in
-``vendor/symfony/src``. You can simply clone the whole Symfony2 into vendor::
+Asegúrate de colocar una copia del componente ``Validator`` de *Symfony2* en ``vendor/symfony/src``. Puedes simplemente clonar todo *Symfony2* en ``vendor``::
 
     $app->register(new Silex\Provider\ValidatorServiceProvider(), array(
         'validator.class_path'    => __DIR__.'/vendor/symfony/src',
     ));
 
-Usage
------
+Uso
+---
 
-The Validator provider provides a ``validator`` service.
+El proveedor ``Validator`` proporciona un servicio ``validator``.
 
-Validating values
+Validando valores
 ~~~~~~~~~~~~~~~~~
 
-You can validate values directly using the ``validateValue`` validator
-method::
+Puedes validar directamente los valores usando el método de validación ``validateValue``::
 
     use Symfony\Component\Validator\Constraints;
 
@@ -57,15 +45,12 @@ method::
         return $violations;
     });
 
-This is relatively limited.
+Esto está limitado relativamente.
 
-Validating object properties
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Validando propiedades de objeto
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you want to add validations to a class, you can implement a static
-``loadValidatorMetadata`` method as described under *Services*. This allows
-you to define constraints for your object properties. It also works with
-getters::
+Si deseas añadir validaciones a una clase, puedes implementar un método estático ``loadValidatorMetadata`` como se describe en *Servicios*. Esto te permite definir las restricciones para las propiedades de tu objeto. También trabaja con captadores::
 
     use Symfony\Component\Validator\Mapping\ClassMetadata;
     use Symfony\Component\Validator\Constraints;
@@ -92,8 +77,6 @@ getters::
         return $violations;
     });
 
-You will have to handle the display of these violations yourself. You can
-however use the *FormServiceProvider* which can make use of the *ValidatorServiceProvider*.
+Tendrás que manipular la presentación de estas violaciones tú mismo. No obstante, puedes utilizar el ``FormServiceProvider`` el cual puede usar el ``ValidatorServiceProvider``.
 
-For more information, consult the `Symfony2 Validation documentation
-<http://symfony.com/doc/2.0/book/validation.html>`_.
+Para más información, consulta la documentación de `validación de Symfony2 <http://symfony.com/doc/2.0/book/validation.html>`_.

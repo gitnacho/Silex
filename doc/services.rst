@@ -1,24 +1,18 @@
-Services
-========
+Servicios
+=========
 
-Silex is not only a microframework. It is also a micro service container. It
-does this by extending `Pimple <http://pimple.sensiolabs.org>`_ which provides
-service goodness in just 44 NCLOC.
+*Silex* no es sólo una microplataforma. También es un microcontenedor de servicios. Esto lo consigue extendiendo a `Pimple <http://pimple-project.org>`_ que ofrece el bondadoso servicio en sólo 44 *NCLOC*.
 
-Dependency Injection
---------------------
+Inyección de dependencias
+-------------------------
 
 .. note::
 
-    You can skip this if you already know what Dependency Injection is.
+    Puedes omitir esto si ya sabes lo que es la inyección de dependencias.
 
-Dependency Injection is a design pattern where you pass dependencies
-to services instead of creating them from within the service or
-relying on globals. This generally leads to code that is decoupled,
-re-usable, flexible and testable.
+La inyección de dependencias es un patrón de diseño dónde pasas las dependencias a servicios en lugar de crearlas desde dentro del servicio o depender de variables globales. Esto generalmente lleva a un código disociado, reutilizable, flexible y fácil de probar.
 
-Here is an example of a class that takes a ``User`` object and stores
-it as a file in JSON format::
+He aquí un ejemplo de una clase que toma un objeto ``Usuario`` y lo guarda como un archivo en formato *JSON*::
 
     class JsonUserPersister
     {
@@ -38,241 +32,187 @@ it as a file in JSON format::
         }
     }
 
-In this simple example the dependency is the ``basePath`` property.
-It is passed to the constructor. This means you can create several
-independent instances with different base paths. Of course
-dependencies do not have to be simple strings. More often they are
-in fact other services.
+En este sencillo ejemplo la dependencia es la propiedad ``basePath``.
+Esta se pasa al constructor. Esto significa que puedes crear varias instancias independientes con diferentes rutas base. Por supuesto, las dependencias no tienen que ser simples cadenas de texto. Muy a menudo estas, de hecho, se encuentran en otros servicios.
 
-Container
-~~~~~~~~~
+Contenedor
+~~~~~~~~~~
 
-A DIC or service container is responsible for creating and storing
-services. It can recursively create dependencies of the requested
-services and inject them. It does so lazily, which means a service
-is only created when you actually need it.
+Un ``IDC`` o contenedor de servicio es responsable de crear y almacenar servicios. Este puede crear recurrentemente dependencias de los servicios solicitados e inyectarlos. Lo hace de manera diferida, lo cual significa que un servicio sólo se crea cuando realmente se necesita.
 
-Most containers are quite complex and are configured through XML
-or YAML files.
+La mayoría de los contenedores son muy complejos y se configuran a través de archivos *XML* o *YAML*.
 
-Pimple is different.
+*Pimple* es diferente
 
-Pimple
-------
+*Pimple*
+--------
 
-Pimple is probably the simplest service container out there. It
-makes strong use of closures and implements the ArrayAccess interface.
+*Pimple*, probablemente, es el más simple contenedor de servicios que hay. Usa exhaustivamente los cierres que implementan la interfaz ``ArrayAccess``.
 
-We will start off by creating a new instance of Pimple -- and
-because ``Silex\Application`` extends ``Pimple`` all of this
-applies to Silex as well::
+Vamos a empezar por crear una nueva instancia de *Pimple* -- y puesto que ``Silex\application`` extiende a *Pimple* todo esto se aplica a *Silex* también:
+
+.. code-block:: php
 
     $container = new Pimple();
 
-or::
+o:
+
+.. code-block:: php
 
     $app = new Silex\Application();
 
-Parameters
+Parámetros
 ~~~~~~~~~~
 
-You can set parameters (which are usually strings) by setting
-an array key on the container::
+Puedes establecer los parámetros (los cuales suelen ser cadenas) estableciendo una clave en el arreglo del contenedor::
 
-    $app['some_parameter'] = 'value';
+    $app['algún_parámetro'] = 'valor';
 
-The array key can be anything, by convention periods are
-used for namespacing::
+La clave del arreglo puede ser cualquier cosa, por convención se utilizan puntos para denominar los espacios de nombres::
 
-    $app['asset.host'] = 'http://cdn.mysite.com/';
+    $app['activo.anfitrión'] = 'http://cdn.misitio.com/';
 
-Reading parameter values is possible with the same
-syntax::
+Es posible leer valores de parámetros con la misma sintaxis:
 
-    echo $app['some_parameter'];
+.. code-block:: php
 
-Service definitions
-~~~~~~~~~~~~~~~~~~~
+    echo $app['algún_parámetro'];
 
-Defining services is no different than defining parameters.
-You just set an array key on the container to be a closure.
-However, when you retrieve the service, the closure is executed.
-This allows for lazy service creation::
+Definiendo servicios
+~~~~~~~~~~~~~~~~~~~~
+
+
+La definición de servicios no es diferente de la definición de parámetros.
+Sólo tienes que establecer una clave en el arreglo del contenedor a un cierre.
+Sin embargo, cuando recuperes el servicio, se ejecuta el cierre.
+Esto permite la creación diferida de servicios::
 
     $app['some_service'] = function () {
         return new Service();
     };
 
-And to retrieve the service, use::
+Y para recuperar el servicio, utiliza::
 
     $service = $app['some_service'];
 
-Every time you call ``$app['some_service']``, a new instance
-of the service is created.
+Cada vez que llames a  ``$app['some_service']``, se crea una nueva instancia del servicio.
 
-Shared services
-~~~~~~~~~~~~~~~
+Servicios compartidos
+~~~~~~~~~~~~~~~~~~~~~
 
-You may want to use the same instance of a service across all
-of your code. In order to do that you can make a *shared*
-service::
+Posiblemente desees utilizar la misma instancia de un servicio a través de todo el código. A fin de que puedas hacer *compartido* un servicio::
 
     $app['some_service'] = $app->share(function () {
         return new Service();
     });
 
-This will create the service on first invocation, and then
-return the existing instance on any subsequent access.
+Esto creará el servicio en la primera invocación, y luego devolverá la instancia existente en cualquier acceso posterior.
 
-Access container from closure
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Accediendo al contenedor desde un cierre
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In many cases you will want to access the service container
-from within a service definition closure. For example when
-fetching services the current service depends on.
+En muchos casos, desearás acceder al contenedor de servicios dentro de un cierre en la definición del servicio. Por ejemplo, al recuperar servicios de los que depende el servicio actual.
 
-Because of this, the container is passed to the closure as
-an argument::
+Debido a esto, el contenedor se pasa al cierre como argumento::
 
     $app['some_service'] = function ($app) {
         return new Service($app['some_other_service'], $app['some_service.config']);
     };
 
-Here you can see an example of Dependency Injection.
-``some_service`` depends on ``some_other_service`` and
-takes ``some_service.config`` as configuration options.
-The dependency is only created when ``some_service`` is
-accessed, and it is possible to replace either of the
-dependencies by simply overriding those definitions.
+Aquí puedes ver un ejemplo de Inyección de dependencias.
+``some_service`` depende de ``some_other_service`` y toma ``some_service.config`` como opciones de configuración.
+La dependencia sólo se crea cuando accedes a ``some_service``, y es posible reemplazar cualquiera de las dependencias simplemente remplazando esas definiciones.
 
 .. note::
 
-    This also works for shared services.
+    Esto también trabaja para los servicios compartidos.
 
-Protected closures
+.. _cierres-protegidos:
+
+Cierres protegidos
 ~~~~~~~~~~~~~~~~~~
 
-Because the container sees closures as factories for
-services, it will always execute them when reading them.
+Debido a que el contenedor ve los cierres cómo fábricas de servicios, siempre se deben ejecutar cuando los leas.
 
-In some cases you will however want to store a closure
-as a parameter, so that you can fetch it and execute it
-yourself -- with your own arguments.
+En algunos casos, sin embargo, deseas almacenar un cierre como un parámetro, de modo que lo puedas recuperar y ejecutar tú mismo -- con tus propios argumentos.
 
-This is why Pimple allows you to protect your closures
-from being executed, by using the ``protect`` method::
+Esta es la razón por la cual *Pimple* te permite proteger tus cierres de ser ejecutados, usando el método ``protect``::
 
     $app['closure_parameter'] = $app->protect(function ($a, $b) {
         return $a + $b;
     });
 
-    // will not execute the closure
+    // no debe ejecutar el cierre
     $add = $app['closure_parameter'];
 
-    // calling it now
+    // llamándolo ahora
     echo $add(2, 3);
 
-Note that protected closures do not get access to
-the container.
+Ten en cuenta que los cierres protegidos no tienen acceso al contenedor.
 
-Core services
--------------
+Servicios básicos
+-----------------
 
-Silex defines a range of services which can be used
-or replaced. You probably don't want to mess with most
-of them.
+*Silex* define una serie de servicios que puedes utilizar o reemplazar. Es probable que no quieras meterte con la mayoría de ellos.
 
-* **request**: Contains the current request object,
-  which is an instance of `Request
-  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html>`_.
-  It gives you access to ``GET``, ``POST`` parameters
-  and lots more!
+* **request**: Contiene el objeto ``Petición`` actual, el cual es una instancia de `Request <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html>`_.
+  ¡Este proporciona acceso a los parámetros ``GET``, ``POST`` y mucho más!
 
-  Example usage::
+  Ejemplo de uso::
 
     $id = $app['request']->get('id');
 
-  This is only available when a request is being served, you can only access it
-  from within a controller, before filter, after filter or error handler.
+  Este sólo está disponible cuando se está sirviendo la petición, sólo puedes acceder a él desde dentro de un controlador, antes del filtro, después del filtro o al manejar algún error.
 
-* **autoloader**: This service provides you with a
-  `UniversalClassLoader
-  <http://api.symfony.com/master/Symfony/Component/ClassLoader/UniversalClassLoader.html>`_
-  that is already registered. You can register prefixes
-  and namespaces on it.
+* **autoloader**: Este servicio te proporciona un `UniversalClassLoader <http://api.symfony.com/master/Symfony/Component/ClassLoader/UniversalClassLoader.html>`_ que ya está registrado. Puedes registrar prefijos y espacios de nombres en él.
 
-  Example usage, autoloads Twig classes::
+  Ejemplo de uso, autocargando clases *Twig*::
 
     $app['autoloader']->registerPrefix('Twig_', $app['twig.class_path']);
 
-  For more information, check out the `Symfony2 autoloader documentation
-  <http://symfony.com/doc/current/components/class_loader.html>`_.
+  Para más información, consulta la documentación del `autocargador de Symfony2 <http://gitnacho.github.com/symfony-docs-es/components/class_loader.html>`_.
 
-* **routes**: The `RouteCollection
-  <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
-  that is used internally. You can add, modify, read
-  routes.
+* **routes**: El `RouteCollection <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_ utilizado internamente. Puedes agregar, modificar y leer rutas.
 
-* **controllers**: The ``Silex\ControllerCollection``
-  that is used internally. Check the *Internals*
-  chapter for more information.
+* **controllers**: La ``Silex\ControllerCollection`` utilizada internamente. Consulta el capítulo :doc:`internals` para más información.
 
-* **dispatcher**: The `EventDispatcher
-  <http://api.symfony.com/master/Symfony/Component/EventDispatcher/EventDispatcher.html>`_
-  that is used internally. It is the core of the Symfony2
-  system and is used quite a bit by Silex.
+* **dispatcher**: El `EventDispatcher <http://api.symfony.com/master/Symfony/Component/EventDispatcher/EventDispatcher.html>`_ utilizado internamente. Es el núcleo del sistema *Symfony2* y se utiliza un poco en *Silex*.
 
-* **resolver**: The `ControllerResolver
-  <http://api.symfony.com/master/Symfony/Component/HttpKernel/Controller/ControllerResolver.html>`_
-  that is used internally. It takes care of executing the
-  controller with the right arguments.
+* **resolver**: El `ControllerResolver <http://api.symfony.com/master/Symfony/Component/HttpKernel/Controller/ControllerResolver.html>`_ utilizado internamente. Se encarga de ejecutar el controlador con los argumentos adecuados.
 
-* **kernel**: The `HttpKernel
-  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html>`_
-  that is used internally. The HttpKernel is the heart of
-  Symfony2, it takes a Request as input and returns a
-  Response as output.
+* **kernel**: El `HttpKernel <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html>`_ utilizado internamente. El ``HttpKernel`` es el corazón de *Symfony2*, este toma una Petición como entrada y devuelve una Respuesta como salida.
 
-* **request_context**: The request context is a simplified representation
-  of the request that is used by the Router and the UrlGenerator.
+* **request_context**: El contexto de la petición es una representación simplificada de la petición que utilizan el ``Router`` y el ``UrlGenerator``.
 
-* **exception_handler**: The Exception handler is the default handler that is
-  used when you don't register one via the `error()` method or if your handler
-  does not return a Response. Disable it with
-  `unset($app['exception_handler'])`.
+* **exception_handler**: El controlador de excepciones es el controlador predeterminado que se utiliza cuando no registras uno a través del método ``error()`` o si el controlador no devuelve una Respuesta. Lo puedes desactivar con ``unset($app['exception_handler'])``.
 
 .. note::
 
-    All of these Silex core services are shared.
+    Todos estos servicios básicos de *Silex* son compartidos.
 
-Core parameters
----------------
+Parámetros básicos
+------------------
 
-* **request.http_port** (optional): Allows you to override the default port
-  for non-HTTPS URLs. If the current request is HTTP, it will always use the
-  current port.
+* **request.http_port** (opcional): Te permite redefinir el puerto predeterminado para direcciones que no sean *HTTPS*. Si la petición actual es *HTTP*, siempre utiliza el puerto actual.
 
-  Defaults to 80.
+  El predeterminado es 80.
 
-  This parameter can be used by the ``UrlGeneratorProvider``.
+  Este parámetro lo puede utilizar el ``UrlGeneratorProvider``.
 
-* **request.https_port** (optional): Allows you to override the default port
-  for HTTPS URLs. If the current request is HTTPS, it will always use the
-  current port.
+* **request.https_port** (opcional): Te permite redefinir el puerto predeterminado para direcciones que no sean *HTTPS*. Si la petición actual es *HTTPS*, siempre usará el puerto actual.
 
-  Defaults to 443.
+  Predeterminado a 443.
 
-  This parameter can be used by the ``UrlGeneratorProvider``.
+  Este parámetro lo puede utilizar el ``UrlGeneratorProvider``.
 
-* **request.default_locale** (optional): The locale used by default.
+* **request.default_locale** (opcional): La región usada por omisión.
 
-  Defaults to ``en``.
+  Predeterminada a ``en``.
 
-* **debug** (optional): Returns whether or not the application is running in
-  debug mode.
+* **debug** (opcional): Indica si o no se ejecuta la aplicación en modo de depuración.
 
-  Defaults to false.
+  El valor predeterminado es ``false``.
 
-* **charset** (optional): The charset to use for Responses.
+* **charset** (opcional): El juego de caracteres a usar para las Respuestas.
 
-  Defaults to UTF-8.
+  Por omisión es UTF-8.

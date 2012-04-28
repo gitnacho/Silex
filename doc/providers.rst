@@ -1,26 +1,22 @@
-Providers
-=========
+Proveedores
+===========
 
-Providers allow the developer to reuse parts of an application into another
-one. Silex provides two types of providers defined by two interfaces:
-`ServiceProviderInterface` for services and `ControllerProviderInterface` for
-controllers.
+Los proveedores permiten al desarrollador reutilizar partes de una aplicación en otra. Silex ofrece dos tipos de proveedores definidos por dos interfaces:
+``ServiceProviderInterface`` para los servicios y ``ControllerProviderInterface`` para los controladores.
 
-Service Providers
------------------
+Proveedores de servicios
+------------------------
 
-Loading providers
-~~~~~~~~~~~~~~~~~
+Cargando proveedores
+~~~~~~~~~~~~~~~~~~~~
 
-In order to load and use a service provider, you must register it on the
-application::
+Con el fin de cargar y usar un proveedor de servicios, lo debes registrar en la aplicación::
 
     $app = new Silex\Application();
 
     $app->register(new Acme\DatabaseServiceProvider());
 
-You can also provide some parameters as a second argument. These
-will be set **before** the provider is registered::
+También puedes proporcionar algunos parámetros como segundo argumento. Estos se deben establecer **antes** de registrar al proveedor::
 
     $app->register(new Acme\DatabaseServiceProvider(), array(
         'database.dsn'      => 'mysql:host=localhost;dbname=myapp',
@@ -28,38 +24,28 @@ will be set **before** the provider is registered::
         'database.password' => 'secret_root_password',
     ));
 
-Conventions
-~~~~~~~~~~~
+Convenciones
+~~~~~~~~~~~~
 
-You need to watch out in what order you do certain things when
-interacting with providers. Just keep to these rules:
+Necesitas tener cuidado con el orden en que haces ciertas cosas cuando interactúas con proveedores. Sólo sigue estas reglas:
 
-* Class paths (for the autoloader) must be defined **before**
-  the provider is registered. Passing it as a second argument
-  to ``Application::register`` qualifies too, because it sets
-  the passed parameters first.
+* Rutas de clase (para el cargador automático) las debes definir **antes** de registrar al proveedor. Pasar esta como segundo argumento a ``Application::register`` también califica, ya que ​​en primer lugar establece los parámetros pasados.
 
-  *Reason: The provider will set up the autoloader at
-  provider register time. If the class path is not set
-  at that point, no autoloader can be registered.*
+  *Razón: El proveedor configurará el cargador automático al momento de registrar al proveedor. Si no estableces la ruta de la clase en ese punto, no puedes registrar un cargador automático.*
 
-* Overriding existing services must occur **after** the
-  provider is registered.
+* La redefinición de servicios existentes debe ocurrir **después** de haber registrado al proveedor.
 
-  *Reason: If the services already exist, the provider
-  will overwrite it.*
+  *Razón: Si los servicios ya existen, el proveedor los sobrescribirá.*
 
-* You can set parameters any time before the service is
-  accessed.
+* Puedes configurar los parámetros en cualquier momento antes de acceder al servicio.
 
-Make sure to stick to this behavior when creating your
-own providers.
+Asegúrate de que te adhieres a este comportamiento al crear tus propios proveedores.
 
-Included providers
-~~~~~~~~~~~~~~~~~~
+Proveedores integrados
+~~~~~~~~~~~~~~~~~~~~~~
 
-There are a few provider that you get out of the box.
-All of these are within the ``Silex\Provider`` namespace.
+Hay algunos proveedores que obtienes fuera de la caja.
+Todos estos están dentro del espacio de nombres ``Silex\Provider``.
 
 * :doc:`DoctrineServiceProvider <providers/doctrine>`
 * :doc:`MonologServiceProvider <providers/monolog>`
@@ -72,31 +58,26 @@ All of these are within the ``Silex\Provider`` namespace.
 * :doc:`ValidatorServiceProvider <providers/validator>`
 * :doc:`HttpCacheServiceProvider <providers/http_cache>`
 
-Third party providers
-~~~~~~~~~~~~~~~~~~~~~
+Proveedores de terceros
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Some service providers are developed by the community. Those 
-third-party providers are listed on `Silex' repository wiki 
-<https://github.com/fabpot/Silex/wiki/Third-Party-ServiceProviders>`_.
+Algunos proveedores de servicios son desarrollados por la comunidad. Esos proveedores están listados en el `wiki del repositorio de Silex <https://github.com/fabpot/Silex/wiki/Third-Party-ServiceProviders>`_.
 
-You are encouraged to share yours.
+Te animamos a compartir los tuyos.
 
-Creating a provider
-~~~~~~~~~~~~~~~~~~~
+Creando un proveedor
+~~~~~~~~~~~~~~~~~~~~
 
-Providers must implement the ``Silex\ServiceProviderInterface``::
+Los proveedores deben implementar el ``Silex\ServiceProviderInterface``::
 
     interface ServiceProviderInterface
     {
         function register(Application $app);
     }
 
-This is very straight forward, just create a new class that
-implements the ``register`` method.  In this method you must
-define services on the application which then may make use
-of other services and parameters.
+Esto es muy sencillo, basta con crear una nueva clase que implemente el método ``register``.  En este método debes definir los servicios de la aplicación que pueden usar otros servicios y parámetros.
 
-Here is an example of such a provider::
+He aquí un ejemplo de tal proveedor::
 
     namespace Acme;
 
@@ -116,12 +97,11 @@ Here is an example of such a provider::
         }
     }
 
-This class provides a ``hello`` service which is a protected
-closure. It takes a ``name`` argument and will return
-``hello.default_name`` if no name is given. If the default
-is also missing, it will use an empty string.
+Esta clase proporciona un servicio, ``hello``, el cual es un cierre protegido. Este toma un argumento nombre y devolverá ``hello.default_name`` si no se da un nombre. Si además falta el predeterminado, utilizará una cadena vacía.
 
-You can now use this provider as follows::
+Ahora puedes utilizar este proveedor de la siguiente manera:
+
+.. code-block:: php
 
     $app = new Silex\Application();
 
@@ -135,23 +115,16 @@ You can now use this provider as follows::
         return $app['hello']($name);
     });
 
-In this example we are getting the ``name`` parameter from the
-query string, so the request path would have to be ``/hello?name=Fabien``.
+En este ejemplo estamos obteniendo el parámetro ``name`` de la cadena de consulta, por lo que la ruta de la petición tendría que ser ``/hello?name=Fabien``.
 
-Class loading
-~~~~~~~~~~~~~
+Cargando clases
+~~~~~~~~~~~~~~~
 
-Providers are great for tying in external libraries as you
-can see by looking at the ``MonologServiceProvider`` and
-``TwigServiceProvider``. If the library is decent and follows the
-`PSR-0 Naming Standard <http://groups.google.com/group/php-standards/web/psr-0-final-proposal>`_
-or the PEAR Naming Convention, it is possible to autoload
-classes using the ``UniversalClassLoader``.
+Los proveedores son ideales para atarlos en bibliotecas externas como puedes ver mirando a ``MonologServiceProvider`` y ``TwigServiceProvider``. Si la biblioteca es decente y sigue el `Estándar de nomenclatura PSR-0 <http://groups.google.com/group/php-standards/web/psr-0-final-proposal>`_ o la convención de nomenclatura *PEAR*, es posible cargar automáticamente las clases con el ``UniversalClassLoader``.
 
-As described in the *Services* chapter, there is an
-*autoloader* service which can be used for this.
+Como se describe en el capítulo *Servicios*, hay un *cargador automático* de servicios que puedes utilizar para esto.
 
-Here is an example of how to use it (based on `Buzz <https://github.com/kriswallsmith/Buzz>`_)::
+He aquí un ejemplo de cómo usarlo (en base a `Buzz <https://github.com/kriswallsmith/Buzz>`_)::
 
     namespace Acme;
 
@@ -170,8 +143,9 @@ Here is an example of how to use it (based on `Buzz <https://github.com/kriswall
         }
     }
 
-This allows you to simply provide the class path as an
-option when registering the provider::
+Esto te permite proporcionar sólo la ruta de clases como una opción al registrar el proveedor:
+
+.. code-block:: php
 
     $app->register(new BuzzServiceProvider(), array(
         'buzz.class_path' => __DIR__.'/vendor/buzz/lib',
@@ -179,37 +153,33 @@ option when registering the provider::
 
 .. note::
 
-    For libraries that do not use PHP 5.3 namespaces you can use ``registerPrefix``
-    instead of ``registerNamespace``, which will use an underscore as directory
-    delimiter.
+    Para las bibliotecas que no usan el espacio de nombres de *PHP* 5.3 pueden utilizar ``RegisterPrefix`` en lugar de ``registerNamespace``, el cual utilizará un guión como delimitador de directorio.
 
-Controllers providers
----------------------
+Proveedores de controladores
+----------------------------
 
-Loading providers
-~~~~~~~~~~~~~~~~~
+Cargando proveedores
+~~~~~~~~~~~~~~~~~~~~
 
-In order to load and use a controller provider, you must "mount" its
-controllers under a path::
+Con el fin de cargar y usar un controlador del proveedor, debes "montar" tus controladores en una ruta::
 
     $app = new Silex\Application();
 
     $app->mount('/blog', new Acme\BlogControllerProvider());
 
-All controllers defined by the provider will now be available under the
-`/blog` path.
+Todos los controladores definidos por el proveedor ahora estarán disponibles bajo la ruta `/blog`.
 
-Creating a provider
-~~~~~~~~~~~~~~~~~~~
+Creando un proveedor
+~~~~~~~~~~~~~~~~~~~~
 
-Providers must implement the ``Silex\ControllerProviderInterface``::
+Los proveedores deben implementar la ``Silex\ControllerProviderInterface``::
 
     interface ControllerProviderInterface
     {
         function connect(Application $app);
     }
 
-Here is an example of such a provider::
+He aquí un ejemplo de tal proveedor::
 
     namespace Acme;
 
@@ -231,25 +201,23 @@ Here is an example of such a provider::
         }
     }
 
-The ``connect`` method must return an instance of ``ControllerCollection``.
-``ControllerCollection`` is the class where all controller related methods are
-defined (like ``get``, ``post``, ``match``, ...).
+El método ``connect`` debe regresar una instancia de ``ControllerCollection``.
+``ControllerCollection`` es la clase donde todos los métodos controladores relacionados están definidos (como ``get``, ``post``, ``match``, ...).
 
 .. tip::
 
-    The ``Application`` class acts in fact as a proxy for these methods.
+    La clase ``Application`` de hecho actúa en un delegado para estos métodos.
 
-You can now use this provider as follows::
+Ahora puedes utilizar este proveedor de la siguiente manera:
+
+.. code-block:: php
 
     $app = new Silex\Application();
 
     $app->mount('/blog', new Acme\HelloControllerProvider());
 
-In this example, the ``/blog/`` path now references the controller defined in
-the provider.
+En este ejemplo, la ruta ``/blog/`` ahora hace referencia al controlador definido en el proveedor.
 
 .. tip::
 
-    You can also define a provider that implements both the service and the
-    controller provider interface and package in the same class the services
-    needed to make your controllers work.
+    También puedes definir un proveedor que implemente ambos, el servicio y la interfaz del proveedor del controlador y envasar en la misma clase los servicios necesarios para hacer que tu controlador funcione.

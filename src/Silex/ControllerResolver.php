@@ -1,12 +1,15 @@
-<?php
+
+.. code-block:: php
+
+    <?php
 
 /*
- * This file is part of the Silex framework.
+ * Este archivo es parte de la plataforma Silex.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Para información completa sobre los derechos de autor y licencia, por
+ * favor, ve el archivo LICENSE que viene con este código fuente.
  */
 
 namespace Silex;
@@ -16,7 +19,7 @@ use Symfony\Component\HttpKernel\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Adds Application as a valid argument for controllers.
+ * Añade Application como un argumento válido para los controladores.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -27,8 +30,8 @@ class ControllerResolver extends BaseControllerResolver
     /**
      * Constructor.
      *
-     * @param Application     $app    An Application instance
-     * @param LoggerInterface $logger A LoggerInterface instance
+     * @param Application     $app    Una instancia de Application
+     * @param LoggerInterface $logger Una instancia de LoggerInterface
      */
     public function __construct(Application $app, LoggerInterface $logger = null)
     {

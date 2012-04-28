@@ -1,7 +1,7 @@
-Cookbook
-========
+Recetario
+=========
 
-The cookbook section contains recipes for solving specific problems.
+La sección del recetario contiene instructivos para resolver problemas específicos.
 
 .. toctree::
     :maxdepth: 1
@@ -12,15 +12,13 @@ The cookbook section contains recipes for solving specific problems.
     session_storage
     form_no_csrf
 
-Recipes
+Recetas
 -------
 
-* :doc:`Accepting a JSON request body <json_request_body>` A common need when
-  building a restful API is the ability to accept a JSON encoded entity from
-  the request body.
+* :doc:`Aceptando el cuerpo de una petición JSON <json_request_body>` Una necesidad común en la construcción de una *API* útil es la posibilidad de aceptar una entidad JSON codificada desde el cuerpo de la petición.
 
-* :doc:`Translating Validation Messages<translating_validation_messages>`.
+* :doc:`traduciendo los mensajes de validación <translating_validation_messages>`.
 
-* :doc:`How to use PdoSessionStorage to store sessions in the database <session_storage>`.
+* :doc:`Cómo usar PdoSessionStorage para almacenar sesiones en la base de datos <session_storage>`.
 
-* :doc:`How to disable the CSRF Protection on a form using the FormExtension <form_no_csrf>`.
+* :doc:`Cómo desactivar la protección CSRF en un formulario utilizando la FormExtension <form_no_csrf>`.

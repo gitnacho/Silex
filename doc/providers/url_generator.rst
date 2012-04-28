@@ -1,36 +1,30 @@
-UrlGeneratorServiceProvider
-===========================
+``UrlGeneratorServiceProvider``
+===============================
 
-The *UrlGeneratorServiceProvider* provides a service for generating
-URLs for named routes.
+El ``UrlGeneratorServiceProvider`` ofrece un servicio para generar *URL* para las rutas con nombre.
 
-Parameters
+Parámetros
 ----------
 
-None.
+Ninguno.
 
-Services
---------
+Servicios
+---------
 
-* **url_generator**: An instance of `UrlGenerator
-  <http://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html>`_,
-  using the `RouteCollection
-  <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_
-  that is provided through the ``routes`` service.
-  It has a ``generate`` method, which takes the route name as an argument,
-  followed by an array of route parameters.
+* **url_generator**: Una instancia del `UrlGenerator <http://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html>`_, usando la `RouteCollection <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_ proporcionada a través del servicio ``routes``.
+  Tiene un método ``generate``, el cual toma el nombre de la ruta como argumento, seguido por un arreglo de parámetros de la ruta.
 
-Registering
+Registrando
 -----------
 
 ::
 
     $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
-Usage
------
+Uso
+---
 
-The UrlGenerator provider provides a ``url_generator`` service::
+El proveedor ``UrlGenerator`` ofrece un servicio ``url_generator``::
 
     $app->get('/', function () {
         return 'welcome to the homepage';

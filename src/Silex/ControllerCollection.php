@@ -1,12 +1,15 @@
-<?php
+
+.. code-block:: php
+
+    <?php
 
 /*
- * This file is part of the Silex framework.
+ * Este archivo es parte de la plataforma Silex.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Para información completa sobre los derechos de autor y licencia, por
+ * favor, ve el archivo LICENSE que viene con este código fuente.
  */
 
 namespace Silex;
@@ -16,11 +19,11 @@ use Symfony\Component\Routing\Route;
 use Silex\Controller;
 
 /**
- * Builds Silex controllers.
+ * Construye los controladores de Silex.
  *
- * It acts as a staging area for routes. You are able to set the route name
- * until flush() is called, at which point all controllers are frozen and
- * converted to a RouteCollection.
+ * Actúa como una área de preparación para las rutas. Podrás configurar el nombre de la ruta
+ * hasta invocar a flush(), en cuyo punto todos los controladores serán
+ * congelados y convertidos a una RouteCollection.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Fabien Potencier <fabien@symfony.com>
@@ -30,12 +33,12 @@ class ControllerCollection
     protected $controllers = array();
 
     /**
-     * Maps a pattern to a callable.
+     * Asigna un patrón a un ejecutable.
      *
-     * You can optionally specify HTTP methods that should be matched.
+     * Opcionalmente puedes especificar los métodos HTTP con que coincidirá.
      *
-     * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param string $pattern Patrón de ruta coincidente
+     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
      *
      * @return Silex\Controller
      */
@@ -49,10 +52,10 @@ class ControllerCollection
     }
 
     /**
-     * Maps a GET request to a callable.
+     * Asigna una petición GET a un ejecutable.
      *
-     * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param string $pattern Patrón de ruta coincidente
+     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
      *
      * @return Silex\Controller
      */
@@ -62,10 +65,10 @@ class ControllerCollection
     }
 
     /**
-     * Maps a POST request to a callable.
+     * Asigna una petición POST a un ejecutable.
      *
-     * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param string $pattern Patrón de ruta coincidente
+     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
      *
      * @return Silex\Controller
      */
@@ -75,10 +78,10 @@ class ControllerCollection
     }
 
     /**
-     * Maps a PUT request to a callable.
+     * Asigna una petición PUT a un ejecutable.
      *
-     * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param string $pattern Patrón de ruta coincidente
+     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
      *
      * @return Silex\Controller
      */
@@ -88,10 +91,10 @@ class ControllerCollection
     }
 
     /**
-     * Maps a DELETE request to a callable.
+     * Asigna una petición DELETE a un ejecutable.
      *
-     * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param string $pattern Patrón de ruta coincidente
+     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
      *
      * @return Silex\Controller
      */
@@ -101,7 +104,7 @@ class ControllerCollection
     }
 
     /**
-     * Adds a controller to the staging area.
+     * Añade un controlador al área de preparación.
      *
      * @param Controller $controller
      */
@@ -111,9 +114,9 @@ class ControllerCollection
     }
 
     /**
-     * Persists and freezes staged controllers.
+     * Persiste y congela controladores congelados.
      *
-     * @return RouteCollection A RouteCollection instance
+     * @return RouteCollection Una instancia de RouteCollection
      */
     public function flush($prefix = '')
     {

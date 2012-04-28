@@ -1,50 +1,37 @@
-MonologServiceProvider
-======================
+``MonologServiceProvider``
+==========================
 
-The *MonologServiceProvider* provides a default logging mechanism
-through Jordi Boggiano's `Monolog <https://github.com/Seldaek/monolog>`_
-library.
+El proveedor ``MonologServiceProvider`` proporciona un mecanismo de registro predeterminado a través de la biblioteca `Monolog <https://github.com/Seldaek/monolog>`_ de Jordi Boggiano's.
 
-It will log requests and errors and allow you to add debug
-logging to your application, so you don't have to use
-``var_dump`` so much anymore. You can use the grown-up
-version called ``tail -f``.
+Esta registrará las peticiones y errores y te permite añadir a tu aplicación el registro de depuración, para que no tengas que usar ``var_dump`` mucho más. Puedes utilizar la versión madura llamada ``tail-f``.
 
-Parameters
+Parámetros
 ----------
 
-* **monolog.logfile**: File where logs are written to.
+* **monolog.logfile**: Archivo donde escribir los registros.
 
-* **monolog.class_path** (optional): Path to where the
-  Monolog library is located.
+* **monolog.class_path** (opcional): Ruta a la biblioteca donde se encuentra *Monolog*.
 
-* **monolog.level** (optional): Level of logging defaults
-  to ``DEBUG``. Must be one of ``Logger::DEBUG``, ``Logger::INFO``,
-  ``Logger::WARNING``, ``Logger::ERROR``. ``DEBUG`` will log
-  everything, ``INFO`` will log everything except ``DEBUG``,
-  etc.
+* **monolog.level** (opcional): El nivel de registro por omisión es ``DEBUG``. Debe ser uno de ``Logger::DEBUG``, ``Logger::INFO``,
+  ``Logger::WARNING``, ``Logger::ERROR``. ``DEBUG`` registra todo, ``INFO`` registrará todo excepto ``DEBUG``, etc.
 
-* **monolog.name** (optional): Name of the monolog channel,
-  defaults to ``myapp``.
+* **monolog.name** (opcional): Nombre del canal de *Monplog*, por omisión es ``myapp``.
 
-Services
---------
+Servicios
+---------
 
-* **monolog**: The monolog logger instance.
+* **monolog**: La instancia del notario de *Monolog*.
 
-  Example usage::
+  Ejemplo de uso::
 
-    $app['monolog']->addDebug('Testing the Monolog logging.');
+    $app['monolog']->addDebug('Probando el notario de Monolog.');
 
-* **monolog.configure**: Protected closure that takes the
-  logger as an argument. You can override it if you do not
-  want the default behavior.
+* **monolog.configure**: Cierre protegido que toma al notario como argumento. Lo puedes modificar si no deseas el comportamiento por omisión.
 
-Registering
+Registrando
 -----------
 
-Make sure you place a copy of *Monolog* in the ``vendor/monolog``
-directory::
+Asegúrate de colocar una copia de *Monolog* en el directorio ``vendor/monolog``::
 
     $app->register(new Silex\Provider\MonologServiceProvider(), array(
         'monolog.logfile'       => __DIR__.'/development.log',
@@ -53,15 +40,12 @@ directory::
 
 .. note::
 
-    Monolog is not compiled into the ``silex.phar`` file. You have to
-    add your own copy of Monolog to your application.
+    *Monolog* no está compilado en el archivo ``silex.phar``. Tienes que añadir tu propia copia de *Monolog* a tu aplicación.
 
-Usage
------
+Uso
+---
 
-The MonologServiceProvider provides a ``monolog`` service. You can use
-it to add log entries for any logging level through ``addDebug()``,
-``addInfo()``, ``addWarning()`` and ``addError()``.
+El proveedor ``MonologServiceProvider`` ofrece un servicio ``monolog``. Lo puedes utilizar para agregar entradas al registro para cualquier nivel de registro a través de ``addDebug()``, ``addInfo()``, ``addWarning()`` y ``addError()``.
 
 ::
 
@@ -75,5 +59,4 @@ it to add log entries for any logging level through ``addDebug()``,
         return new Response('', 201);
     });
 
-For more information, check out the `Monolog documentation
-<https://github.com/Seldaek/monolog>`_.
+Para más información, consulta la `documentación de Monolog <https://github.com/Seldaek/monolog>`_.

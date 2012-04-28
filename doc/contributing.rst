@@ -1,24 +1,18 @@
-Contributing
-============
+Colaborando
+===========
 
-We are open to contributions to the Silex code. If you find
-a bug or want to contribute a provider, just follow these
-steps.
+Estamos abiertos a las aportaciones al código de *Silex*. Si encuentras un error o quieres contribuir con un proveedor, sólo tienes que seguir estos pasos.
 
-* Fork `the Silex repository <https://github.com/fabpot/Silex>`_
-  on github.
+* Bifurca el `repositorio de Silex <https://github.com/fabpot/Silex>`_ en *github*.
 
-* Make your feature addition or bug fix.
+* Agrega tu característica o corrección de fallo.
 
-* Add tests for it. This is important so we don't break it in a future version unintentionally.
+* Añade las pruebas para ello. Esto es importante para que no se rompa involuntariamente en una futura versión.
 
-* Send a pull request. Bonus points for topic branches.
+* Envía una solicitud de atracción. Explicando el propósito para el tema de la rama.
 
-If you have a big change or would like to discuss something,
-please join us on the `mailing list
-<http://groups.google.com/group/silex-php>`_.
+Si tienes un gran cambio o te gustaría hablar de algo, por favor, únete a nuestra lista de correo `<http://groups.google.com/group/silex-php>`_.
 
 .. note::
 
-    Any code you contribute must be licensed under the MIT
-    License.
+    Cualquier aportación de código se debe autorizar bajo la Licencia *MIT*.

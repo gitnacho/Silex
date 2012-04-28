@@ -1,56 +1,47 @@
-SessionServiceProvider
-======================
+``SessionServiceProvider``
+==========================
 
-The *SessionServiceProvider* provides a service for storing data persistently
-between requests.
+El proveedor ``SessionServiceProvider`` ofrece un servicio para almacenar datos persistentes entre peticiones.
 
-Parameters
+Parámetros
 ----------
 
-* **session.storage.save_path** (optional): The path for the
-  ``NativeFileSessionHandler``, defaults to the value of
-  ``sys_get_temp_dir()``.
+* **session.storage.save_path** (opcional): La trayectoria para el ``NativeFileSessionHandler``, ---por omisión--- es el valor de ``sys_get_temp_dir()``.
 
-* **session.storage.options**: An array of options that is passed to the
-  constructor of the ``session.storage`` service.
+* **session.storage.options**: Un arreglo de opciones que se pasa al constructor del servicio ``session.storage``.
 
-  In case of the default ``NativeSessionStorage``, the possible options are:
+  En caso del predeterminado ``NativeSessionStorage``, las opciones posibles son:
 
-  * **name**: The cookie name (_SESS by default)
-  * **id**: The session id (null by default)
-  * **cookie_lifetime**: Cookie lifetime
-  * **path**: Cookie path
-  * **domain**: Cookie domain
-  * **secure**: Cookie secure (HTTPS)
-  * **httponly**: Whether the cookie is http only
+  * **name**: El nombre de la ``cookie`` (por omisión ``_SESS``)
+  * **id**: El ``id`` de la sesión (por omisión ``null``)
+  * **cookie_lifetime**: Tiempo de vida de la ``cookie``
+  * **path**: Ruta a la ``cookie``
+  * **domain**: Dominio de la ``cookie``
+  * **secure**: ``cookie`` segura (*HTTPS*)
+  * **httponly**: Cuando la ``cookie`` únicamente es *http*
 
-  However, all of these are optional. Sessions last as long as the browser
-  is open. To override this, set the ``lifetime`` option.
+  Sin embargo, todas estas son opcionales. Las sesiones duran por siempre, mientras el navegador permanezca abierto. Para evitar esto, establece la opción ``lifetime``.
 
-Services
---------
+Servicios
+---------
 
-* **session**: An instance of Symfony2's `Session
-  <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html>`_.
+* **session**: Una instancia de la `Session <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html>`_ de *Symfony2*.
 
-* **session.storage**: A service that is used for persistence of the
-  session data. Defaults to a ``NativeSessionStorage``
+* **session.storage**: Un servicio que se utiliza para persistir los datos de sesión. El predefinido es ``NativeSessionStorage``
   
-* **session.storage.handler**: A service that is used by the ``session.storage``
-  for data access. Defaults to a ``NativeFileSessionHandler`` storage handler.
+* **session.storage.handler**: Un servicio que utiliza ``session.storage`` para acceder a los datos. El controlador de almacenamiento predefinido es ``NativeFileSessionHandler``.
 
-Registering
+Registrando
 -----------
 
 ::
 
     $app->register(new Silex\Provider\SessionServiceProvider());
 
-Usage
------
+Uso
+---
 
-The Session provider provides a ``session`` service. Here is an
-example that authenticates a user and creates a session for him::
+El proveedor ``Session`` proporciona un servicio ``session``. He aquí un ejemplo que autentica a un usuario y crea una sesión para él::
 
     use Symfony\Component\HttpFoundation\Response;
 

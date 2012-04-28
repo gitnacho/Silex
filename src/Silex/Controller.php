@@ -1,12 +1,15 @@
-<?php
+
+.. code-block:: php
+
+    <?php
 
 /*
- * This file is part of the Silex framework.
+ * Este archivo es parte de la plataforma Silex.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Para información completa sobre los derechos de autor y licencia, por
+ * favor, ve el archivo LICENSE que viene con este código fuente.
  */
 
 namespace Silex;
@@ -16,7 +19,7 @@ use Silex\Exception\ControllerFrozenException;
 use Symfony\Component\Routing\Route;
 
 /**
- * A wrapper for a controller, mapped to a route.
+ * Una envoltura para un controlador, asignado a una ruta.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  */
@@ -37,7 +40,7 @@ class Controller
     }
 
     /**
-     * Gets the controller's route.
+     * Obtiene la ruta del controlador.
      *
      * @return Route
      */
@@ -47,7 +50,7 @@ class Controller
     }
 
     /**
-     * Gets the controller's route name.
+     * Obtiene el nombre de la ruta del controlador.
      *
      * @return string
      */
@@ -57,15 +60,15 @@ class Controller
     }
 
     /**
-     * Sets the controller's route.
+     * Establece la ruta del controlador.
      *
      * @param string $routeName
-     * @return Controller $this The current Controller instance
+     * @return Controller $this La instancia de Controller actual
      */
     public function bind($routeName)
     {
         if ($this->isFrozen) {
-            throw new ControllerFrozenException(sprintf('Calling %s on frozen %s instance.', __METHOD__, __CLASS__));
+            throw new ControllerFrozenException(sprintf('Llamando a %s en una instancia congelada de %s.', __METHOD__, __CLASS__));
         }
 
         $this->routeName = $routeName;
@@ -74,11 +77,11 @@ class Controller
     }
 
     /**
-     * Sets the requirement for a route variable.
+     * Establece los requisitos para una ruta variable.
      *
-     * @param string $variable The variable name
-     * @param string $regexp   The regexp to apply
-     * @return Controller $this The current Controller instance
+     * @param string $variable El nombre variable
+     * @param string $regexp   La expresión regular por aplicar
+     * @return Controller $this La instancia del controlador actual
      */
     public function assert($variable, $regexp)
     {
@@ -88,11 +91,11 @@ class Controller
     }
 
     /**
-     * Sets the default value for a route variable.
+     * Establece el valor predefinido para una variable de ruta.
      *
-     * @param string $variable The variable name
-     * @param mixed  $default  The default value
-     * @return Controller $this The current Controller instance
+     * @param string $variable El nombre variable
+     * @param mixed  $default  El valor predefinido
+     * @return Controller $this La instancia del controlador actual
      */
     public function value($variable, $default)
     {
@@ -102,11 +105,11 @@ class Controller
     }
 
     /**
-     * Sets a converter for a route variable.
+     * Establece un convertidor para una variable de ruta.
      *
-     * @param string $variable The variable name
-     * @param mixed  $callback A PHP callback that converts the original value
-     * @return Controller $this The current Controller instance
+     * @param string $variable El nombre variable
+     * @param mixed  $callback Una retrollamada PHP que convierta al valor original
+     * @return Controller $this La instancia del controlador actual
      */
     public function convert($variable, $callback)
     {
@@ -118,10 +121,10 @@ class Controller
     }
 
     /**
-     * Sets the requirement for the HTTP method.
+     * Establece los requisitos para el método HTTP.
      *
-     * @param string $method The HTTP method name. Multiple methods can be supplied, delimited by a pipe character '|', eg. 'GET|POST'.
-     * @return Controller $this The current Controller instance
+     * @param string $method El nombre del método HTTP. Puedes suplir múltiples métodos, delimitados por un carácter de tubería '|', p.e. 'GET|POST'.
+     * @return Controller $this La instancia del controlador actual
      */
     public function method($method)
     {
@@ -131,9 +134,9 @@ class Controller
     }
 
     /**
-     * Sets the requirement of HTTP (no HTTPS) on this controller.
+     * Establece los requisitos de HTTP (no HTTPS) en este controlador.
      *
-     * @return Controller $this The current Controller instance
+     * @return Controller $this La instancia del controlador actual
      */
     public function requireHttp()
     {
@@ -143,9 +146,9 @@ class Controller
     }
 
     /**
-     * Sets the requirement of HTTPS on this controller.
+     * Establece los requisitos HTTPS en este controlador.
      *
-     * @return Controller $this The current Controller instance
+     * @return Controller $this La instancia del controlador actual
      */
     public function requireHttps()
     {
@@ -155,11 +158,11 @@ class Controller
     }
 
     /**
-     * Sets a callback to handle before triggering the route callback.
-     * (a.k.a. "Route Middleware")
+     * Establece una retrollamada para manipular retrollamadas de ruta before.
+     * (alias "Lógica intermedia de ruta")
      *
-     * @param mixed  $callback A PHP callback to be triggered when the Route is matched, just before the route callback
-     * @return Controller $this The current Controller instance
+     * @param mixed  $callback Una retrollamada PHP a lanzar cuando la ruta coincide, justo antes de la retrollamada de la ruta
+     * @return Controller $this La instancia del controlador actual
      */
     public function middleware($callback)
     {
@@ -171,9 +174,9 @@ class Controller
     }
 
     /**
-     * Freezes the controller.
+     * Congela el controlador.
      *
-     * Once the controller is frozen, you can no longer change the route name
+     * Una vez congelado el controlador, no puedes cambiar el nombre de la ruta
      */
     public function freeze()
     {

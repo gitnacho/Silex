@@ -1,25 +1,22 @@
-Usage
-=====
+Usándola
+========
 
-This chapter describes how to use Silex.
+Este capítulo describe cómo utilizar *Silex*.
 
-Bootstrap
----------
+Arranque
+--------
 
-To include the Silex all you need to do is require the ``silex.phar``
-file and create an instance of ``Silex\Application``. After your
-controller definitions, call the ``run`` method on your application::
+Para incluir *Silex* todo lo que tienes que hacer es requerir el archivo ``silex.phar`` y crear una instancia de ``Silex\Application``. Después de definir tu controlador, llama al método ``run`` en tu aplicación::
 
     require_once __DIR__.'/silex.phar';
 
     $app = new Silex\Application();
 
-    // definitions
+    // definiciones
 
     $app->run();
 
-One other thing you have to do is configure your web server. If you
-are using apache you can use a ``.htaccess`` file for this.
+Otra cosa que tienes que hacer es configurar tu servidor web. Si estás usando *Apache* puedes utilizar un ``.htaccess`` para esto.
 
 .. code-block:: apache
 
@@ -27,79 +24,67 @@ are using apache you can use a ``.htaccess`` file for this.
         Options -MultiViews
 
         RewriteEngine On
-        #RewriteBase /path/to/app
+        #RewriteBase /ruta/a/tu/aplicación
         RewriteCond %{REQUEST_FILENAME} !-f
         RewriteRule ^ index.php [L]
     </IfModule>
 
 .. note::
 
-    If your site is not at the webroot level you will have to uncomment the
-    ``RewriteBase`` statement and adjust the path to point to your directory,
-    relative from the webroot.
+    Si tu sitio no está a nivel raíz del servidor web, tienes que descomentar la declaración ``RewriteBase`` y ajustar la ruta para que apunte al directorio, relativo a la raíz del servidor web.
 
 .. tip::
 
-    When developing a website, you might want to turn on the debug mode to
-    ease debugging::
+    Cuando desarrollas un sitio web, posiblemente desees activar el modo de depuración para facilitar la corrección de errores::
 
         $app['debug'] = true;
 
 .. tip::
 
-    If your application is hosted behind a reverse proxy and you want Silex
-    to trust the `X-Forwarded-For*` headers, you will need to run your application
-    like this::
+    Si tu aplicación se encuentra detrás de un delegado inverso y deseas que *Silex* compruebe las cabeceras ``X-Forwarded-For*``, tendrás que ejecutar tu aplicación así::
 
         use Symfony\Component\HttpFoundation\Request;
 
         Request::trustProxyData();
         $app->run();
 
-Routing
--------
+Enrutado
+--------
 
-In Silex you define a route and the controller that is called when that
-route is matched
+En *Silex* defines una ruta y el controlador que se invocará cuando dicha ruta concuerde
 
-A route pattern consists of:
+Un patrón de ruta se compone de:
 
-* *Pattern*: The route pattern defines a path that points to a resource.
-  The pattern can include variable parts and you are able to set
-  RegExp requirements for them.
+* *Pattern*: El patrón de ruta define una ruta que apunta a un recurso.
+  El patrón puede incluir partes variables y tú podrás establecer los requisitos con expresiones regulares.
 
-* *Method*: One of the following HTTP methods: ``GET``, ``POST``, ``PUT``
-  ``DELETE``. This describes the interaction with the resource. Commonly
-  only ``GET`` and ``POST`` are used, but it is possible to use the
-  others as well.
+* *Method*: Uno de los siguientes métodos *HTTP*: ``GET``, ``POST``, ``PUT``
+  ``DELETE``. Este describe la interacción con el recurso. Normalmente sólo se utilizan ``GET`` y ``POST``, pero, también es posible utilizar los otros.
 
-The controller is defined using a closure like this::
+El controlador se define usando un cierre de esta manera:
+
+.. code-block:: php
 
     function () {
-        // do something
+        // hace algo
     }
 
-Closures are anonymous functions that may import state from outside
-of their definition. This is different from globals, because the outer
-state does not have to be global. For instance, you could define a
-closure in a function and import local variables of that function.
+Los cierres son funciones anónimas que pueden importar el estado desde fuera de su definición. Esto es diferente de las variables globales, porque el estado exterior no tiene que ser global. Por ejemplo, podrías definir un cierre en una función e importar variables locales desde esa función.
 
 .. note::
 
-    Closures that do not import scope are referred to as lambdas.
-    Because in PHP all anonymous functions are instances of the
-    ``Closure`` class, we will not make a distinction here.
+    Los cierres que no importan el ámbito se conocen como lambdas.
+    Debido a que en *PHP* todas las funciones anónimas son instancias de la clase ``Closure``, no vamos a hacer una distinción aquí.
 
-The return value of the closure becomes the content of the page.
+El valor de retorno del cierre se convierte en el contenido de la página.
 
-There is also an alternate way for defining controllers using a
-class method. The syntax for that is ``ClassName::methodName``.
-Static methods are also possible.
+También existe una forma alterna para definir controladores que utilizan un método de clase. La sintaxis para esto es **NombreClase**::**nombreMétodo**.
+También son posibles los métodos estáticos.
 
-Example GET route
-~~~~~~~~~~~~~~~~~
+Ejemplo de ruta ``GET``
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Here is an example definition of a ``GET`` route::
+He aquí un ejemplo de una definición de ruta ``GET``::
 
     $blogPosts = array(
         1 => array(
@@ -120,16 +105,12 @@ Here is an example definition of a ``GET`` route::
         return $output;
     });
 
-Visiting ``/blog`` will return a list of blog post titles. The ``use``
-statement means something different in this context. It tells the
-closure to import the $blogPosts variable from the outer scope. This
-allows you to use it from within the closure.
+Al visitar ``/blog`` devolverá una lista con los títulos de los comunicados en el ``blog``. La declaración ``use`` significa algo diferente en este contexto. Esta instruye al cierre a importar la variable ``comunicadosBLog`` desde el ámbito externo. Esto te permite utilizarla dentro del cierre.
 
-Dynamic routing
-~~~~~~~~~~~~~~~
+Enrutado dinámico
+~~~~~~~~~~~~~~~~~
 
-Now, you can create another controller for viewing individual blog
-posts::
+Ahora, puedes crear otro controlador para ver comunicados individuales del ``blog``::
 
     $app->get('/blog/show/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
         if (!isset($blogPosts[$id])) {
@@ -142,18 +123,14 @@ posts::
                 "<p>{$post['body']}</p>";
     });
 
-This route definition has a variable ``{id}`` part which is passed
-to the closure.
+Esta definición de ruta tiene una parte variable ``{id}`` que se pasa al cierre.
 
-When the post does not exist, we are using ``abort()`` to stop the request
-early. It actually throws an exception, which we will see how to handle later
-on.
+Cuando el comunicado no existe, estamos usando ``abort()`` para detener la petición inicial. En realidad, se produce una excepción, la cual veremos cómo manejar más adelante.
 
-Example POST route
-~~~~~~~~~~~~~~~~~~
+Ejemplo de ruta ``POST``
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-POST routes signify the creation of a resource. An example for this is a
-feedback form. We will use the ``mail`` function to send an e-mail::
+Las rutas ``POST`` denotan la creación de un recurso. Un ejemplo de esto es un formulario de comentarios. Vamos a utilizar la función ``mail`` para enviar un correo electrónico::
 
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
@@ -165,48 +142,38 @@ feedback form. We will use the ``mail`` function to send an e-mail::
         return new Response('Thank you for your feedback!', 201);
     });
 
-It is pretty straightforward.
+Es bastante sencillo.
 
 .. note::
 
-    There is a :doc:`SwiftmailerServiceProvider <providers/swiftmailer>` included
-    that you can use instead of ``mail()``.
+    Hay un :doc:`SwiftmailerServiceProvider <providers/swiftmailer>` incluido que puedes utilizar en lugar de ``mail()``.
 
-The current ``request`` is automatically injected by Silex to the Closure
-thanks to the type hinting. It is an instance of `Request
-<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html>`_,
-so you can fetch variables using the request ``get`` method.
+La ``petición`` actual es inyectada al ``cierre`` automáticamente por *Silex* gracias al indicador de tipo. Es una instancia de `Request <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html>`_, por tanto puedes recuperar las variables usando el método ``get`` de la petición.
 
-Instead of returning a string we are returning an instance of
-`Response
-<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html>`_.
-This allows setting an HTTP
-status code, in this case it is set to ``201 Created``.
+En lugar de devolver una cadena regresamos una instancia de `Response <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html>`_.
+Esto nos permite fijar un código de estado *HTTP*, en este caso configurado a ``201 Creado``.
 
 .. note::
 
-    Silex always uses a ``Response`` internally, it converts strings to
-    responses with status code ``200 Ok``.
+    *Silex* siempre utiliza internamente una ``Respuesta``, la convierte a cadenas para respuestas con código de estado ``200 OK``.
 
-Other methods
+Otros métodos
 ~~~~~~~~~~~~~
 
-You can create controllers for most HTTP methods. Just call one of these
-methods on your application: ``get``, ``post``, ``put``, ``delete``. You
-can also call ``match``, which will match all methods::
+Puedes crear controladores para la mayoría de los métodos *HTTP*. Sólo tienes que llamar uno de estos métodos en tu aplicación: ``get``, ``post``, ``put``, ``delete``. También puedes llamar ``match``, el cual coincidirá con todos los métodos::
 
     $app->match('/blog', function () {
         ...
     });
 
-You can then restrict the allowed methods via the ``method`` method::
+Entonces puedes restringir los métodos permitidos a través del método ``method``::
 
     $app->match('/blog', function () {
         ...
     })
     ->method('PATCH');
 
-You can match multiple methods with one controller using regex syntax::
+Puedes sincronizar varios métodos con un controlador utilizando la sintaxis de expresiones regulares::
 
     $app->match('/blog', function () {
         ...
@@ -215,33 +182,35 @@ You can match multiple methods with one controller using regex syntax::
 
 .. note::
 
-    The order in which the routes are defined is significant. The first
-    matching route will be used, so place more generic routes at the bottom.
+    El orden en que definas las rutas es importante. La primera ruta que coincida se utilizará, por lo tanto coloca tus rutas más genéricas en la parte inferior.
 
 
-Route variables
-~~~~~~~~~~~~~~~
+Variables de ruta
+~~~~~~~~~~~~~~~~~
 
-As it has been shown before you can define variable parts in a route like this::
+Como mostramos antes, puedes definir partes variables en una ruta, como esta:
+
+.. code-block:: php
 
     $app->get('/blog/show/{id}', function ($id) {
         ...
     });
 
-It is also possible to have more than one variable part, just make sure the
-closure arguments match the names of the variable parts::
+También es posible tener más de una parte variable, basta con que encierres los argumentos coincidentes con los nombres de las partes variables::
 
     $app->get('/blog/show/{postId}/{commentId}', function ($postId, $commentId) {
         ...
     });
 
-While it's not suggested, you could also do this (note the switched arguments)::
+Si bien no se sugiere, también lo puedes hacer (ten en cuenta la conmutación de los argumentos)::
 
     $app->get('/blog/show/{postId}/{commentId}', function ($commentId, $postId) {
         ...
     });
 
-You can also ask for the current Request and Application objects::
+También puedes consultar la ``Petición`` actual y el objeto ``Aplicación``:
+
+.. code-block:: php
 
     $app->get('/blog/show/{id}', function (Application $app, Request $request, $id) {
         ...
@@ -249,25 +218,22 @@ You can also ask for the current Request and Application objects::
 
 .. note::
 
-    Note for the Application and Request objects, Silex does the injection
-    based on the type hinting and not on the variable name::
+    Ten en cuenta que para los objetos ``Aplicación`` y  ``Petición``, *Silex* hace la inyección basándose en el indicador de tipo y no en el nombre de la variable::
 
         $app->get('/blog/show/{id}', function (Application $foo, Request $bar, $id) {
             ...
         });
 
-Route variables converters
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Convertidores de variables de ruta
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before injecting the route variables into the controller, you can apply some
-converters::
+Antes de inyectar las variables de ruta en el controlador, puedes aplicar algunos convertidores::
 
     $app->get('/user/{id}', function ($id) {
         // ...
     })->convert('id', function ($id) { return (int) $id; });
 
-This is useful when you want to convert route variables to objects as it
-allows to reuse the conversion code across different controllers::
+Esto es útil cuando quieres convertir las variables de ruta a objetos, ya que permite reutilizar el código de conversión entre diferentes controladores::
 
     $userProvider = function ($id) {
         return new User($id);
@@ -281,7 +247,7 @@ allows to reuse the conversion code across different controllers::
         // ...
     })->convert('user', $userProvider);
 
-The converter callback also receives the ``Request`` as its second argument::
+La retrollamada al convertidor también recibe la ``Petición`` como segundo argumento::
 
     $callback = function ($post, Request $request) {
         return new Post($request->attributes->get('slug'));
@@ -291,22 +257,19 @@ The converter callback also receives the ``Request`` as its second argument::
         // ...
     })->convert('post', $callback);
 
-Requirements
-~~~~~~~~~~~~
+Requisitos
+~~~~~~~~~~
 
-In some cases you may want to only match certain expressions. You can define
-requirements using regular expressions by calling ``assert`` on the
-``Controller`` object, which is returned by the routing methods.
+En algunos casos es posible que sólo desees detectar ciertas expresiones. Puedes definir los requisitos usando expresiones regulares llamando a ``assert`` en el objeto ``Controller``, que es devuelto por los métodos de enrutado.
 
-The following will make sure the ``id`` argument is numeric, since ``\d+``
-matches any amount of digits::
+Lo siguiente se asegurará de que el argumento ``id`` es numérico, ya que ``\d+`` coincide con cualquier cantidad de dígitos::
 
     $app->get('/blog/show/{id}', function ($id) {
         ...
     })
     ->assert('id', '\d+');
 
-You can also chain these calls::
+También puedes encadenar estas llamadas::
 
     $app->get('/blog/show/{postId}/{commentId}', function ($postId, $commentId) {
         ...
@@ -314,27 +277,23 @@ You can also chain these calls::
     ->assert('postId', '\d+')
     ->assert('commentId', '\d+');
 
-Default values
-~~~~~~~~~~~~~~
+valores predeterminados
+~~~~~~~~~~~~~~~~~~~~~~~
 
-You can define a default value for any route variable by calling ``value`` on
-the ``Controller`` object::
+Puedes definir un valor predeterminado para cualquier variable de ruta llamando a ``value`` en el objeto ``Controlador``::
 
     $app->get('/{pageName}', function ($pageName) {
         ...
     })
     ->value('pageName', 'index');
 
-This will allow matching ``/``, in which case the ``pageName`` variable will
-have the value ``index``.
+Esto te permitirá coincidir ``/``, en cuyo caso la variable ``nombrePagina`` tendrá el valor de ``index``.
 
-Named routes
-~~~~~~~~~~~~
+Rutas con nombre
+~~~~~~~~~~~~~~~~
 
-Some providers (such as ``UrlGeneratorProvider``) can make use of named routes.
-By default Silex will generate a route name for you, that cannot really be
-used. You can give a route a name by calling ``bind`` on the ``Controller``
-object that is returned by the routing methods::
+Algunos proveedores (como ``UrlGeneratorProvider``) pueden usar rutas con nombre.
+De manera predeterminada *Silex* generará un nombre de ruta para ti, el cual, en realidad, no puedes utilizar. Puedes dar un nombre a una ruta llamando a ``bind`` en el objeto ``Controlador`` devuelto por los métodos de enrutado::
 
     $app->get('/', function () {
         ...
@@ -349,52 +308,52 @@ object that is returned by the routing methods::
 
 .. note::
 
-    It only makes sense to name routes if you use providers that make use
-    of the ``RouteCollection``.
+    Sólo tiene sentido nombrar rutas si utilizas proveedores que usan la ``RouteCollection``.
 
-Before and after filters
-------------------------
+Filtros ``before`` y ``after``
+------------------------------
 
-Silex allows you to run code before and after every request. This happens
-through ``before`` and ``after`` filters. All you need to do is pass a closure::
+*Silex* te permite ejecutar código antes y después de cada petición. Esto ocurre a través de los filtros ``before`` y ``after``. Todo lo que necesitas hacer es pasar un cierre::
 
     $app->before(function () {
-        // set up
+        // configuración
     });
 
     $app->after(function () {
-        // tear down
+        // destrucción
     });
 
-The before filter has access to the current Request, and can short-circuit
-the whole rendering by returning a Response::
+El filtro ``before`` tiene acceso a la ``Petición`` actual, y puede provocar un cortocircuito en toda la reproducción, devolviendo una ``Respuesta``:
+
+.. code-block:: php
 
     $app->before(function (Request $request) {
-        // redirect the user to the login screen if access to the Resource is protected
+        // redirige al usuario al formulario de acceso si el recurso accedido está protegido
         if (...) {
             return new RedirectResponse('/login');
         }
     });
 
-The after filter has access to the Request and the Response::
+El filtro ``after`` tiene acceso a la ``Petición`` y a la ``Respuesta``:
+
+.. code-block:: php
 
     $app->after(function (Request $request, Response $response) {
-        // tweak the Response
+        // ajusta la Respuesta
     });
 
 .. note::
 
-    The filters are only run for the "master" Request.
+    Los filtros sólo los ejecuta la ``Petición`` "maestra".
 
-Route middlewares
------------------
+Servicios intermedios de lógica para la ruta
+--------------------------------------------
 
-Route middlewares are PHP callables which are triggered when their associated
-route is matched. They are fired just before the route callback, but after the
-application ``before`` filters.
+Los servicios intermedios de lógica (``middlewares``) para la ruta son ejecutables *PHP* que se desencadenan cuando encaja su ruta asociada. Se disparan justo antes de la retrollamada a la ruta, pero después de aplicar los filtros ``before``.
 
-This can be used for a lot of use cases; for instance, here is a simple
-"anonymous/logged user" check::
+Los puedes usar en una gran cantidad de situaciones; Por ejemplo, aquí está una simple comprobación de "usuario anónimo/registrado":
+
+.. code-block:: php
 
     $mustBeAnonymous = function (Request $request) use ($app) {
         if ($app['session']->has('userId')) {
@@ -423,31 +382,22 @@ This can be used for a lot of use cases; for instance, here is a simple
     })
     ->middleware($mustBeLogged);
 
-The ``middleware`` function can be called several times for a given route, in
-which case they are triggered in the same order as you added them to the
-route.
+Una determinada ruta puede invocar varias veces a la función ``middleware``, en cuyo caso se activa en el mismo orden en que la añadas a la ruta.
 
-For convenience, the route middlewares functions are triggered with the
-current ``Request`` instance as their only argument.
+Por conveniencia, las funciones de lógica intermedia de ruta se activan con la instancia de la ``Petición`` actual como su único argumento.
 
-If any of the route middlewares returns a Symfony HTTP Response, it will
-short-circuit the whole rendering: the next middlewares won't be run, neither
-the route callback. You can also redirect to another page by returning a
-redirect response, which you can create by calling the Application
-``redirect`` method.
+Si alguno de los servicios de lógica intermedia de ruta devuelve una respuesta *HTTP* de *Symfony*, cortocircuita la reproducción completa: Los siguientes servicios de lógica intermedia no se ejecutarán, ni la retrollamada a la ruta. También puedes redirigir a otra página devolviendo una respuesta de redirección, la cual puedes crear llamando al método ``redirect`` de la aplicación.
 
-If a route middleware does not return a Symfony HTTP Response or ``null``, a
-``RuntimeException`` is thrown.
+Si un servicio de lógica intermedia de ruta no devuelve una respuesta *HTTP* de *Symfony* o ``null``, se lanza una ``RuntimeException``.
 
-Error handlers
---------------
+Manipuladores de error
+----------------------
 
-If some part of your code throws an exception you will want to display
-some kind of error page to the user. This is what error handlers do. You
-can also use them to do additional things, such as logging.
+Si alguna parte de tu código produce una excepción de la que desees mostrar algún tipo de página de error al usuario. Esto es lo que hacen los manipuladores de error. También puedes utilizarlos para hacer cosas adicionales, tal como registrar sucesos.
 
-To register an error handler, pass a closure to the ``error`` method
-which takes an ``Exception`` argument and returns a response::
+Para registrar un manipulador de error, pasa un cierre al método ``error`` el cual toma un argumento ``Exception`` y devuelve una respuesta:
+
+.. code-block:: php
 
     use Symfony\Component\HttpFoundation\Response;
 
@@ -455,8 +405,7 @@ which takes an ``Exception`` argument and returns a response::
         return new Response('We are sorry, but something went terribly wrong.', $code);
     });
 
-You can also check for specific errors by using the ``$code`` argument, and
-handle them differently::
+También puedes comprobar si hay errores específicos usando el argumento ``$code``, y manejándolo de manera diferente::
 
     use Symfony\Component\HttpFoundation\Response;
 
@@ -472,23 +421,16 @@ handle them differently::
         return new Response($message, $code);
     });
 
-If you want to set up logging you can use a separate error handler for that.
-Just make sure you register it before the response error handlers, because
-once a response is returned, the following handlers are ignored.
+Si deseas configurar el registro puedes utilizar un manipulador de errores independiente para eso.
+Sólo asegúrate de registrarlo antes que los manipuladores que responden a error, porque una vez que se devuelve una respuesta, se omiten los siguientes manipuladores.
 
 .. note::
 
-    Silex ships with a provider for `Monolog <https://github.com/Seldaek/monolog>`_
-    which handles logging of errors. Check out the *Providers* chapter
-    for details.
+    *Silex* viene con un proveedor para `Monolog <https://github.com/Seldaek/monolog>`_ el cual maneja el registro de errores. Échale un vistazo al capítulo :doc:`providers` para más detalles.
 
 .. tip::
 
-    Silex comes with a default error handler that displays a detailed error
-    message with the stack trace when **debug** is true, and a simple error
-    message otherwise. Error handlers registered via the ``error()`` method
-    always take precedence but you can keep the nice error messages when debug
-    is turned on like this::
+    *Silex* viene con un controlador de errores predeterminado que muestra un mensaje de error detallado con el seguimiento de la pila cuando **debug** es ``true``, y de otra manera un mensaje de error simple. Los manipuladores de error registrados a través del método ``error()`` siempre tienen prioridad, pero puedes mantener agradables los mensajes de error de depuración cuando se enciende con algo como esto::
 
         use Symfony\Component\HttpFoundation\Response;
 
@@ -497,11 +439,10 @@ once a response is returned, the following handlers are ignored.
                 return;
             }
 
-            // logic to handle the error and return a Response
+            // lógica para manejar el error y devolver una respuesta
         });
 
-The error handlers are also called when you use ``abort`` to abort a request
-early::
+A los manipuladores de error también se les llama cuando utilizas ``abort`` para anular tempranamente una petición::
 
     $app->get('/blog/show/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
         if (!isset($blogPosts[$id])) {
@@ -511,31 +452,29 @@ early::
         return new Response(...);
     });
 
-Redirects
----------
+Redirigiendo
+------------
 
-You can redirect to another page by returning a redirect response, which
-you can create by calling the ``redirect`` method::
+Puedes redirigir a otra página devolviendo una respuesta de redirección, la cual puedes crear mediante una llamada al método ``redirect``::
 
     $app->get('/', function () use ($app) {
         return $app->redirect('/hello');
     });
 
-This will redirect from ``/`` to ``/hello``.
+Esto redirigirá de ``/`` a ``/hello``.
 
-JSON
-----
+*JSON*
+------
 
-If you want to return JSON data, you can use the ``json`` helper method.
-Simply pass it your data, status code and headers, and it will create a
-JSON response for you.
+Si quieres devolver datos *JSON*, puedes usar el método ayudante ``json``.
+Simplemente le tienes que proporcionar tus datos, código de estado y cabeceras, y este creará una respuesta *JSON* para ti.
 
 .. code-block:: php
 
     $app->get('/users/{id}', function ($id) use ($app) {
         $user = getUser($id);
 
-        if (!$user) {
+            if (!$user) {
             $error = array('message' => 'The user was not found.');
             return $app->json($error, 404);
         }
@@ -543,11 +482,11 @@ JSON response for you.
         return $app->json($user);
     });
 
-Streaming
----------
+Transmitiendo secuencias
+------------------------
 
-It's possible to create a streaming response, which is important in cases
-when you cannot buffer the data being sent.
+Es posible crear una respuesta para la transmisión de secuencias, lo cual es importante en los casos
+cuando no puedes mantener en memoria los datos que se envían.
 
 .. code-block:: php
 
@@ -563,8 +502,7 @@ when you cannot buffer the data being sent.
         return $app->stream($stream, 200, array('Content-Type' => 'image/png'));
     });
 
-If you need to send chunks, make sure you call ``ob_flush`` and ``flush`` after
-every chunk.
+Si necesitas enviar trozos, asegúrate de llamar a ``ob_flush`` y ``flush`` después de cada parte.
 
 .. code-block:: php
 
@@ -578,78 +516,68 @@ every chunk.
         fclose($fh);
     };
 
-Security
---------
+Seguridad
+---------
 
-Make sure to protect your application against attacks.
+Asegúrate de proteger tu aplicación contra ataques.
 
-Escaping
-~~~~~~~~
+Escapando
+~~~~~~~~~
 
-When outputting any user input (either route variables GET/POST variables
-obtained from the request), you will have to make sure to escape it
-correctly, to prevent Cross-Site-Scripting attacks.
+Cuando reproduces la entrada del usuario (ya sea en las variables ``GET/POST`` o en variables obtenidas desde la petición), tendrás que asegurarte de escaparlas correctamente, para evitar ataques que exploten vulnerabilidades del sistema.
 
-* **Escaping HTML**: PHP provides the ``htmlspecialchars`` function for this.
-  Silex provides a shortcut ``escape`` method::
+* **Escapando HTML**: *PHP* proporciona la función ``htmlspecialchars`` para esto.
+  *Silex* ofrece un atajo, el método ``escape``::
 
       $app->get('/name', function (Silex\Application $app) {
           $name = $app['request']->get('name');
           return "You provided the name {$app->escape($name)}.";
       });
 
-  If you use the Twig template engine you should use its escaping or even
-  auto-escaping mechanisms.
+  Si utilizas el motor de plantillas *Twig* debes usar su escape o, incluso, mecanismos de autoescape.
 
-* **Escaping JSON**: If you want to provide data in JSON format you should
-  use the Silex ``json`` function::
+* **Escapando JSON**: Si quieres proporcionar datos en formato *JSON* debes utilizar la función ``json`` de *Silex*::
 
       $app->get('/name.json', function (Silex\Application $app) {
           $name = $app['request']->get('name');
           return $app->json(array('name' => $name));
       });
 
-Console
+Consola
 -------
 
-Silex includes a lightweight console for updating to the latest
-version.
+*Silex* incluye una consola ligera para actualizar a la última versión.
 
-To find out which version of Silex you are using, invoke ``silex.phar`` on the
-command-line with ``version`` as an argument:
+Para saber qué versión de *Silex* estás utilizando, invoca a ``silex.phar`` en la línea de ordenes con ``version`` como argumento:
 
 .. code-block:: text
 
     $ php silex.phar version
     Silex version 0a243d3 2011-04-17 14:49:31 +0200
 
-To check that your are using the latest version, run the ``check`` command:
+Para comprobar si estás utilizando la última versión, ejecuta la orden ``check``:
 
 .. code-block:: text
 
     $ php silex.phar check
 
-To update ``silex.phar`` to the latest version, invoke the ``update``
-command:
+Para actualizar ``silex.phar`` a la última versión, invoca la orden ``update``:
 
 .. code-block:: text
 
     $ php silex.phar update
 
-This will automatically download a new ``silex.phar`` from
-``silex.sensiolabs.org`` and replace the existing one.
+Esto descargará automáticamente un nuevo ``silex.phar`` desde ``silex.sensiolabs.org`` y sustituirá al actual.
 
-Pitfalls
---------
+Trampas
+-------
 
-There are some things that can go wrong. Here we will try and outline the
-most frequent ones.
+Hay algunas cosas que pueden salir mal. Aquí vamos a tratar de esbozar las más frecuentes.
 
-PHP configuration
-~~~~~~~~~~~~~~~~~
+Configuración de *PHP*
+~~~~~~~~~~~~~~~~~~~~~~
 
-Certain PHP distributions have restrictive default Phar settings. Setting
-the following may help.
+Ciertas distribuciones de *PHP*, de manera predeterminada tienen configurado ``Phar`` muy restrictivamente. Ajustar lo siguiente puede ayudar.
 
 .. code-block:: ini
 
@@ -657,7 +585,7 @@ the following may help.
     phar.readonly = Off
     phar.require_hash = Off
 
-If you are on Suhosin you will also have to set this:
+Si estás en ``Suhosin`` también tendrás que fijar lo siguiente:
 
 .. code-block:: ini
 
@@ -665,39 +593,33 @@ If you are on Suhosin you will also have to set this:
 
 .. note::
 
-    Ubuntu's PHP ships with Suhosin, so if you are using Ubuntu, you will need
-    this change.
+    El *PHP* de *Ubuntu* viene con *Suhosin*, así que si estás usando *Ubuntu*, necesitarás este cambio.
 
-Phar-Stub bug
-~~~~~~~~~~~~~
+Fallo ``Phar-Stub``
+~~~~~~~~~~~~~~~~~~~
 
-Some PHP installations have a bug that throws a ``PharException`` when trying
-to include the Phar. It will also tell you that ``Silex\Application`` could not
-be found. A workaround is using the following include line::
+Algunas instalaciones de *PHP* tienen un error que arroja una ``PharException`` cuando tratas de incluir el ``Phar``. También te dirá que ``Silex\Application`` no se pudo encontrar. Una solución es usar la siguiente línea::
 
     require_once 'phar://'.__DIR__.'/silex.phar/autoload.php';
 
-The exact cause of this issue could not be determined yet.
+La causa exacta de esta emisión no se ha podido determinar todavía.
 
-ioncube loader bug
-~~~~~~~~~~~~~~~~~~
+Fallo en el cargador de ``ioncube``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Ioncube loader is an extension that can decode PHP encoded file.
-Unfortunately, old versions (prior to version 4.0.9) are not working well
-with phar archives.
-You must either upgrade Ioncube loader to version 4.0.9 or newer or disable it
-by commenting or removing this line in your php.ini file:
+El cargador de ``Ioncube`` es una extensión que puede decodificar archivos *PHP* codificados.
+Desafortunadamente, las versiones antiguas (anteriores a la versión 4.0.9) no están funcionando bien con archivos ``phar``.
+Debes actualizar tu ``Ioncube Loder`` a la versión  4.0.9  o más reciente o desactivarla comentando o eliminando esta línea en tu archivo ``php.ini``:
 
 .. code-block:: ini
 
     zend_extension = /usr/lib/php5/20090626+lfs/ioncube_loader_lin_5.3.so
 
 
-IIS configuration
------------------
+Configuración *IIS*
+-------------------
 
-If you are using the Internet Information Services from Windows, you can use
-this sample ``web.config`` file:
+Si estás utilizando el ``Internet Information Services`` de *Windows*, puedes utilizar de ejemplo este archivo ``web.config``:
 
 .. code-block:: xml
 

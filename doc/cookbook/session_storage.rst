@@ -1,18 +1,12 @@
-How to use PdoSessionStorage to store sessions in the database
-==============================================================
+Cómo utilizar ``PdoSessionStorage`` para almacenar sesiones en la base de datos
+===============================================================================
 
-By default, the :doc:`SessionServiceProvider <providers/session>` writes
-session information in files using Symfony2 NativeFileSessionStorage. Most
-medium to large websites use a database to store sessions instead of files,
-because databases are easier to use and scale in a multi-webserver
-environment.
+De manera predeterminada, el :doc:`SessionServiceProvider </providers/session>` escribe en archivos la información de sesión utilizando el ``NativeFileSessionStorage`` de *Symfony2*. La mayoría de los medianos a grandes sitios *web*, utiliza una base de datos para almacenar sesiones en lugar de archivos, porque las bases de datos son más fáciles de usar y escalar en un entorno multiservidor.
 
-Symfony2's ``NativeSessionStorage`` has multiple storage handlers and one of them uses PDO to
-store sessions, ``PdoSessionHandler``.
-To use it, replace the ``session.storage.handler`` service in your application like
-explained below.
+``NativeSessionStorage`` de *Symfony2* tiene múltiples soluciones de almacenamiento de sesión y una de ellas utiliza *PDO* para almacenar sesiones, ``PdoSessionHandler``.
+Para usarla, reemplaza el servicio ``session.storage.handler`` en tu aplicación como se explica a continuación.
 
-Example
+Ejemplo
 -------
 
 ::
@@ -48,15 +42,14 @@ Example
         );
     });
 
-Database structure
-------------------
+Estructura de la base de datos
+------------------------------
 
-PdoSessionStorage needs a database table with 3 columns:
+``PdoSessionStorage`` necesita una tabla en la base de datos con 3 columnas:
 
-* ``session_id``: ID column (VARCHAR(255) or larger)
-* ``session_value``: Value column (TEXT or CLOB)
-* ``session_time``: Time column (INTEGER)
+* ``session_id``: Columna ``ID`` (``VARCHAR(255)`` o más grande)
+* ``session_value``: Valor de la columna (``TEXT`` o ``CLOB``)
+* ``session_time``: La columna de tiempo (``INTEGER``)
 
-You can find examples of SQL statements to create the session table in the
-`Symfony2 cookbook
-<http://symfony.com/doc/current/cookbook/configuration/pdo_session_storage.html>`
+Puedes encontrar ejemplos de declaraciones *SQL* para crear la tabla de sesión en el `Recetario
+<http://gitnacho.github.com/symfony-docs-es/cookbook/configuration/pdo_session_storage.html>`_ de *Symfony2*.

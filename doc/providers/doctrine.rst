@@ -1,62 +1,51 @@
-DoctrineServiceProvider
-=======================
+``DoctrineServiceProvider``
+===========================
 
-The *DoctrineServiceProvider* provides integration with the `Doctrine DBAL
-<http://www.doctrine-project.org/projects/dbal>`_ for easy database acccess.
+El ``DoctrineServiceProvider`` proporciona integración con *Doctrine* `DBAL <http://www.doctrine-project.org/projects/dbal>`_ para acceder fácilmente a la base de datos.
 
 .. note::
 
-    There is only a Doctrine DBAL. An ORM service is **not** supplied.
+    Sólo hay una ``DBAL`` de *Doctrine*. **No** se suministra un servicio ``ORM``.
 
-Parameters
+Parámetros
 ----------
 
-* **db.options**: Array of Doctrine DBAL options.
+* **db.options**: Arreglo de opciones  para ``DBAL`` de *Doctrine*.
 
-  These options are available:
+  Estas opciones están disponibles:
 
-  * **driver**: The database driver to use, defaults to ``pdo_mysql``.
-    Can be any of: ``pdo_mysql``, ``pdo_sqlite``, ``pdo_pgsql``,
-    ``pdo_oci``, ``oci8``, ``ibm_db2``, ``pdo_ibm``, ``pdo_sqlsrv``.
+  * **driver**: El controlador de la base de datos a utilizar, por omisión es ``pdo_mysql``.
+    Puede ser alguno de entre: ``pdo_mysql``, ``pdo_sqlite``, ``pdo_pgsql``, ``pdo_oci``, ``oci8``, ``ibm_db2``, ``pdo_ibm``, ``pdo_sqlsrv``.
 
-  * **dbname**: The name of the database to connect to.
+  * **dbname**: El nombre de la base de datos a la cual conectarse.
 
-  * **host**: The host of the database to connect to. Defaults to
-    localhost.
+  * **host**: El servidor de la base de datos a la cual conectarse. Por omisión es ``localhost``.
 
-  * **user**: The user of the database to connect to. Defaults to
-    root.
+  * **user**: El usuario de la base de datos con el cual conectarse. Por omisión es ``root``.
 
-  * **password**: The password of the database to connect to.
+  * **password**: La contraseña de la base de datos con la cual conectarse.
 
-  * **path**: Only relevant for ``pdo_sqlite``, specifies the path to
-    the SQLite database.
+  * **path**: Sólo es relevante para ``pdo_sqlite``, especifica la ruta a la base de datos ``SQLite``.
 
-  These and additional options are described in detail in the `Doctrine DBAL
-  configuration documentation <http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html>`_.
+  Estas y otras opciones se describen en detalle en la documentación de `configurando el DBAL de Doctrine <http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html>`_.
 
-* **db.dbal.class_path** (optional): Path to where the
-  Doctrine DBAL is located.
+* **db.dbal.class_path** (opcional): Ruta a dónde se encuentra el ``DBAL`` de *Doctrine*.
 
-* **db.common.class_path** (optional): Path to where
-  Doctrine Common is located.
+* **db.common.class_path** (opcional): Ruta a dónde se encuentra *Doctrine Common*.
 
-Services
---------
+Servicios
+---------
 
-* **db**: The database connection, instance of
-  ``Doctrine\DBAL\Connection``.
+* **db**: La conexión de base de datos, instancia de ``Doctrine\DBAL\Connection``.
 
-* **db.config**: Configuration object for Doctrine. Defaults to
-  an empty ``Doctrine\DBAL\Configuration``.
+* **db.config**: Objeto de configuración para *Doctrine*. El valor predeterminado es una ``Doctrine\DBAL\Configuration`` vacía.
 
-* **db.event_manager**: Event Manager for Doctrine.
+* **db.event_manager**: Gestor de eventos para *Doctrine*.
 
-Registering
+Registrando
 -----------
 
-Make sure you place a copy of *Doctrine DBAL* in ``vendor/doctrine-dbal``
-and *Doctrine Common* in ``vendor/doctrine-common``::
+Asegúrate de colocar una copia del ``DBAL`` de *Doctrine* en ``vendor/doctrine-dbal`` y *Doctrine Common* en ``vendor/doctrine-common``::
 
     $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'db.options'            => array(
@@ -67,11 +56,10 @@ and *Doctrine Common* in ``vendor/doctrine-common``::
         'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
 
-Usage
------
+Uso
+---
 
-The Doctrine provider provides a ``db`` service. Here is a usage
-example::
+El proveedor *Doctrine* proporciona un servicio ``db``. Aquí está un ejemplo de uso::
 
     $app->get('/blog/show/{id}', function ($id) use ($app) {
         $sql = "SELECT * FROM posts WHERE id = ?";
@@ -81,13 +69,11 @@ example::
                 "<p>{$post['body']}</p>";
     });
 
-Using multiple databases
-------------------------
+Utilizando múltiples bases de datos
+-----------------------------------
 
-The Doctrine provider can allow access to multiple databases. In order to
-configure the data sources, replace the **db.options** with **dbs.options**.
-**dbs.options** is an array of configurations where keys are connection names
-and values are options::
+El proveedor *Doctrine* te permite acceder a múltiples bases de datos. Para configurar tus fuentes de datos, sustituye ``db.options`` con ``dbs.options``.
+``dbs.options`` es una matriz de configuraciones donde las claves son los nombres de las conexiones y los valores son las opciones::
 
     $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'dbs.options' => array (
@@ -110,15 +96,13 @@ and values are options::
         'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
 
-The first registered connection is the default and can simply be accessed as
-you would if there was only one connection. Given the above configuration,
-these two lines are equivalent::
+La primer conexión registrada es la predeterminada y puedes acceder a ella como lo harías si hubiera una sola conexión. Teniendo en cuenta la configuración anterior, estas dos líneas son equivalentes::
 
     $app['db']->fetchAssoc('SELECT * FROM table');
 
     $app['dbs']['mysql_read']->fetchAssoc('SELECT * FROM table');
 
-Using multiple connections::
+Usando múltiples conexiones::
 
     $app->get('/blog/show/{id}', function ($id) use ($app) {
         $sql = "SELECT * FROM posts WHERE id = ?";
@@ -131,5 +115,4 @@ Using multiple connections::
                 "<p>{$post['body']}</p>";
     });
 
-For more information, consult the `Doctrine DBAL documentation
-<http://www.doctrine-project.org/docs/dbal/2.0/en/>`_.
+Para más información, consulta la `Documentación DBAL de Doctrine <http://www.doctrine-project.org/docs/dbal/2.0/en/>`_.

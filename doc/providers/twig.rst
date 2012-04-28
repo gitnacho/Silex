@@ -1,46 +1,34 @@
-TwigServiceProvider
-===================
+``TwigServiceProvider``
+=======================
 
-The *TwigServiceProvider* provides integration with the `Twig
-<http://twig.sensiolabs.org/>`_ template engine.
+El ``TwigServiceProvider`` proporciona integración con el motor de plantillas `Twig <http://http://gitnacho.github.com/Twig/intro.html>`_.
 
-Parameters
+Parámetros
 ----------
 
-* **twig.path** (optional): Path to the directory containing twig template
-  files (it can also be an array of paths).
+* **twig.path** (opcional): Ruta al directorio que contiene archivos de plantilla *Twig* (también puede ser un arreglo de rutas).
 
-* **twig.templates** (optional): An associative array of template names to
-  template contents. Use this if you want to define your templates inline.
+* **twig.templates** (opcional): Se trata de una matriz asociativa de nombres de plantilla para el contenido de la plantilla. Usa esta opción si deseas definir tus plantillas en línea.
 
-* **twig.options** (optional): An associative array of twig
-  options. Check out the twig documentation for more information.
+* **twig.options** (opcional): Una matriz asociativa de opciones *Twig*. Echa un vistazo a la documentación de *Twig* para más información.
 
-* **twig.class_path** (optional): Path to where the Twig
-  library is located.
+* **twig.class_path** (opcional): Ruta a dónde se encuentra la biblioteca *Twig*.
 
-* **twig.form.templates** (optional): An array of templates used to render
-  forms (only available when the ``FormServiceProvider`` is enabled).
+* **twig.form.templates** (opcional): Una matriz de plantillas utilizada para reproducir formularios (disponible únicamente cuando está habilitado el ``FormServiceProvider``).
 
-Services
---------
+Servicios
+---------
 
-* **twig**: The ``Twig_Environment`` instance. The main way of
-  interacting with Twig.
+* **twig**: La instancia de ``Twig_Environment``. La principal forma de interactuar con *Twig*.
 
-* **twig.configure**: :doc:`Protected closure <services#protected-closures>` that takes the Twig
-  environment as an argument. You can use it to add more
-  custom globals.
+* **twig.configure**: :ref:`Cierre protegido <cierres-protegidos>` que toma el entorno *Twig* como argumento. Lo puedes utilizar para agregar más globales personalizadas.
 
-* **twig.loader**: The loader for Twig templates which uses
-  the ``twig.path`` and the ``twig.templates`` options. You
-  can also replace the loader completely.
+* **twig.loader**: El cargador de plantillas *Twig* que utilizan las opciones ``twig.path`` y ``twig.templates``. También puedes reemplazar el cargador completamente.
 
-Registering
+Registrando
 -----------
 
-Make sure you place a copy of *Twig* in the ``vendor/twig``
-directory::
+Asegúrate de colocar una copia de *Twig* en el directorio ``vendor/twig``::
 
     $app->register(new Silex\Provider\TwigServiceProvider(), array(
         'twig.path'       => __DIR__.'/views',
@@ -49,13 +37,12 @@ directory::
 
 .. note::
 
-    Twig is not compiled into the ``silex.phar`` file. You have to
-    add your own copy of Twig to your application.
+    *Twig* no está compilado en el archivo ``silex.phar``. Tienes que añadir tu propia copia de *Twig* a tu aplicación.
 
-Usage
------
+Uso
+---
 
-The Twig provider provides a ``twig`` service::
+El proveedor *Twig* ofrece un servicio ``twig``::
 
     $app->get('/hello/{name}', function ($name) use ($app) {
         return $app['twig']->render('hello.twig', array(
@@ -63,25 +50,23 @@ The Twig provider provides a ``twig`` service::
         ));
     });
 
-This will render a file named ``views/hello.twig``.
+Esto reproducirá un archivo llamado ``views/hola.twig``.
 
-In any Twig template, the ``app`` variable refers to the Application object.
-So you can access any services from within your view. For example to access
-``$app['request']->getHost()``, just put this in your template:
+En cualquier plantilla de *Twig*, la variable ``app`` se refiere al objeto ``Aplicación``.
+Para que puedas acceder a cualquier servicio desde tu vista. Por ejemplo, para acceder a ``$app['request']->getHost()``, sólo tienes que poner esto en tu plantilla:
 
 .. code-block:: jinja
 
     {{ app.request.host }}
 
-A ``render`` function is also registered to help you render another controller
-from a template:
+También se registra una función ``render`` para ayudarte a reproducir otro controlador desde una plantilla:
 
 .. code-block:: jinja
 
     {{ render('/sidebar') }}
 
-    {# or if you are also using UrlGeneratorServiceProvider with the SymfonyBridgesServiceProvider #}
+    {# o si también estás usando UrlGeneratorServiceProvider con el SymfonyBridgesServiceProvider #}
     {{ render(path('sidebar')) }}
 
-For more information, check out the `Twig documentation
-<http://twig.sensiolabs.org>`_.
+Para más información, consulta la `documentación de
+Twig <http://gitnacho.github.com/Twig/index.html>`_.

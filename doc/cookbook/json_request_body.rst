@@ -1,22 +1,19 @@
-Accepting a JSON request body
-=============================
+Aceptando el cuerpo de una petición *JSON*
+==========================================
 
-A common need when building a restful API is the ability to accept a JSON
-encoded entity from the request body.
+Una necesidad común en la construcción de una *API* útil es la posibilidad de aceptar una entidad *JSON* codificada desde el cuerpo de la petición.
 
-An example for such an API could be a blog post creation.
+Un ejemplo de este tipo de *API* podría ser la creación de un *blog*.
 
-Example API
------------
+Ejemplo de *API*
+----------------
 
-In this example we will create an API for creating a blog post. The following
-is a spec of how we want it to work.
+En este ejemplo vamos a diseñar una *API* para crear un *blog*. La siguiente es una especificación de cómo queremos que funcione.
 
-Request
-~~~~~~~
+``Petición``
+~~~~~~~~~~~~
 
-In the request we send the data for the blog post as a JSON object. We also
-indicate that using the ``Content-Type`` header.
+En la petición, enviamos los datos para la entrada en el *blog* como un objeto *JSON*. También indicamos que utilizamos la cabecera ``Content-Type``.
 
 ::
 
@@ -27,31 +24,26 @@ indicate that using the ``Content-Type`` header.
 
     {"title":"Hello World!","body":"This is my first post!"}
 
-Response
-~~~~~~~~
+``Respuesta``
+~~~~~~~~~~~~~
 
-The server responds with a 201 status code, telling us that the post was
-created. It tells us the ``Content-Type`` of the response, which is also
-JSON.
+El servidor responde con un código de estado 201, el cual nos dice que la entrada fue creada satisfactoriamente. Nos dice que el ``Content-Type`` de la respuesta, también es *JSON*.
 
 ::
 
     HTTP/1.1 201 Created
     Content-Type: application/json
     Content-Length: 65
-    Connection: close
+    Connection: clocase
 
-    {"id":"1","title":"Hello World!","body":"This is my first post!"}
+    {"id":"1","title":"Hello World!","body":"This is mí first post!"}
 
-Parsing the request body
-------------------------
+Analizando el cuerpo de la petición
+-----------------------------------
 
-The request body should only be parsed as JSON if the ``Content-Type`` header
-begins with ``application/json``. Since we want to do this for every request,
-the easiest solution is to use a before filter.
+El cuerpo de la petición sólo se debe analizar como *JSON* si la cabecera ``Content-Type`` comienza con ``application/json``. Como queremos hacer esto para cada petición, la solución más fácil es usar un filtro ``before``.
 
-We simply use ``json_decode`` to parse the content of the request and then
-replace the request data on the ``$request`` object.
+Simplemente usamos ``json_decode`` para analizar el contenido de la petición y luego sustituimos los datos de la petición en el objeto ``$request``.
 
 ::
 
@@ -65,11 +57,10 @@ replace the request data on the ``$request`` object.
         }
     });
 
-Controller implementation
--------------------------
+Implementando el controlador
+----------------------------
 
-Our controller will create a new blog post from the data provided and will
-return the post object, including its ``id``, as JSON.
+Nuestro controlador creará una nueva entrada en el *blog* basada en los datos proporcionados y devolverá el objeto ``post``, incluyendo su ``id``, como *JSON*.
 
 ::
 
@@ -87,11 +78,10 @@ return the post object, including its ``id``, as JSON.
         return $app->json($post, 201);
     });
 
-Manual testing
---------------
+Probando manualmente
+--------------------
 
-In order to manually test our API, we can use the ``curl`` command line
-utility, which allows sending HTTP requests.
+Con el fin de probar manualmente nuestra *API*, podemos usar la utilidad ``curl`` de la línea de ordenes, la cual nos permite enviar peticiones *HTTP*.
 
 ::
 

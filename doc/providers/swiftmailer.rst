@@ -1,37 +1,33 @@
-SwiftmailerServiceProvider
-==========================
+``SwiftmailerServiceProvider``
+==============================
 
-The *SwiftmailerServiceProvider* provides a service for sending
-email through the `Swift Mailer <http://swiftmailer.org>`_
-library.
+El proveedor ``SwiftmailerServiceProvider`` ofrece un servicio para enviar correo electrónico a través de la biblioteca de correo `Swift Mailer <http://swiftmailer.org>`_.
 
-You can use the ``mailer`` service to send messages easily.
-By default, it will attempt to send emails through SMTP.
+Puedes utilizar el servicio ``mailer`` (cliente de correo) para enviar mensajes fácilmente.
+Por omisión, este tratará de enviar el correo electrónico a través de *SMTP*.
 
-Parameters
+Parámetros
 ----------
 
-* **swiftmailer.options**: An array of options for the default
-  SMTP-based configuration.
+* **swiftmailer.options**: Una matriz de opciones para la configuración predeterminada basada en *SMTP*.
 
-  The following options can be set:
+  Puedes ajustar las siguientes opciones:
 
-  * **host**: SMTP hostname, defaults to 'localhost'.
-  * **port**: SMTP port, defaults to 25.
-  * **username**: SMTP username, defaults to an empty string.
-  * **password**: SMTP password, defaults to an empty string.
-  * **encryption**: SMTP encryption, defaults to null.
-  * **auth_mode**: SMTP authentication mode, defaults to null.
+  * **host**: nombre del servidor *SMTP*, predeterminado a ``'localhost'``.
+  * **port**: puerto *SMTP*, el predeterminado es 25.
+  * **username**: nombre del usuario *SMTP*, por omisión es una cadena vacía.
+  * **password**: contraseña *SMTP*, de manera predeterminada es una cadena vacía.
+  * **encryption**: cifrado *SMTP*, predeterminado a ``null``.
+  * **auth_mode**: modo de autenticación *SMTP*, predeterminado a ``null``.
 
-* **swiftmailer.class_path** (optional): Path to where the
-  Swift Mailer library is located.
+* **swiftmailer.class_path** (opcional): Ruta a donde está ubicada la librería ``Swift Mailer``.
 
-Services
---------
+Servicios
+---------
 
-* **mailer**: The mailer instance.
+* **mailer**: La instancia del cliente de correo.
 
-  Example usage::
+  Ejemplo de uso::
 
     $message = \Swift_Message::newInstance();
 
@@ -39,24 +35,18 @@ Services
 
     $app['mailer']->send($message);
 
-* **swiftmailer.transport**: The transport used for e-mail
-  delivery. Defaults to a ``Swift_Transport_EsmtpTransport``.
+* **swiftmailer.transport**: El transporte usado para entregar el correo electrónico. Predeterminado a ``Swift_Transport_EsmtpTransport``.
 
-* **swiftmailer.transport.buffer**: StreamBuffer used by
-  the transport.
+* **swiftmailer.transport.buffer**: El ``StreamBuffer`` usado por el transporte.
 
-* **swiftmailer.transport.authhandler**: Authentication
-  handler used by the transport. Will try the following
-  by default: CRAM-MD5, login, plaintext.
+* **swiftmailer.transport.authhandler**: Controlador de autenticación usado por el transporte. De manera predeterminada intentará con los siguientes: CRAM-MD5, login, plaintext.
 
-* **swiftmailer.transport.eventdispatcher**: Internal event
-  dispatcher used by Swiftmailer.
+* **swiftmailer.transport.eventdispatcher**: Despachador de eventos interno usado por ``Swiftmailer``.
 
-Registering
+Registrando
 -----------
 
-Make sure you place a copy of *Swift Mailer* in the ``vendor/swiftmailer``
-directory. Make sure you point the class path to ``/lib/classes``.
+Asegúrate de colocar una copia de *Swift Mailer*  en el directorio ``vendor/SwiftMailer``. Asegúrate de apuntar la ruta de tu clase a ``/lib/classes``.
 
 ::
 
@@ -66,13 +56,12 @@ directory. Make sure you point the class path to ``/lib/classes``.
 
 .. note::
 
-    Swift Mailer is not compiled into the ``silex.phar`` file. You have to
-    add your own copy of Swift Mailer to your application.
+    ``Swift Mailer`` no está compilado en el archivo ``silex.phar``. Tienes que añadir tu propia copia de ``Swift Mailer`` para tu aplicación.
 
-Usage
------
+Uso
+---
 
-The Swiftmailer provider provides a ``mailer`` service.
+El proveedor ``Swiftmailer`` proporciona un servicio ``mailer``.
 
 ::
 
@@ -90,5 +79,5 @@ The Swiftmailer provider provides a ``mailer`` service.
         return new Response('Thank you for your feedback!', 201);
     });
 
-For more information, check out the `Swift Mailer documentation
+Para más información, consulta la `Documentación de Swift Mailer
 <http://swiftmailer.org>`_.

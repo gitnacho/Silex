@@ -1,26 +1,21 @@
-Introduction
+Introducción
 ============
 
-Silex is a PHP microframework for PHP 5.3. It is built on the shoulders
-of Symfony2 and Pimple and also inspired by sinatra.
+*Silex* es una microplataforma *PHP* para *PHP* 5.3. Está construida sobre los hombros de *Symfony2* y *Pimple* además de inspirada en *Sinatra*.
 
-A microframework provides the guts for building simple single-file apps.
-Silex aims to be:
+Una microplataforma proporciona la base para construir aplicaciones simples de un solo archivo.
+*Silex* pretende ser:
 
-* *Concise*: Silex exposes an intuitive and concise API that is fun to use.
+* *Concisa*: Silex expone una intuitiva y concisa API que es divertido utilizar.
 
-* *Extensible*: Silex has an extension system based around the Pimple
-  micro service-container that makes it even easier to tie in third party
-  libraries.
+* *Extensible*: *Silex* cuenta con un sistema de extensión en torno al microcontenedor de servicios *Pimple* que lo hace aún más fácil de encajar con bibliotecas de terceros.
 
-* *Testable*: Silex uses Symfony2's HttpKernel which abstracts request and
-  response. This makes it very easy to test apps and the framework itself.
-  It also respects the HTTP specification and encourages its proper use.
+* *Comprobable*: *Silex* utiliza el ``HttpKernel`` de *Symfony2* el cual abstrae las peticiones y respuestas. Esto hace que sea muy fácil probar las aplicaciones y la propia plataforma.
+  También respeta la especificación *HTTP* y alienta su uso adecuado.
 
-In a nutshell, you define controllers and map them to routes, all in one
-step.
+En pocas palabras, tú defines controladores y asignas rutas, en un solo paso.
 
-**Let's go!** ::
+**¡Comencemos!** ::
 
     require_once __DIR__.'/silex.phar';
 
@@ -32,17 +27,13 @@ step.
 
     $app->run();
 
-All that is needed to get access to the Framework is to include
-``silex.phar``. This phar (PHP Archive) file will take care of the rest.
+Todo lo que necesitas para acceder a la plataforma es incluir ``silex.phar``. Este archivo ``phar`` (archivo *PHP*) se encargará del resto.
 
-Next we define a route to ``/hello/{name}`` that matches for ``GET``
-requests. When the route matches, the function is executed and the return
-value is sent back to the client.
+A continuación defines una ruta a ``/hello/{name}`` que corresponde con las peticiones ``GET``. Cuando la ruta coincide, se ejecuta la función y el valor de retorno se devuelve al cliente.
 
-Finally, the app is run. Visit ``/hello/world`` to see the result.
-It's really that easy!
+Por último, se ejecuta la aplicación. Visita ``/hello/world`` para ver el resultado.
+¡Así de fácil!
 
-Installing Silex is as easy as it can get. Download the `silex.phar`_ file
-and you're done!
+Instalar *Silex* es tan fácil como lo puedas obtener. ¡Descarga el archivo `silex.phar`_ y listo!
 
-.. _silex.phar: http://silex.sensiolabs.org/get/silex.phar
+.. _`silex.phar`: http://silex.sensiolabs.org/get/silex.phar

@@ -1,24 +1,21 @@
-HttpCacheServiceProvider
-========================
+``HttpCacheServiceProvider``
+============================
 
-The *HttpCacheProvider* provides support for the Symfony2 Reverse Proxy.
+El proveedor ``HttpCacheProvider`` proporciona compatibilidad para el delegado inverso de *Symfony2*.
 
-Parameters
+Parámetros
 ----------
 
-* **http_cache.cache_dir**: The cache directory to store the HTTP cache data.
+* **http_cache.cache_dir**: El directorio de caché para almacenar los datos de la caché *HTTP*.
 
-* **http_cache.options** (optional): An array of options for the `HttpCache
-  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_
-  constructor.
+* **http_cache.options** (opcional): Una matriz de opciones para el constructor de `HttpCache <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_.
 
-Services
---------
+Servicios
+---------
 
-* **http_cache**: An instance of `HttpCache
-  <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_,
+* **http_cache**: Una instancia de `HttpCache <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_.
 
-Registering
+Registrando
 -----------
 
 ::
@@ -27,11 +24,10 @@ Registering
         'http_cache.cache_dir' => __DIR__.'/cache/',
     ));
 
-Usage
------
+Uso
+---
 
-Silex already supports any Reverse Proxy like Varnish out of the box by
-setting Response HTTP cache headers::
+*Silex*, fuera de la caja, ya es compatible con cualquier delegado inverso como *Varnish* ajustando las cabeceras de caché *HTTP* de la Respuesta::
 
     $app->get('/', function() {
         return new Response('Foo', 200, array(
@@ -39,12 +35,11 @@ setting Response HTTP cache headers::
         ));
     });
 
-This provider allows you to use the Symfony2 reverse proxy natively with
-Silex applications by using the `http_cache` service::
+Este proveedor te permite utilizar el delegado inverso nativo de *Symfony2* con aplicaciones *Silex* usando el servicio ``http_cache``::
 
     $app['http_cache']->run();
 
-The provider also provide ESI support::
+El proveedor también proporciona apoyo *ESI*::
 
     $app->get('/', function() {
         return new Response(<<<EOF
@@ -70,5 +65,5 @@ The provider also provide ESI support::
 
     $app['http_cache']->run();
 
-For more information, consult the `Symfony2 HTTP Cache documentation
-<http://symfony.com/doc/current/book/http_cache.html>`_.
+Para más información, consulta la documentación de la `caché HTTP de Symfony2
+<http://gitnacho.github.com/symfony-docs-es/book/http_cache.html>`_.

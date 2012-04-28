@@ -1,50 +1,45 @@
-Changelog
-=========
+Registro de cambios
+===================
 
-This changelog references all backward incompatibilities as we introduce them:
+Este registro de cambios refiere todas las incompatibilidades con versiones anteriores conforme se presentaron:
 
-* **2012-03-20**: Added ``json`` helper::
+* **2012-03-20**: Añadido el ayudante ``json``::
 
         $data = array('some' => 'data');
         $response = $app->json($data);
 
-* **2012-03-11**: Added route middlewares.
+* **2012-03-11**: Añadido soporte lógico intermedio de ruta
 
-* **2012-03-02**: Switched to use Composer for dependency management.
+* **2012-03-02**: Ahora utiliza **Composer** para gestionar dependencias
 
-* **2012-02-27**: Updated to Symfony 2.1 session handling.
+* **2012-02-27**: Manipulación de sesión actualizada a *Symfony 2.1*.
 
-* **2012-01-02**: Introduced support for streaming responses.
+* **2012-01-02**: Introdujo el apoyo para respuestas que transmiten secuencias.
 
-* **2011-09-22**: ``ExtensionInterface`` has been renamed to
-  ``ServiceProviderInterface``. All built-in extensions have been renamed
-  accordingly (for instance, ``Silex\Extension\TwigExtension`` has been
-  renamed to ``Silex\Provider\TwigServiceProvider``).
+* **2011-09-22**: ``ExtensionInterface`` se le cambió el nombre a ``ServiceProviderInterface``. Todas las extensiones integradas se han renombrado consecuentemente (por ejemplo, ``Silex\Extension\TwigExtension`` ha cambiado el nombre a ``Silex\Provider\TwigServiceProvider``)
 
-* **2011-09-22**: The way reusable applications work has changed. The
-  ``mount()`` method now takes an instance of ``ControllerCollection`` instead
-  of an ``Application`` one.
+* **2011-09-22**: La forma de trabajar de las aplicaciones reutilizables ha cambiado. El método ``mount()`` ahora toma una instancia de ``ControllerCollection`` en lugar de una ``Application``.
 
-    Before::
+    Antes::
 
         $app = new Application();
         $app->get('/bar', function() { return 'foo'; });
 
         return $app;
 
-    After::
+    Después::
 
         $app = new ControllerCollection();
         $app->get('/bar', function() { return 'foo'; });
 
         return $app;
 
-* **2011-08-08**: The controller method configuration is now done on the Controller itself
+* **2011-08-08**: La configuración del método controlador ahora se hace en el propio ``Controlador``
 
-    Before::
+    Antes::
 
         $app->match('/', function () { echo 'foo'; }, 'GET|POST');
 
-    After::
+    Después::
 
         $app->match('/', function () { echo 'foo'; })->method('GET|POST');

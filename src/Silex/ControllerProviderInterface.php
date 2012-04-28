@@ -1,29 +1,32 @@
-<?php
+
+.. code-block:: php
+
+    <?php
 
 /*
- * This file is part of the Silex framework.
+ * Este archivo es parte de la plataforma Silex.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Para información completa sobre los derechos de autor y licencia, por
+ * favor, ve el archivo LICENSE que viene con este código fuente.
  */
 
 namespace Silex;
 
 /**
- * Interface for controller providers.
+ * Interfaz para proveedores de controlador.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 interface ControllerProviderInterface
 {
     /**
-     * Returns routes to connect to the given application.
+     * Devuelve rutas para conectar a la aplicación dada.
      *
-     * @param Application $app An Application instance
+     * @param Application $app Una instancia de Application
      *
-     * @return ControllerCollection A ControllerCollection instance
+     * @return ControllerCollection Una instancia de ControllerCollection
      */
     function connect(Application $app);
 }

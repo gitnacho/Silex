@@ -1,9 +1,9 @@
-Translating Validation Messages
-===============================
+Traduciendo mensajes de validación
+==================================
 
-When working with Symfony2 validator, a common task would be to show localized validation messages.
+Cuando trabajas con la validador de *Symfony2*, una tarea común sería mostrar mensajes de validación traducidos.
 
-In order to do that, you will need to register translator and point to translated resources:
+Para ello, tendrás que registrar el traductor y apuntar a los recursos traducidos:
 
 ::
 
@@ -17,4 +17,4 @@ In order to do that, you will need to register translator and point to translate
         $app['translator']->addResource('xlf', __DIR__ . '/vendor/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/translations/validators.sr_Latn.xlf', 'sr_Latn', 'validators');
     });
 
-And that's all you need to load translations from Symfony2 ``xlf`` files.
+Y eso es todo lo que necesitas para cargar las traducciones desde archivos ``xlf`` a *Symfony2*

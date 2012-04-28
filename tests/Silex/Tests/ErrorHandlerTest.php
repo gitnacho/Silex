@@ -1,12 +1,15 @@
-<?php
+
+.. code-block:: php
+
+    <?php
 
 /*
- * This file is part of the Silex framework.
+ * Este archivo es parte de la plataforma Silex.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ * Este archivo fuente está sujeto a la licencia MIT incluida con
+ * este código fuente en el archivo LICENSE.
  */
 
 namespace Silex\Tests;

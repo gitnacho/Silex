@@ -1,12 +1,15 @@
-<?php
+
+.. code-block:: php
+
+    <?php
 
 /*
- * This file is part of the Silex framework.
+ * Este archivo es parte de la plataforma Silex.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Para información completa sobre los derechos de autor y licencia, por
+ * favor, ve el archivo LICENSE que viene con este código fuente.
  */
 
 namespace Silex;
@@ -45,7 +48,7 @@ use Silex\RedirectableUrlMatcher;
 use Silex\ControllerResolver;
 
 /**
- * The Silex framework class.
+ * La clase de la plataforma Silex.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -80,7 +83,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         });
 
         $this['dispatcher'] = $this->share(function () use ($app) {
-            $dispatcher = new EventDispatcher();
+            $despachador = new EventDispatcher();
             $dispatcher->addSubscriber($app);
 
             $urlMatcher = new LazyUrlMatcher(function () use ($app) {
@@ -119,7 +122,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
                     $event->setResponse($ret);
                     return;
                 } elseif (null !== $ret) {
-                    throw new \RuntimeException('Middleware for route "'.$event->getRequest()->attributes->get('_route').'" returned an invalid response value. Must return null or an instance of Response.');
+                    throw new \RuntimeException('soporte lógico intermedio para ruta "'.$event->getRequest()->attributes->get('_route').'" devuelve un valor de respuesta inválido. Debe regresar null o una instancia de Respuesta.');
                 }
             }
         });
@@ -127,7 +130,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['request.default_locale'] = 'en';
 
         $this['request'] = function () {
-            throw new \RuntimeException('Accessed request service outside of request scope. Try moving that call to a before handler or controller.');
+            throw new \RuntimeException('Servicio de respuesta accedido fuera del ámbito de la petición. Intenta moviendo esta llamada a un controlador "before".');
         };
 
         $this['request.http_port'] = 80;
@@ -137,10 +140,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Registers a service provider.
+     * Registra un proveedor de servicio.
      *
-     * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
-     * @param array                    $values   An array of values that customizes the provider
+     * @param ServiceProviderInterface $provider Una instancia de ServiceProviderInterface
+     * @param array                    $values   Un arreglo de valores que personalizan el proveedor
      */
     public function register(ServiceProviderInterface $provider, array $values = array())
     {
@@ -152,12 +155,12 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Maps a pattern to a callable.
+     * Asigna un patrón a un ejecutable.
      *
-     * You can optionally specify HTTP methods that should be matched.
+     * Opcionalmente puedes especificar los métodos HTTP con que coincidirá.
      *
-     * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param string $pattern Patrón de ruta coincidente
+     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
      *
      * @return Silex\Controller
      */
@@ -167,10 +170,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Maps a GET request to a callable.
+     * Asigna una petición GET a un ejecutable.
      *
-     * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param string $pattern Patrón de ruta coincidente
+     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
      *
      * @return Silex\Controller
      */
@@ -180,10 +183,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Maps a POST request to a callable.
+     * Asigna una petición POST a un ejecutable.
      *
-     * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param string $pattern Patrón de ruta coincidente
+     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
      *
      * @return Silex\Controller
      */
@@ -193,10 +196,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Maps a PUT request to a callable.
+     * Asigna una petición PUT a un ejecutable.
      *
-     * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param string $pattern Patrón de ruta coincidente
+     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
      *
      * @return Silex\Controller
      */
@@ -206,10 +209,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Maps a DELETE request to a callable.
+     * Asigna una petición DELETE a un ejecutable.
      *
-     * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
+     * @param string $pattern Patrón de ruta coincidente
+     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
      *
      * @return Silex\Controller
      */
@@ -219,13 +222,13 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Registers a before filter.
+     * Registra un filtro before.
      *
-     * Before filters are run before any route has been matched.
+     * Los filtros before se ejecutan antes de buscar cualquier ruta coincidente.
      *
-     * @param mixed   $callback Before filter callback
-     * @param integer $priority The higher this value, the earlier an event
-     *                          listener will be triggered in the chain (defaults to 0)
+     * @param mixed   $callback Retrollamada a filtro before
+     * @param integer $priority Mientras más alto este valor, más pronto se
+     *                          lanzará el escucha del evento en la cadena (por omisión es 0)
      */
     public function before($callback, $priority = 0)
     {
@@ -239,13 +242,13 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Registers an after filter.
+     * Registra un filtro after.
      *
-     * After filters are run after the controller has been executed.
+     * Los filtros after se ejecutan después de ejecutado el controlador.
      *
-     * @param mixed   $callback After filter callback
-     * @param integer $priority The higher this value, the earlier an event
-     *                          listener will be triggered in the chain (defaults to 0)
+     * @param mixed   $callback Retrollamada del filtro after
+     * @param integer $priority Mientras más alto este valor, más pronto se
+     *                          lanzará el escucha en la cadena (por omisión es 0)
      */
     public function after($callback, $priority = 0)
     {
@@ -255,11 +258,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Aborts the current request by sending a proper HTTP error.
+     * Aborta la petición actual enviando un error HTTP adecuado.
      *
-     * @param integer $statusCode The HTTP status code
-     * @param string  $message    The status message
-     * @param array   $headers    An array of HTTP headers
+     * @param integer $statusCode El código de estado HTTP
+     * @param string  $message    El mensaje de estado
+     * @param array   $headers    Un arreglo de cabeceras HTTP
      */
     public function abort($statusCode, $message = '', array $headers = array())
     {
@@ -267,21 +270,21 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Registers an error handler.
+     * Registra un manipulador de error.
      *
-     * Error handlers are simple callables which take a single Exception
-     * as an argument. If a controller throws an exception, an error handler
-     * can return a specific response.
+     * Los manipuladores de error son retrollamadas sencillas que toman
+     * una sola excepción como argumento. Si un controlador lanza una excepción, un manipulador
+     * de error puede devolver una respuesta específica.
      *
-     * When an exception occurs, all handlers will be called, until one returns
-     * something (a string or a Response object), at which point that will be
-     * returned to the client.
+     * Cuando ocurre una excepción, todos los manipuladores serán llamados, hasta
+     * que uno regrese algo (una cadena o un objeto respuesta), punto en el cual
+     * será devuelto al cliente.
      *
-     * For this reason you should add logging handlers before output handlers.
+     * Por esta razón debes añadir manipuladores de registro antes de los controladores.
      *
-     * @param mixed   $callback Error handler callback, takes an Exception argument
-     * @param integer $priority The higher this value, the earlier an event
-     *                          listener will be triggered in the chain (defaults to 0)
+     * @param mixed   $callback Retrollamada controlador de error, toma una Excepción como argumento
+     * @param integer $priority Mientras más alto este valor, más pronto se
+     *                          lanzará el escucha en la cadena (por omisión es 0)
      */
     public function error($callback, $priority = 0)
     {
@@ -300,7 +303,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Flushes the controller collection.
      *
-     * @param string $prefix The route prefix
+     * @param string $prefix El prefijo de la ruta
      */
     public function flush($prefix = '')
     {
@@ -308,10 +311,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Redirects the user to another URL.
+     * Redirige al usuario a otra URL.
      *
-     * @param string  $url    The URL to redirect to
-     * @param integer $status The status code (302 by default)
+     * @param string  $url    La URL a la cual redirigir
+     * @param integer $status El código de estado (el predefinido es 302)
      *
      * @see Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -321,11 +324,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Creates a streaming response.
+     * Crea una respuesta a transmitir.
      *
-     * @param mixed   $callback A valid PHP callback
-     * @param integer $status   The response status code
-     * @param array   $headers  An array of response headers
+     * @param mixed   $callback Una retrollamada PHP válida
+     * @param integer $status   El código de estado de la respuesta
+     * @param array   $headers  Una matriz de cabeceras de la respuesta
      *
      * @see Symfony\Component\HttpFoundation\StreamedResponse
      */
@@ -335,11 +338,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Escapes a text for HTML.
+     * Escapa un texto para HTML.
      *
-     * @param string  $text         The input text to be escaped
+     * @param string  $text         El campo de entrada de texto a escapar
      * @param integer $flags        The flags (@see htmlspecialchars)
-     * @param string  $charset      The charset
+     * @param string  $charset      El juego de caracteres
      * @param Boolean $doubleEncode Whether to try to avoid double escaping or not
      *
      * @return string Escaped text
@@ -364,10 +367,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Mounts an application under the given route prefix.
+     * Monta una aplicación bajo el prefijo de ruta dado.
      *
-     * @param string $prefix The route prefix
-     * @param ControllerCollection|ControllerProviderInterface $app A ControllerCollection or a ControllerProviderInterface instance
+     * @param string $prefix El prefijo de la ruta
+     * @param ControllerCollection|ControllerProviderInterface $app Una instancia de ControllerCollection o ControllerProviderInterface
      */
     public function mount($prefix, $app)
     {
@@ -376,7 +379,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         }
 
         if (!$app instanceof ControllerCollection) {
-            throw new \LogicException('The "mount" method takes either a ControllerCollection or a ControllerProviderInterface instance.');
+            throw new \LogicException('El método "mount" toma bien una instancia de ControllerCollection o ControllerProviderInterface.');
         }
 
         $this['routes']->addCollection($app->flush($prefix), $prefix);
@@ -385,7 +388,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Handles the request and delivers the response.
      *
-     * @param Request $request Request to process
+     * @param Request $request Petición a procesar
      */
     public function run(Request $request = null)
     {
@@ -414,7 +417,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * Handles onEarlyKernelRequest events.
      *
-     * @param KernelEvent $event The event to handle
+     * @param KernelEvent $event El evento a manipular
      */
     public function onEarlyKernelRequest(KernelEvent $event)
     {
@@ -427,9 +430,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Handles onKernelRequest events.
+     * Maneja eventos onKernelRequest.
      *
-     * @param KernelEvent $event The event to handle
+     * @param KernelEvent $event El evento a manipular
      */
     public function onKernelRequest(KernelEvent $event)
     {
@@ -441,9 +444,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Handles converters.
+     * Manipula convertidores.
      *
-     * @param FilterControllerEvent $event A FilterControllerEvent instance
+     * @param FilterControllerEvent $event Una instancia de FilterControllerEvent
      */
     public function onKernelController(FilterControllerEvent $event)
     {
@@ -457,9 +460,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Handles string responses.
+     * Manipula respuestas de cadena.
      *
-     * Handler for onKernelView.
+     * Controlador para onKernelView.
      */
     public function onKernelView(GetResponseForControllerResultEvent $event)
     {
@@ -469,7 +472,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Runs after filters.
+     * Ejecuta filtros after.
      *
      * Handler for onKernelResponse.
      */

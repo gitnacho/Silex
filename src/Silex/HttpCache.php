@@ -1,12 +1,15 @@
-<?php
+
+.. code-block:: php
+
+    <?php
 
 /*
- * This file is part of the Silex framework.
+ * Este archivo es parte de la plataforma Silex.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Para información completa sobre los derechos de autor y licencia, por
+ * favor, ve el archivo LICENSE que viene con este código fuente.
  */
 
 namespace Silex;
@@ -15,16 +18,16 @@ use Symfony\Component\HttpKernel\HttpCache\HttpCache as BaseHttpCache;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * HTTP Cache extension to allow using the run() shortcut.
+ * Extensión de caché HTTP para permitirte usar el atajo run().
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class HttpCache extends BaseHttpCache
 {
     /**
-     * Handles the Request and delivers the Response.
+     * Manipula la Petición y libera la Respuesta.
      *
-     * @param Request $request The Request objet
+     * @param Request $request El objeto Respuesta
      */
     public function run(Request $request = null)
     {

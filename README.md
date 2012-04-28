@@ -1,8 +1,8 @@
-Silex, a simple Web Framework
-=============================
+Silex, una sencilla plataforma *Web*
+====================================
 
-Silex is a simple web framework to develop simple websites based on
-[Symfony2][1] components:
+Silex es una sencilla plataforma *web* para desarrollar sencillos sitios *web* basados en componentes de
+[Symfony2][1]:
 
 
 ```php
@@ -16,31 +16,29 @@ $app->get('/hello/{name}', function ($name) use ($app) {
 });
 
 $app->run();
-```
+ 
 
-Silex works with PHP 5.3.2 or later.
+Silex trabaja con PHP 5.3.2 o más reciente.
 
-## Installation
+## Instalando
 
-Installing Silex is as easy as it can get. Download the [`silex.phar`][2] file
-and you're done!
+Instalar *Silex* es tan fácil como lo puedas obtener. ¡Descarga el archivo [`silex.phar`][2] y listo!
 
-## More Information
+Más Información
 
-Read the [documentation][3] for more information.
+Lee la [documentación][3] para más información.
 
-## Tests
+## Pruebas
 
-To run the test suite, you need [composer](http://getcomposer.org) and
-[PHPUnit](https://github.com/sebastianbergmann/phpunit).
+Para ejecutar el banco de pruebas necesitas [composer](http://getcomposer.org) y [PHPUnit](https://github.com/sebastianbergmann/phpunit).
 
     $ php composer.phar install --dev
     $ phpunit
 
-## License
+## Licencia
 
-Silex is licensed under the MIT license.
+Silex se libera bajo la licencia *MIT*.
 
 [1]: http://symfony.com
 [2]: http://silex.sensiolabs.org/get/silex.phar
-[3]: http://silex.sensiolabs.org/documentation
+[3]: http://gitnacho.github.com/silex
