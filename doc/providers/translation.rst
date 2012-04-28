@@ -139,11 +139,13 @@ Accediendo a las traducciones en las plantillas *Twig*
 Una vez cargado, el proveedor del servicio de traducción está disponible desde las plantillas *Twig*:
 
 .. code-block:: jinja
+
     {{ app.translator.trans('translation_key') }}
 
 Aún mejor: registra el :doc:`SymfonyBridgesServiceProvider <providers/symfony_bridges>` y obtendrás la ``TranslationExtension`` del puente, misma que te permite traducir cadenas a la manera de *Twig*:
 
 .. code-block:: jinja
+
     {{ 'translation_key'|trans }}
     {{ 'translation_key'|transchoice }}
     {% trans %}translation_key{% endtrans %}
