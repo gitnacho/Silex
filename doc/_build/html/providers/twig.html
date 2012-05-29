@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TwigServiceProvider &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="../_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="../index.html" />
+    <link rel="up" title="Silex" href="index.html" />
+    <link rel="next" title="UrlGeneratorServiceProvider" href="url_generator.html" />
+    <link rel="prev" title="TranslationServiceProvider" href="translation.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="../search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="url_generator.html" title="UrlGeneratorServiceProvider"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="translation.html" title="TranslationServiceProvider"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U"><em>Silex</em></a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="twigserviceprovider">
+<h1><tt class="docutils literal"><span class="pre">TwigServiceProvider</span></tt><a class="headerlink" href="#twigserviceprovider" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>El <tt class="docutils literal"><span class="pre">TwigServiceProvider</span></tt> proporciona integración con el motor de plantillas <a class="reference external" href="http://http://gitnacho.github.com/Twig/intro.html">Twig</a>.</p>
+<div class="section" id="parametros">
+<h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
+<ul class="simple">
+<li><strong>twig.path</strong> (opcional): Ruta al directorio que contiene archivos de plantilla <em>Twig</em> (también puede ser un arreglo de rutas).</li>
+<li><strong>twig.templates</strong> (opcional): Se trata de una matriz asociativa de nombres de plantilla para el contenido de la plantilla. Usa esta opción si deseas definir tus plantillas en línea.</li>
+<li><strong>twig.options</strong> (opcional): Una matriz asociativa de opciones <em>Twig</em>. Echa un vistazo a la documentación de <em>Twig</em> para más información.</li>
+<li><strong>twig.form.templates</strong> (opcional): Una matriz de plantillas utilizada para reproducir formularios (disponible únicamente cuando está habilitado el <tt class="docutils literal"><span class="pre">FormServiceProvider</span></tt>).</li>
+</ul>
+</div>
+<div class="section" id="servicios">
+<h2>Servicios<a class="headerlink" href="#servicios" title="Enlazar permanentemente con este título">¶</a></h2>
+<ul class="simple">
+<li><strong>twig</strong>: La instancia de <tt class="docutils literal"><span class="pre">Twig_Environment</span></tt>. La principal forma de interactuar con <em>Twig</em>.</li>
+<li><strong>twig.configure</strong>: <em class="xref std std-ref">Cierre protegido</em> que toma el entorno <em>Twig</em> como argumento. Lo puedes utilizar para agregar más globales personalizadas.</li>
+<li><strong>twig.loader</strong>: El cargador de plantillas <em>Twig</em> utiliza las opciones <tt class="docutils literal"><span class="pre">twig.path</span></tt> y <tt class="docutils literal"><span class="pre">twig.templates</span></tt>. También puedes reemplazar el cargador completamente.</li>
+</ul>
+</div>
+<div class="section" id="registrando">
+<h2>Registrando<a class="headerlink" href="#registrando" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\TwigServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;twig.path&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/views&#39;</span><span class="p">,</span>
+<span class="p">));</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p><em>Twig</em> no viene en los archivos <tt class="docutils literal"><span class="pre">silex</span></tt>, por lo tanto necesitas añadirlo como dependencia en tu archivo <tt class="file docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<div class="last highlight-json"><pre>"require": {
+    "twig/twig": "&gt;=1.8,&lt;2.0-dev"
+}</pre>
+</div>
+</div>
+</div>
+<div class="section" id="integrando-componentes-de-symfony2">
+<h2>Integrando componentes de <em>Symfony2</em><a class="headerlink" href="#integrando-componentes-de-symfony2" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><em>Symfony</em> incluye un puente a <em>Twig</em> que proporciona integración adicional entre algunos componentes de <em>Symfony2</em> y <em>Twig</em>. Añádelo como dependencia a tu archivo <tt class="file docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<div class="highlight-json"><pre>"require": {
+    "symfony/twig-bridge": "2.1.*",
+}</pre>
+</div>
+<p>Cuando está presente el <tt class="docutils literal"><span class="pre">TwigServiceProvider</span></tt> te proporcionará las siguientes capacidades adicionales:</p>
+<ul class="simple">
+<li><strong>UrlGeneratorServiceProvider</strong>: Si estás usando el <tt class="docutils literal"><span class="pre">UrlGeneratorServiceProvider</span></tt>, tendrás acceso a las funciones <tt class="docutils literal"><span class="pre">path()</span></tt> y <tt class="docutils literal"><span class="pre">url()</span></tt> functions. Puedes encontrar más información en la documentación de <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/routing.html#generando-url-desde-una-plantilla">enrutado de Symfony2</a>.</li>
+<li><strong>TranslationServiceProvider</strong>: Si estás usando el <tt class="docutils literal"><span class="pre">TranslationServiceProvider</span></tt>, obtendrás las funciones <tt class="docutils literal"><span class="pre">trans()</span></tt> y <tt class="docutils literal"><span class="pre">transchoice()</span></tt> para traducción en plantillas <em>Twig</em>. Puedes encontrar más información en la documentación de <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/translation.html#plantillas-twig">traducción de Symfony2</a>.</li>
+<li><strong>FormServiceProvider</strong>: Si estás usando el <tt class="docutils literal"><span class="pre">FormServiceProvider</span></tt>, recibirás un conjunto de ayudantes para trabajar con formularios en plantillas. Puedes encontrar más información en la <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/reference/forms/twig_reference.html">referencia de formularios de Symfony2</a>.</li>
+</ul>
+</div>
+<div class="section" id="uso">
+<h2>Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El proveedor <em>Twig</em> ofrece un servicio <tt class="docutils literal"><span class="pre">twig</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/hello/{name}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;twig&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;hello.twig&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="nv">$name</span><span class="p">,</span>
+    <span class="p">));</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Esto reproducirá un archivo llamado <tt class="docutils literal"><span class="pre">views/hola.twig</span></tt>.</p>
+<p>En cualquier plantilla de <em>Twig</em>, la variable <tt class="docutils literal"><span class="pre">app</span></tt> se refiere al objeto <tt class="docutils literal"><span class="pre">Aplicación</span></tt>.
+Para que puedas acceder a cualquier servicio desde tu vista. Por ejemplo, para acceder a <tt class="docutils literal"><span class="pre">$app['request']-&gt;getHost()</span></tt>, sólo tienes que poner esto en tu plantilla:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">app.request.host</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>También se registra una función <tt class="docutils literal"><span class="pre">render</span></tt> para ayudarte a reproducir otro controlador desde una plantilla:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">render</span><span class="o">(</span><span class="s1">&#39;/sidebar&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+
+<span class="c">{# o si también estás usando UrlGeneratorServiceProvider con el SymfonyBridgesServiceProvider #}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">render</span><span class="o">(</span><span class="nv">path</span><span class="o">(</span><span class="s1">&#39;sidebar&#39;</span><span class="o">))</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Para más información, consulta la <a class="reference external" href="http://gitnacho.github.com/Twig/index.html">documentación de
+Twig</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="url_generator.html" title="UrlGeneratorServiceProvider"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="translation.html" title="TranslationServiceProvider"
+             >anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" ><em>Silex</em></a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

@@ -16,13 +16,10 @@ namespace Silex\Provider;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Monolog Provider.
@@ -33,8 +30,16 @@ class MonologServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['monolog'] = $app->share(function () use ($app) {
-            $log = new Logger(isset($app['monolog.name']) ? $app['monolog.name'] : 'myapp');
+        if ($bridge = class_exists('Symfony\Bridge\Monolog\Logger')) {
+            $app['logger'] = function () use ($app) {
+                return $app['monolog'];
+            };
+        }
+
+        $app['monolog'] = $app->share(function () use ($app, $bridge) {
+            $class = $bridge ? 'Symfony\Bridge\Monolog\Logger' : 'Monolog\Logger';
+
+            $log = new $class(isset($app['monolog.name']) ? $app['monolog.name'] : 'myapp');
 
             $app['monolog.configure']($log);
 
@@ -54,18 +59,17 @@ class MonologServiceProvider implements ServiceProviderInterface
                 return Logger::DEBUG;
             };
         }
+    }
 
-        if (isset($app['monolog.class_path'])) {
-            $app['autoloader']->registerNamespace('Monolog', $app['monolog.class_path']);
-        }
-
+    public function boot(Application $app)
+    {
         $app->before(function (Request $request) use ($app) {
             $app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
         });
 
         $app->error(function (\Exception $e) use ($app) {
             $app['monolog']->addError($e->getMessage());
-        });
+        }, 255);
 
         $app->after(function (Request $request, Response $response) use ($app) {
             $app['monolog']->addInfo('< '.$response->getStatusCode());

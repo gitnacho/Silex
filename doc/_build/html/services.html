@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Servicios &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="index.html" />
+    <link rel="next" title="Proveedores" href="providers.html" />
+    <link rel="prev" title="Usándola" href="usage.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="providers.html" title="Proveedores"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usándola"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="index.html">Silex en Español</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="servicios">
+<h1>Servicios<a class="headerlink" href="#servicios" title="Enlazar permanentemente con este título">¶</a></h1>
+<p><em>Silex</em> no es sólo una microplataforma. También es un microcontenedor de servicios. Esto lo consigue extendiendo a <a class="reference external" href="http://pimple-project.org">Pimple</a> que ofrece el bondadoso servicio en sólo 44 <em>NCLOC</em>.</p>
+<div class="section" id="inyeccion-de-dependencias">
+<h2>Inyección de dependencias<a class="headerlink" href="#inyeccion-de-dependencias" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Puedes omitir esto si ya sabes lo que es la inyección de dependencias.</p>
+</div>
+<p>La inyección de dependencias es un patrón de diseño dónde pasas las dependencias a servicios en lugar de crearlas desde dentro del servicio o depender de variables globales. Esto generalmente lleva a un código disociado, reutilizable, flexible y fácil de probar.</p>
+<p>He aquí un ejemplo de una clase que toma un objeto <tt class="docutils literal"><span class="pre">Usuario</span></tt> y lo guarda como un archivo en formato <em>JSON</em>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">class</span> <span class="nc">JsonUserPersister</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="nv">$basePath</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$basePath</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span> <span class="o">=</span> <span class="nv">$basePath</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">persist</span><span class="p">(</span><span class="nx">User</span> <span class="nv">$user</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">getAttributes</span><span class="p">();</span>
+        <span class="nv">$json</span> <span class="o">=</span> <span class="nx">json_encode</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+        <span class="nv">$filename</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">basePath</span><span class="o">.</span><span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="nv">$user</span><span class="o">-&gt;</span><span class="na">id</span><span class="o">.</span><span class="s1">&#39;.json&#39;</span><span class="p">;</span>
+        <span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$filename</span><span class="p">,</span> <span class="nv">$json</span><span class="p">,</span> <span class="nx">LOCK_EX</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>En este sencillo ejemplo la dependencia es la propiedad <tt class="docutils literal"><span class="pre">basePath</span></tt>. Esta se pasa al constructor. Esto significa que puedes crear varias instancias independientes con diferentes rutas base. Por supuesto, las dependencias no tienen que ser simples cadenas de texto. Muy a menudo estas, de hecho, se encuentran en otros servicios.</p>
+<div class="section" id="contenedor">
+<h3>Contenedor<a class="headerlink" href="#contenedor" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Un <tt class="docutils literal"><span class="pre">IDC</span></tt> o contenedor de servicio es responsable de crear y almacenar servicios.
+Este puede crear dependencias recurrentemente de los servicios solicitados e inyectarlos. Lo hace de manera diferida, lo cual significa que un servicio sólo se crea cuando realmente se necesita.</p>
+<p>La mayoría de los contenedores son muy complejos y se configuran a través de archivos <em>XML</em> o <em>YAML</em>.</p>
+<p><em>Pimple</em> es diferente</p>
+</div>
+</div>
+<div class="section" id="id1">
+<h2><em>Pimple</em><a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><em>Pimple</em>, probablemente, es el más simple contenedor de servicios que hay. Usa exhaustivamente los cierres que implementan la interfaz <tt class="docutils literal"><span class="pre">ArrayAccess</span></tt>.</p>
+<p>Vamos a empezar por crear una nueva instancia de <em>Pimple</em> &#8211; y puesto que <tt class="docutils literal"><span class="pre">Silex\application</span></tt> extiende a <em>Pimple</em> todo esto se aplica a <em>Silex</em> también:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$container</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pimple</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>o:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silex\Application</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="section" id="parametros">
+<h3>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Puedes ajustar los parámetros (que suelen ser cadenas) estableciendo una clave en el arreglo del contenedor:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algún_parámetro&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;valor&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>La clave del arreglo puede ser cualquier cosa, por convención se utilizan puntos para denominar los espacios de nombres:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;activo.anfitrión&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;http://cdn.misitio.com/&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Es posible leer valores de parámetros con la misma sintaxis:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">echo</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algún_parámetro&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="definiendo-servicios">
+<h3>Definiendo servicios<a class="headerlink" href="#definiendo-servicios" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>La definición de servicios no es diferente de la definición de parámetros. Sólo tienes que establecer una clave en el arreglo del contenedor a un cierre. No obstante, cuando recuperes el servicio, se ejecuta el cierre. Esto permite la creación diferida de servicios:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_service&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Service</span><span class="p">();</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Y para recuperar el servicio, utiliza:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$service</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_service&#39;</span><span class="p">];</span>
+</pre></div>
+</div>
+<p>Cada vez que llames a  <tt class="docutils literal"><span class="pre">$app['some_service']</span></tt>, se crea una nueva instancia del servicio.</p>
+</div>
+<div class="section" id="servicios-compartidos">
+<h3>Servicios compartidos<a class="headerlink" href="#servicios-compartidos" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Posiblemente quieras utilizar la misma instancia de un servicio a través de todo tu código. A fin de que puedas hacer <em>compartido</em> un servicio:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_service&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Service</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Esto creará el servicio en la primera invocación, y luego devolverá la instancia existente en cualquier acceso posterior.</p>
+</div>
+<div class="section" id="accediendo-al-contenedor-desde-un-cierre">
+<h3>Accediendo al contenedor desde un cierre<a class="headerlink" href="#accediendo-al-contenedor-desde-un-cierre" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>En muchos casos, desearás acceder al contenedor de servicios dentro de un cierre en la definición del servicio. Por ejemplo, al recuperar servicios de los que depende el servicio actual.</p>
+<p>Debido a esto, el contenedor se pasa al cierre como argumento:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_service&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Service</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_other_service&#39;</span><span class="p">],</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_service.config&#39;</span><span class="p">]);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Aquí puedes ver un ejemplo de Inyección de dependencias. <tt class="docutils literal"><span class="pre">some_service</span></tt> depende de <tt class="docutils literal"><span class="pre">some_other_service</span></tt> y toma <tt class="docutils literal"><span class="pre">some_service.config</span></tt> como opciones de configuración. La dependencia sólo se crea cuando accedes a <tt class="docutils literal"><span class="pre">some_service</span></tt>, y es posible sustituir cualquier dependencia simplemente sustituyendo esas definiciones.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Esto también trabaja para los servicios compartidos.</p>
+</div>
+</div>
+<div class="section" id="cierres-protegidos">
+<span id="id2"></span><h3>Cierres protegidos<a class="headerlink" href="#cierres-protegidos" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Debido a que el contenedor ve los cierres cómo fábricas de servicios, siempre se deben ejecutar cuando los leas.</p>
+<p>En algunos casos, sin embargo, deseas almacenar un cierre como un parámetro, de modo que lo puedas recuperar y ejecutar tú mismo &#8211; con tus propios argumentos.</p>
+<p>Esta es la razón por la cual <em>Pimple</em> te permite proteger tus cierres de ser ejecutados, usando el método <tt class="docutils literal"><span class="pre">protect</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;closure_parameter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">protect</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$a</span><span class="p">,</span> <span class="nv">$b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nv">$a</span> <span class="o">+</span> <span class="nv">$b</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="c1">// no debe ejecutar el cierre</span>
+<span class="nv">$add</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;closure_parameter&#39;</span><span class="p">];</span>
+
+<span class="c1">// llamándolo ahora</span>
+<span class="k">echo</span> <span class="nv">$add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Ten en cuenta que los cierres protegidos no tienen acceso al contenedor.</p>
+</div>
+</div>
+<div class="section" id="servicios-basicos">
+<h2>Servicios básicos<a class="headerlink" href="#servicios-basicos" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><em>Silex</em> define una serie de servicios que puedes utilizar o reemplazar. Probablemente no quieras meterte con la mayoría de ellos.</p>
+<ul>
+<li><p class="first"><strong>request</strong>: Contiene el objeto <tt class="docutils literal"><span class="pre">Petición</span></tt> actual, el cual es una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html">Request</a>.
+¡Este proporciona acceso a los parámetros <tt class="docutils literal"><span class="pre">GET</span></tt>, <tt class="docutils literal"><span class="pre">POST</span></tt> y muchos más!</p>
+<p>Ejemplo de uso:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$id</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;request&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Este sólo está disponible cuando se está sirviendo la petición, sólo puedes acceder a él desde dentro de un controlador, antes del filtro, después del filtro o al manejar algún error.</p>
+</li>
+<li><p class="first"><strong>routes</strong>: El <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html">RouteCollection</a> utilizado internamente. Puedes agregar, modificar y leer rutas.</p>
+</li>
+<li><p class="first"><strong>controllers</strong>: La <tt class="docutils literal"><span class="pre">Silex\ControllerCollection</span></tt> utilizada internamente.
+Consulta el capítulo <a class="reference internal" href="internals.html"><em>Funcionamiento interno</em></a> para más información.</p>
+</li>
+<li><p class="first"><strong>dispatcher</strong>: El <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/EventDispatcher/EventDispatcher.html">EventDispatcher</a> utilizado internamente. Es el núcleo del sistema <em>Symfony2</em> y se utiliza un poco en <em>Silex</em>.</p>
+</li>
+<li><p class="first"><strong>resolver</strong>: El <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpKernel/Controller/ControllerResolver.html">ControllerResolver</a> utilizado internamente. Se encarga de ejecutar el controlador con los argumentos adecuados.</p>
+</li>
+<li><p class="first"><strong>kernel</strong>: El <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html">HttpKernel</a> utilizado internamente. El <tt class="docutils literal"><span class="pre">HttpKernel</span></tt> es el corazón de <em>Symfony2</em>, este toma una <tt class="docutils literal"><span class="pre">Petición</span></tt> como entrada y devuelve una <tt class="docutils literal"><span class="pre">Respuesta</span></tt> como salida.</p>
+</li>
+<li><p class="first"><strong>request_context</strong>: El contexto de la petición es una representación simplificada de la petición que utilizan el <tt class="docutils literal"><span class="pre">Router</span></tt> y el <tt class="docutils literal"><span class="pre">UrlGenerator</span></tt>.</p>
+</li>
+<li><p class="first"><strong>exception_handler</strong>: El controlador de excepciones es el controlador predeterminado que se utiliza cuando no registras uno a través del método <tt class="docutils literal"><span class="pre">error()</span></tt> o si el controlador no devuelve una Respuesta. Lo puedes desactivar con <tt class="docutils literal"><span class="pre">unset($app['exception_handler'])</span></tt>.</p>
+</li>
+<li><p class="first"><strong>logger</strong>: Una instancia de <a href="#id3"><span class="problematic" id="id4">`http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html`_</span></a>. De forma predeterminada, el registro está desactivado ya que el valor se establece en <tt class="docutils literal"><span class="pre">null</span></tt>.
+Cuando el puente <em>Monolog</em> de <em>Symfony2</em> está instalado, se utiliza <em>Monolog</em> automáticamente como el registrador cronológico predeterminado.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Todos estos servicios básicos de <em>Silex</em> son compartidos.</p>
+</div>
+</div>
+<div class="section" id="parametros-basicos">
+<h2>Parámetros básicos<a class="headerlink" href="#parametros-basicos" title="Enlazar permanentemente con este título">¶</a></h2>
+<ul>
+<li><p class="first"><strong>request.http_port</strong> (opcional): Te permite redefinir el puerto predeterminado para direcciones que no sean <em>HTTPS</em>. Si la petición actual es <em>HTTP</em>, siempre utiliza el puerto actual.</p>
+<p>El predeterminado es 80.</p>
+<p>Este parámetro lo puede utilizar el <tt class="docutils literal"><span class="pre">UrlGeneratorProvider</span></tt>.</p>
+</li>
+<li><p class="first"><strong>request.https_port</strong> (opcional): Te permite redefinir el puerto predeterminado para direcciones que no sean <em>HTTPS</em>. Si la petición actual es <em>HTTPS</em>, siempre usará el puerto actual.</p>
+<p>Predeterminado a 443.</p>
+<p>Este parámetro lo puede utilizar el <tt class="docutils literal"><span class="pre">UrlGeneratorProvider</span></tt>.</p>
+</li>
+<li><p class="first"><strong>request.default_locale</strong> (opcional): La región usada por omisión.</p>
+<p>Predeterminada a <tt class="docutils literal"><span class="pre">en</span></tt>.</p>
+</li>
+<li><p class="first"><strong>debug</strong> (opcional): Indica si o no se ejecuta la aplicación en modo de depuración.</p>
+<p>El valor predeterminado es <tt class="docutils literal"><span class="pre">false</span></tt>.</p>
+</li>
+<li><p class="first"><strong>charset</strong> (opcional): El juego de caracteres a usar para las Respuestas.</p>
+<p>Por omisión es UTF-8.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="providers.html" title="Proveedores"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usándola"
+             >anterior</a> |</li>
+        <li><a href="index.html">Silex en Español</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

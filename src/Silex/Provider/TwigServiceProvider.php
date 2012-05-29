@@ -44,7 +44,11 @@ class TwigServiceProvider implements ServiceProviderInterface
             $twig->addGlobal('app', $app);
             $twig->addExtension(new TwigCoreExtension());
 
-            if (isset($app['symfony_bridges'])) {
+            if ($app['debug']) {
+                $twig->addExtension(new \Twig_Extension_Debug());
+            }
+
+            if (class_exists('Symfony\Bridge\Twig\Extension\RoutingExtension')) {
                 if (isset($app['url_generator'])) {
                     $twig->addExtension(new TwigRoutingExtension($app['url_generator']));
                 }
@@ -88,9 +92,9 @@ class TwigServiceProvider implements ServiceProviderInterface
                 $app['twig.loader.array'],
             ));
         });
+    }
 
-        if (isset($app['twig.class_path'])) {
-            $app['autoloader']->registerPrefix('Twig_', $app['twig.class_path']);
-        }
+    public function boot(Application $app)
+    {
     }
 }

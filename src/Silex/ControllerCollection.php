@@ -15,7 +15,6 @@
 namespace Silex;
 
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Route;
 use Silex\Controller;
 
 /**
@@ -31,6 +30,17 @@ use Silex\Controller;
 class ControllerCollection
 {
     protected $controllers = array();
+    protected $defaultRoute;
+
+    /**
+     * Constructor.
+     *
+     * @param Route $route
+     */
+    public function __construct()
+    {
+        $this->defaultRoute = new Route('');
+    }
 
     /**
      * Asigna un patrón a un ejecutable.
@@ -38,15 +48,17 @@ class ControllerCollection
      * Opcionalmente puedes especificar los métodos HTTP con que coincidirá.
      *
      * @param string $pattern Patrón de ruta coincidente
-     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
     public function match($pattern, $to)
     {
-        $route = new Route($pattern, array('_controller' => $to));
-        $controller = new Controller($route);
-        $this->add($controller);
+        $route = clone $this->defaultRoute;
+        $route->setPattern($pattern);
+        $route->setDefault('_controller', $to);
+
+        $this->controllers[] = $controller = new Controller($route);
 
         return $controller;
     }
@@ -55,7 +67,7 @@ class ControllerCollection
      * Asigna una petición GET a un ejecutable.
      *
      * @param string $pattern Patrón de ruta coincidente
-     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -68,7 +80,7 @@ class ControllerCollection
      * Asigna una petición POST a un ejecutable.
      *
      * @param string $pattern Patrón de ruta coincidente
-     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -81,7 +93,7 @@ class ControllerCollection
      * Asigna una petición PUT a un ejecutable.
      *
      * @param string $pattern Patrón de ruta coincidente
-     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -94,7 +106,7 @@ class ControllerCollection
      * Asigna una petición DELETE a un ejecutable.
      *
      * @param string $pattern Patrón de ruta coincidente
-     * @param mixed $to Retrollamar que devuelve la respuesta cuando coincide
+     * @param mixed  $to      Callback that returns the response when matched
      *
      * @return Silex\Controller
      */
@@ -104,13 +116,129 @@ class ControllerCollection
     }
 
     /**
-     * Añade un controlador al área de preparación.
+     * Establece los requisitos para una ruta variable.
      *
-     * @param Controller $controller
+     * @param string $variable El nombre variable
+     * @param string $regexp   The regexp to apply
+     *
+     * @return Controller $this La instancia del controlador actual
      */
-    public function add(Controller $controller)
+    public function assert($variable, $regexp)
     {
-        $this->controllers[] = $controller;
+        $this->defaultRoute->assert($variable, $regexp);
+
+        foreach ($this->controllers as $controller) {
+            $controller->assert($variable, $regexp);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Establece el valor predefinido para una variable de ruta.
+     *
+     * @param string $variable El nombre variable
+     * @param mixed  $default  The default value
+     *
+     * @return Controller $this La instancia del controlador actual
+     */
+    public function value($variable, $default)
+    {
+        $this->defaultRoute->value($variable, $default);
+
+        foreach ($this->controllers as $controller) {
+            $controller->value($variable, $default);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Establece un convertidor para una variable de ruta.
+     *
+     * @param string $variable El nombre variable
+     * @param mixed  $callback A PHP callback that converts the original value
+     *
+     * @return Controller $this La instancia del controlador actual
+     */
+    public function convert($variable, $callback)
+    {
+        $this->defaultRoute->convert($variable, $callback);
+
+        foreach ($this->controllers as $controller) {
+            $controller->convert($variable, $callback);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Establece los requisitos para el método HTTP.
+     *
+     * @param string $method El nombre del método HTTP. Puedes suplir múltiples métodos, delimitados por un carácter de tubería '|', p.e. 'GET|POST'
+     *
+     * @return Controller $this La instancia del controlador actual
+     */
+    public function method($method)
+    {
+        $this->defaultRoute->method($method);
+
+        foreach ($this->controllers as $controller) {
+            $controller->method($method);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Establece los requisitos de HTTP (no HTTPS) en este controlador.
+     *
+     * @return Controller $this La instancia del controlador actual
+     */
+    public function requireHttp()
+    {
+        $this->defaultRoute->requireHttp();
+
+        foreach ($this->controllers as $controller) {
+            $controller->requireHttp();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Establece los requisitos HTTPS en este controlador.
+     *
+     * @return Controller $this La instancia del controlador actual
+     */
+    public function requireHttps()
+    {
+        $this->defaultRoute->requireHttps();
+
+        foreach ($this->controllers as $controller) {
+            $controller->requireHttps();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Establece una retrollamada para manipular retrollamadas de ruta before.
+     * (alias "Lógica intermedia de ruta")
+     *
+     * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
+     *
+     * @return Controller $this La instancia del controlador actual
+     */
+    public function middleware($callback)
+    {
+        $this->defaultRoute->middleware($callback);
+
+        foreach ($this->controllers as $controller) {
+            $controller->middleware($callback);
+        }
+
+        return $this;
     }
 
     /**
@@ -123,10 +251,14 @@ class ControllerCollection
         $routes = new RouteCollection();
 
         foreach ($this->controllers as $controller) {
-            if (!$controller->getRouteName()) {
-                $controller->bindDefaultRouteName($prefix);
+            if (!$name = $controller->getRouteName()) {
+                $name = $controller->generateRouteName($prefix);
+                while ($routes->get($name)) {
+                    $name .= '_';
+                }
+                $controller->bind($name);
             }
-            $routes->add($controller->getRouteName(), $controller->getRoute());
+            $routes->add($name, $controller->getRoute());
             $controller->freeze();
         }
 

@@ -38,8 +38,11 @@ class TranslationServiceProvider implements ServiceProviderInterface
             }
 
             $translator->addLoader('array', $app['translator.loader']);
-            foreach ($app['translator.messages'] as $locale => $messages) {
-                $translator->addResource('array', $messages, $locale);
+
+            foreach ($app['translator.domains'] as $domain => $data) {
+                foreach ($data as $locale => $messages) {
+                    $translator->addResource('array', $messages, $locale, $domain);
+                }
             }
 
             return $translator;
@@ -52,9 +55,9 @@ class TranslationServiceProvider implements ServiceProviderInterface
         $app['translator.message_selector'] = $app->share(function () {
             return new MessageSelector();
         });
+    }
 
-        if (isset($app['translation.class_path'])) {
-            $app['autoloader']->registerNamespace('Symfony\\Component\\Translation', $app['translation.class_path']);
-        }
+    public function boot(Application $app)
+    {
     }
 }

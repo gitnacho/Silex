@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
@@ -51,17 +52,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequest()
     {
-        $app = new Application();
-
-        $app->get('/', function () {
-            return 'root';
-        });
-
         $request = Request::create('/');
 
-        $app->handle($request);
+        $app = new Application();
+        $app->get('/', function (Request $req) use ($request) {
+            return $request === $req ? 'ok' : 'ko';
+        });
 
-        $this->assertEquals($request, $app['request']);
+        $this->assertEquals('ok', $app->handle($request)->getContent());
     }
 
     public function testGetRoutesWithNoRoutes()
@@ -73,7 +71,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, count($routes->all()));
     }
 
-    public function testgetRoutesWithRoutes()
+    public function testGetRoutesWithRoutes()
     {
         $app = new Application();
 
@@ -193,6 +191,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $app->get('/reached', function () use (&$middlewareTarget) {
             $middlewareTarget[] = 'route_triggered';
+
             return 'hello';
         })
         ->middleware($middleware1)
@@ -267,6 +266,33 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(array('before_triggered', 'middleware_triggered', 'route_triggered'), $middlewareTarget);
     }
 
+    public function testFinishFilter()
+    {
+        $containerTarget = array();
+
+        $app = new Application();
+
+        $app->finish(function () use (&$containerTarget) {
+            $containerTarget[] = '4_filterFinish';
+        });
+
+        $app->get('/foo', function () use (&$containerTarget) {
+            $containerTarget[] = '1_routeTriggered';
+
+            return new StreamedResponse(function() use (&$containerTarget) {
+                $containerTarget[] = '3_responseSent';
+            });
+        });
+
+        $app->after(function () use (&$containerTarget) {
+            $containerTarget[] = '2_filterAfter';
+        });
+
+        $app->run(Request::create('/foo'));
+
+        $this->assertSame(array('1_routeTriggered', '2_filterAfter', '3_responseSent', '4_filterFinish'), $containerTarget);
+    }
+
     /**
      * @expectedException RuntimeException
      */
@@ -294,6 +320,54 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
 
         $request = $app['request'];
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testAccessingRequestOutsideOfScopeShouldThrowRuntimeExceptionAfterHandling()
+    {
+        $app = new Application();
+        $app->get('/', function () {
+            return 'hello';
+        });
+        $app->handle(Request::create('/'), HttpKernelInterface::MASTER_REQUEST, false);
+
+        $request = $app['request'];
+    }
+
+    public function testSubRequest()
+    {
+        $app = new Application();
+        $app->get('/sub', function (Request $request) {
+            return new Response('foo');
+        });
+        $app->get('/', function (Request $request) use ($app) {
+            return $app->handle(Request::create('/sub'), HttpKernelInterface::SUB_REQUEST);
+        });
+
+        $this->assertEquals('foo', $app->handle(Request::create('/'))->getContent());
+    }
+
+    public function testSubRequestDoesNotReplaceMainRequestAfterHandling()
+    {
+        $mainRequest = Request::create('/');
+        $subRequest = Request::create('/sub');
+
+        $app = new Application();
+        $app->get('/sub', function (Request $request) {
+            return new Response('foo');
+        });
+        $app->get('/', function (Request $request) use ($subRequest, $app) {
+            $response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+
+            // request in app must be the main request here
+            $response->setContent($response->getContent().' '.$app['request']->getPathInfo());
+
+            return $response;
+        });
+
+        $this->assertEquals('foo /', $app->handle($mainRequest)->getContent());
     }
 }
 

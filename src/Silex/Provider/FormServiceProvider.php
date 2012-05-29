@@ -54,9 +54,9 @@ class FormServiceProvider implements ServiceProviderInterface
 
             return new DefaultCsrfProvider($app['form.secret']);
         });
+    }
 
-        if (isset($app['form.class_path'])) {
-            $app['autoloader']->registerNamespace('Symfony\\Component\\Form', $app['form.class_path']);
-        }
+    public function boot(Application $app)
+    {
     }
 }

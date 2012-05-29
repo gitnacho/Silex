@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Probando &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="index.html" />
+    <link rel="next" title="Recetario" href="cookbook/index.html" />
+    <link rel="prev" title="Proveedores" href="providers.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="cookbook/index.html" title="Recetario"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="providers.html" title="Proveedores"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="index.html">Silex en Español</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="probando">
+<h1>Probando<a class="headerlink" href="#probando" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Debido a que <em>Silex</em> está construido en la cima de <em>Symfony2</em>, es muy fácil escribir pruebas funcionales para tu aplicación. Las pruebas funcionales son pruebas automatizadas de software que garantizan que el código funciona correctamente. Estas van a través de la interfaz de usuario, utilizando un navegador simulado, e imitan las acciones que un usuario podría llevar a cabo.</p>
+<div class="section" id="por-que">
+<h2>¿Por qué?<a class="headerlink" href="#por-que" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Si no estás familiarizado con las pruebas de software, puedes preguntarte por qué tendrías que necesitarlas. Cada vez que haces un cambio a tu aplicación, tienes que probarlo. Esto significa recorrer todas las páginas y asegurarte de que todavía están trabajando. Las pruebas funcionales te ahorran un montón de tiempo, ya que te permiten probar la aplicación en general, en menos de un segundo ejecutando una única orden.</p>
+<p>Para más información sobre las pruebas funcionales, pruebas unitarias y pruebas automatizadas de software en general, consulta <a class="reference external" href="https://github.com/sebastianbergmann/phpunit">PHPUnit</a> y <a class="reference external" href="http://www.slideshare.net/avalanche123/clean-code-5609451">Bulat Shakirzyanov hablando en código limpio</a>.</p>
+</div>
+<div class="section" id="id1">
+<h2><em>PHPUnit</em><a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><a class="reference external" href="https://github.com/sebastianbergmann/phpunit">PHPUnit</a>
+Es la plataforma de pruebas estándar de facto para <em>PHP</em>. Fue construida para escribir pruebas unitarias, pero también la puedes utilizar para pruebas funcionales. Escribes tus pruebas creando una nueva clase, que extiende a <tt class="docutils literal"><span class="pre">PHPUnit_Framework_TestCase</span></tt>. Tus casos de prueba son los métodos prefijados con <tt class="docutils literal"><span class="pre">test</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactFormTest</span> <span class="k">extends</span> <span class="nx">PHPUnit_Framework_TestCase</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testInitialPage</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>En tus casos de prueba, haces afirmaciones sobre el estado de lo que estás probando. En este caso estamos probando un formulario de contacto, por lo tanto se quiere acertar que la página se ha cargado correctamente y contiene nuestro formulario:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">public</span> <span class="k">function</span> <span class="nf">testInitialPage</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nv">$statusCode</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="nv">$pageContent</span> <span class="o">=</span> <span class="o">...</span>
+
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nv">$statusCode</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertContains</span><span class="p">(</span><span class="s1">&#39;Contact us&#39;</span><span class="p">,</span> <span class="nv">$pageContent</span><span class="p">);</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertContains</span><span class="p">(</span><span class="s1">&#39;&lt;form&#39;</span><span class="p">,</span> <span class="nv">$pageContent</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Aquí puedes ver algunas de las aserciones disponibles. Hay una lista completa en la sección <a class="reference external" href="http://www.phpunit.de/manual/current/en/writing-tests-for-phpunit.html">Escribiendo pruebas para PHPUnit</a> de la documentación de <em>PHPUnit</em>.</p>
+</div>
+<div class="section" id="webtestcase">
+<h2><tt class="docutils literal"><span class="pre">WebTestCase</span></tt><a class="headerlink" href="#webtestcase" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><em>Symfony2</em> proporciona una clase <tt class="docutils literal"><span class="pre">WebTestCase</span></tt> que puedes utilizar para escribir pruebas funcionales. La versión <tt class="docutils literal"><span class="pre">Silex</span></tt> de esta clase es <tt class="docutils literal"><span class="pre">Silex\WebTestCase</span></tt>, y la puedes utilizar haciendo que tu prueba la extienda:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Silex\WebTestCase</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">ContactFormTest</span> <span class="k">extends</span> <span class="nx">WebTestCase</span>
+<span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Para hacer comprobable tu aplicación, es necesario asegurarte de que sigue las instrucciones de &#8220;reutilización de aplicaciones&#8221; de <a class="reference internal" href="usage.html"><em>Usándola</em></a>.</p>
+</div>
+<p>Para tu <tt class="docutils literal"><span class="pre">WebTestCase</span></tt>, tendrás que implementar un método <tt class="docutils literal"><span class="pre">createApplication</span></tt>, el cual devuelve tu aplicación. Este, probablemente, se verá así:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">public</span> <span class="k">function</span> <span class="nf">createApplication</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">require</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/path/to/app.php&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Asegúrate de <strong>no</strong> usar <tt class="docutils literal"><span class="pre">require_once</span></tt> aquí, ya que este método se ejecutará antes de cada prueba.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Truco</p>
+<p>De manera predeterminada, la aplicación se comporta de la misma manera que cuando se utiliza desde un navegador. Pero cuando se produce un error, a veces es más fácil obtener excepciones en lugar de páginas <em>HTML</em>. Es bastante simple si ajustas la configuración de la aplicación en el método <tt class="docutils literal"><span class="pre">createApplication()</span></tt> como sigue:</p>
+<div class="last highlight-php"><div class="highlight"><pre><span class="k">public</span> <span class="k">function</span> <span class="nf">createApplication</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nv">$app</span> <span class="o">=</span> <span class="k">require</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/path/to/app.php&#39;</span><span class="p">;</span>
+    <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;debug&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+    <span class="nb">unset</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;exception_handler&#39;</span><span class="p">]);</span>
+
+    <span class="k">return</span> <span class="nv">$app</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Truco</p>
+<p>Si tu aplicación usa sesiones, tienes que usar <tt class="docutils literal"><span class="pre">FilesystemSessionStorage</span></tt> para guardar las sesiones:</p>
+<div class="last highlight-php"><div class="highlight"><pre><span class="c1">// ...</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\SessionStorage\FilesystemSessionStorage</span><span class="p">;</span>
+<span class="c1">// ...</span>
+
+<span class="k">public</span> <span class="k">function</span> <span class="nf">createApplication</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span><span class="p">[</span><span class="s1">&#39;session.storage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">FilesystemSessionStorage</span><span class="p">(</span><span class="nx">sys_get_temp_dir</span><span class="p">());</span>
+    <span class="p">});</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>El <tt class="docutils literal"><span class="pre">WebTestCase</span></tt> proporciona un método <tt class="docutils literal"><span class="pre">createClient</span></tt>. Un cliente actúa como un navegador, y te permite interactuar con tu aplicación. Así es como funciona:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">public</span> <span class="k">function</span> <span class="nf">testInitialPage</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nv">$client</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">createClient</span><span class="p">();</span>
+    <span class="nv">$crawler</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">request</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">);</span>
+
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertTrue</span><span class="p">(</span><span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getResponse</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">isOk</span><span class="p">());</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertCount</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">$crawler</span><span class="o">-&gt;</span><span class="na">filter</span><span class="p">(</span><span class="s1">&#39;h1:contains(&quot;Contact us&quot;)&#39;</span><span class="p">));</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertCount</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">$crawler</span><span class="o">-&gt;</span><span class="na">filter</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">));</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Aquí suceden varias cosas. Tienes tanto un <tt class="docutils literal"><span class="pre">Cliente</span></tt> como un <tt class="docutils literal"><span class="pre">Rastreador</span></tt>.</p>
+<p>También puedes acceder a la aplicación a través de <tt class="docutils literal"><span class="pre">$this-&gt;app</span></tt>.</p>
+</div>
+<div class="section" id="cliente">
+<h2>Cliente<a class="headerlink" href="#cliente" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El cliente representa un navegador. Este mantiene tu historial de navegación, <tt class="docutils literal"><span class="pre">cookies</span></tt> y mucho más. El método <tt class="docutils literal"><span class="pre">request</span></tt> te permite hacer una petición a una página en tu aplicación.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Puedes encontrar alguna documentación para esto en la sección <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/testing.html#el-cliente-de-pruebas">cliente del capítulo de pruebas de la documentación de Symfony2</a>.</p>
+</div>
+</div>
+<div class="section" id="rastreador">
+<h2><tt class="docutils literal"><span class="pre">Rastreador</span></tt><a class="headerlink" href="#rastreador" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El <tt class="docutils literal"><span class="pre">rastreador</span></tt> te permite inspeccionar el contenido de una página. Lo puedes filtrar usando expresiones <em>CSS</em> y mucho más.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Puedes encontrar alguna documentación para este en la sección <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/testing.html#el-cliente-de-pruebas">rastreador del capítulo de pruebas de la documentación de Symfony2</a>.</p>
+</div>
+</div>
+<div class="section" id="configurando">
+<h2>Configurando<a class="headerlink" href="#configurando" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>La forma sugerida para configurar <em>PHPUnit</em> es crear un archivo <tt class="docutils literal"><span class="pre">phpunit.xml.dist</span></tt>, un directorio <tt class="docutils literal"><span class="pre">tests</span></tt> y tus pruebas en <tt class="docutils literal"><span class="pre">tests/TuAp/Tests/TuPruebaTest.php</span></tt>. El archivo <tt class="docutils literal"><span class="pre">phpunit.xml.dist</span></tt> debe tener el siguiente aspecto:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;phpunit</span> <span class="na">backupGlobals=</span><span class="s">&quot;false&quot;</span>
+         <span class="na">backupStaticAttributes=</span><span class="s">&quot;false&quot;</span>
+         <span class="na">colors=</span><span class="s">&quot;true&quot;</span>
+         <span class="na">convertErrorsToExceptions=</span><span class="s">&quot;true&quot;</span>
+         <span class="na">convertNoticesToExceptions=</span><span class="s">&quot;true&quot;</span>
+         <span class="na">convertWarningsToExceptions=</span><span class="s">&quot;true&quot;</span>
+         <span class="na">processIsolation=</span><span class="s">&quot;false&quot;</span>
+         <span class="na">stopOnFailure=</span><span class="s">&quot;false&quot;</span>
+         <span class="na">syntaxCheck=</span><span class="s">&quot;false&quot;</span>
+<span class="nt">&gt;</span>
+    <span class="nt">&lt;testsuites&gt;</span>
+        <span class="nt">&lt;testsuite</span> <span class="na">name=</span><span class="s">&quot;YourApp Test Suite&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;directory&gt;</span>./tests/<span class="nt">&lt;/directory&gt;</span>
+        <span class="nt">&lt;/testsuite&gt;</span>
+    <span class="nt">&lt;/testsuites&gt;</span>
+<span class="nt">&lt;/phpunit&gt;</span>
+</pre></div>
+</div>
+<p>También puedes configurar un archivo de arranque para cargar tus clases y listas blancas automáticamente para los informes de cobertura de código.</p>
+<p>Tu <tt class="docutils literal"><span class="pre">tests/YourApp/Tests/YourTest.php</span></tt> debería tener este aspecto:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">namespace</span> <span class="nx">YourApp\Tests</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Silex\WebTestCase</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">YourTest</span> <span class="k">extends</span> <span class="nx">WebTestCase</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">createApplication</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">require</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/../../../app.php&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">testFooBar</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="o">...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Ahora, cuando ejecutes <tt class="docutils literal"><span class="pre">phpunit</span></tt> en la línea de ordenes, se deben ejecutar tus pruebas.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="cookbook/index.html" title="Recetario"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="providers.html" title="Proveedores"
+             >anterior</a> |</li>
+        <li><a href="index.html">Silex en Español</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

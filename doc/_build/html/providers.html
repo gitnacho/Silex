@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Proveedores &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="index.html" />
+    <link rel="next" title="Probando" href="testing.html" />
+    <link rel="prev" title="Servicios" href="services.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="testing.html" title="Probando"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="services.html" title="Servicios"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="index.html">Silex en Español</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="proveedores">
+<h1>Proveedores<a class="headerlink" href="#proveedores" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Los proveedores permiten al desarrollador reutilizar partes de una aplicación en otra. Silex ofrece dos tipos de proveedores definidos por dos interfaces:
+<tt class="docutils literal"><span class="pre">ServiceProviderInterface</span></tt> para los servicios y <tt class="docutils literal"><span class="pre">ControllerProviderInterface</span></tt> para los controladores.</p>
+<div class="section" id="proveedores-de-servicios">
+<h2>Proveedores de servicios<a class="headerlink" href="#proveedores-de-servicios" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="cargando-proveedores">
+<h3>Cargando proveedores<a class="headerlink" href="#cargando-proveedores" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Con el fin de cargar y usar un proveedor de servicios, lo debes registrar en la aplicación:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silex\Application</span><span class="p">();</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Acme\DatabaseServiceProvider</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>También puedes proporcionar algunos parámetros como segundo argumento. Estos se deben establecer <strong>antes</strong> de registrar al proveedor:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Acme\DatabaseServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;database.dsn&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;mysql:host=localhost;dbname=myapp&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;database.user&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;database.password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;secret_root_password&#39;</span><span class="p">,</span>
+<span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="convenciones">
+<h3>Convenciones<a class="headerlink" href="#convenciones" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Necesitas tener cuidado con el orden en que haces ciertas cosas cuando interactúas con proveedores. Sólo sigue estas reglas:</p>
+<ul>
+<li><p class="first">La redefinición de servicios existentes debe ocurrir <strong>después</strong> de haber registrado el proveedor.</p>
+<p><em>Razón: Si los servicios ya existen, el proveedor los sobrescribirá.</em></p>
+</li>
+<li><p class="first">Puedes configurar los parámetros en cualquier momento antes de acceder al servicio.</p>
+</li>
+</ul>
+<p>Asegúrate de que te adhieres a este comportamiento al crear tus propios proveedores.</p>
+</div>
+<div class="section" id="proveedores-integrados">
+<h3>Proveedores integrados<a class="headerlink" href="#proveedores-integrados" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Hay algunos proveedores que obtienes fuera de la caja. Todos ellos están dentro del espacio de nombres <tt class="docutils literal"><span class="pre">Silex\Provider</span></tt>.</p>
+<ul class="simple">
+<li><a class="reference internal" href="providers/doctrine.html"><em>DoctrineServiceProvider</em></a></li>
+<li><a class="reference internal" href="providers/monolog.html"><em>MonologServiceProvider</em></a></li>
+<li><a class="reference internal" href="providers/session.html"><em>SessionServiceProvider</em></a></li>
+<li><a class="reference internal" href="providers/swiftmailer.html"><em>SwiftmailerServiceProvider</em></a></li>
+<li><a class="reference internal" href="providers/symfony_bridges.html"><em>SymfonyBridgesServiceProvider</em></a></li>
+<li><a class="reference internal" href="providers/twig.html"><em>TwigServiceProvider</em></a></li>
+<li><a class="reference internal" href="providers/translation.html"><em>TranslationServiceProvider</em></a></li>
+<li><a class="reference internal" href="providers/url_generator.html"><em>UrlGeneratorServiceProvider</em></a></li>
+<li><a class="reference internal" href="providers/validator.html"><em>ValidatorServiceProvider</em></a></li>
+<li><a class="reference internal" href="providers/http_cache.html"><em>HttpCacheServiceProvider</em></a></li>
+</ul>
+</div>
+<div class="section" id="proveedores-de-terceros">
+<h3>Proveedores de terceros<a class="headerlink" href="#proveedores-de-terceros" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Algunos proveedores de servicios son desarrollados por la comunidad. Esos proveedores están listados en el <a class="reference external" href="https://github.com/fabpot/Silex/wiki/Third-Party-ServiceProviders">wiki del repositorio de Silex</a>.</p>
+<p>Te animamos a compartir los tuyos.</p>
+</div>
+<div class="section" id="creando-un-proveedor">
+<h3>Creando un proveedor<a class="headerlink" href="#creando-un-proveedor" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Los proveedores deben implementar el <tt class="docutils literal"><span class="pre">Silex\ServiceProviderInterface</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">interface</span> <span class="nx">ServiceProviderInterface</span>
+<span class="p">{</span>
+    <span class="k">function</span> <span class="nf">register</span><span class="p">(</span><span class="nx">Application</span> <span class="nv">$app</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Esto es muy sencillo, basta con crear una nueva clase que implemente el método <tt class="docutils literal"><span class="pre">register</span></tt>. En este método tienes que definir los servicios de la aplicación que pueden usar otros servicios y parámetros.</p>
+<p>He aquí un ejemplo de tal proveedor:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">namespace</span> <span class="nx">Acme</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Silex\Application</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Silex\ServiceProviderInterface</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">HelloServiceProvider</span> <span class="k">implements</span> <span class="nx">ServiceProviderInterface</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">register</span><span class="p">(</span><span class="nx">Application</span> <span class="nv">$app</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;hello&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">protect</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$default</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;hello.default_name&#39;</span><span class="p">]</span> <span class="o">?</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;hello.default_name&#39;</span><span class="p">]</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+            <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$name</span> <span class="o">?:</span> <span class="nv">$default</span><span class="p">;</span>
+
+            <span class="k">return</span> <span class="s1">&#39;Hello &#39;</span><span class="o">.</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">escape</span><span class="p">(</span><span class="nv">$name</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Esta clase proporciona un servicio, <tt class="docutils literal"><span class="pre">hello</span></tt>, el cual es un cierre protegido. Este toma un argumento nombre y devolverá <tt class="docutils literal"><span class="pre">hello.default_name</span></tt> si no se da un nombre. Si además falta el predeterminado, utilizará una cadena vacía.</p>
+<p>Ahora puedes utilizar este proveedor de la siguiente manera:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silex\Application</span><span class="p">();</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Acme\HelloServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;hello.default_name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Igor&#39;</span><span class="p">,</span>
+<span class="p">));</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;request&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;hello&#39;</span><span class="p">](</span><span class="nv">$name</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>En este ejemplo estamos obteniendo el parámetro <tt class="docutils literal"><span class="pre">name</span></tt> desde la cadena de consulta, por lo que la ruta de la petición tendría que ser <tt class="docutils literal"><span class="pre">/hello?name=Fabien</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="proveedores-de-controladores">
+<h2>Proveedores de controladores<a class="headerlink" href="#proveedores-de-controladores" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="id1">
+<h3>Cargando proveedores<a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Con el fin de cargar y usar un controlador del proveedor, debes &#8220;montar&#8221; tus controladores en una ruta:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silex\Application</span><span class="p">();</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">mount</span><span class="p">(</span><span class="s1">&#39;/blog&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Acme\BlogControllerProvider</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Todos los controladores definidos por el proveedor ahora estarán disponibles bajo la ruta <cite>/blog</cite>.</p>
+</div>
+<div class="section" id="id2">
+<h3>Creando un proveedor<a class="headerlink" href="#id2" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Los proveedores deben implementar la <tt class="docutils literal"><span class="pre">Silex\ControllerProviderInterface</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">interface</span> <span class="nx">ControllerProviderInterface</span>
+<span class="p">{</span>
+    <span class="k">function</span> <span class="nf">connect</span><span class="p">(</span><span class="nx">Application</span> <span class="nv">$app</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>He aquí un ejemplo de tal proveedor:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">namespace</span> <span class="nx">Acme</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Silex\Application</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Silex\ControllerProviderInterface</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Silex\ControllerCollection</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">HelloControllerProvider</span> <span class="k">implements</span> <span class="nx">ControllerProviderInterface</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">connect</span><span class="p">(</span><span class="nx">Application</span> <span class="nv">$app</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$controllers</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ControllerCollection</span><span class="p">();</span>
+
+        <span class="nv">$controllers</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Application</span> <span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">redirect</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="k">return</span> <span class="nv">$controllers</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>El método <tt class="docutils literal"><span class="pre">connect</span></tt> debe regresar una instancia de <tt class="docutils literal"><span class="pre">ControllerCollection</span></tt>.
+<tt class="docutils literal"><span class="pre">ControllerCollection</span></tt> es la clase donde todos los métodos controladores relacionados están definidos (como <tt class="docutils literal"><span class="pre">get</span></tt>, <tt class="docutils literal"><span class="pre">post</span></tt>, <tt class="docutils literal"><span class="pre">match</span></tt>, ...).</p>
+<div class="admonition tip">
+<p class="first admonition-title">Truco</p>
+<p class="last">La clase <tt class="docutils literal"><span class="pre">Application</span></tt> de hecho actúa en un delegado para estos métodos.</p>
+</div>
+<p>Ahora puedes utilizar este proveedor de la siguiente manera:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silex\Application</span><span class="p">();</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">mount</span><span class="p">(</span><span class="s1">&#39;/blog&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Acme\HelloControllerProvider</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>En este ejemplo, la ruta <tt class="docutils literal"><span class="pre">/blog/</span></tt> ahora hace referencia al controlador definido en el proveedor.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Truco</p>
+<p class="last">También puedes definir un proveedor que implemente ambos, el servicio y la interfaz del proveedor del controlador y envasar en la misma clase los servicios necesarios para hacer que tu controlador funcione.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="testing.html" title="Probando"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="services.html" title="Servicios"
+             >anterior</a> |</li>
+        <li><a href="index.html">Silex en Español</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

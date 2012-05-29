@@ -1,5 +1,7 @@
 Silex, una sencilla plataforma Web
-====================================
+==================================
+
+[![Build Status](https://secure.travis-ci.org/fabpot/Silex.png?branch=master)](http://travis-ci.org/fabpot/Silex)
 
 Silex es una sencilla plataforma web para desarrollar sencillos
 sitios web basados en componentes de [Symfony2][1]:
@@ -7,7 +9,7 @@ sitios web basados en componentes de [Symfony2][1]:
 
 ```php
 <?php
-require_once __DIR__.'/silex.phar';
+require_once __DIR__.'/../vendor/autoload.php';
 
 $app = new Silex\Application();
 
@@ -18,11 +20,11 @@ $app->get('/hello/{name}', function ($name) use ($app) {
 $app->run();
 ```
 
-Silex trabaja con PHP 5.3.2 o más reciente.
+Silex trabaja con PHP 5.3.3 o más reciente.
 
 ## Instalando
 
-Instalar Silex es tan fácil como lo puedas obtener. ¡Descarga el archivo [`silex.phar`][2] y listo!
+Instalar Silex es tan fácil como lo puedas obtener. Descarga el archivo [silex.zip][2], ¡descomprímelo y listo!
 
 ## Más Información
 
@@ -42,5 +44,5 @@ Para ejecutar el banco de pruebas necesitas
 Silex se libera bajo la licencia MIT.
 
 [1]: http://symfony.com
-[2]: http://silex.sensiolabs.org/get/silex.phar
+[2]: http://silex.sensiolabs.org/get/silex.zip
 [3]: http://gitnacho.github.com/silex

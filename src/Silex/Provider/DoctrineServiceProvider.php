@@ -121,13 +121,9 @@ class DoctrineServiceProvider implements ServiceProviderInterface
 
             return $dbs[$app['dbs.default']];
         });
+    }
 
-        if (isset($app['db.dbal.class_path'])) {
-            $app['autoloader']->registerNamespace('Doctrine\\DBAL', $app['db.dbal.class_path']);
-        }
-
-        if (isset($app['db.common.class_path'])) {
-            $app['autoloader']->registerNamespace('Doctrine\\Common', $app['db.common.class_path']);
-        }
+    public function boot(Application $app)
+    {
     }
 }

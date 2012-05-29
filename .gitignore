@@ -1,4 +1,4 @@
-phpunit.xml
-silex.phar
-vendor
-doc/_build/
+/phpunit.xml
+/vendor
+/build
+

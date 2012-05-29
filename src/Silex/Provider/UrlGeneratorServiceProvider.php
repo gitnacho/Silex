@@ -34,4 +34,8 @@ class UrlGeneratorServiceProvider implements ServiceProviderInterface
             return new UrlGenerator($app['routes'], $app['request_context']);
         });
     }
+
+    public function boot(Application $app)
+    {
+    }
 }

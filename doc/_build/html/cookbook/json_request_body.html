@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Aceptando el cuerpo de una petición JSON &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="../_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="../index.html" />
+    <link rel="up" title="Recetario" href="index.html" />
+    <link rel="next" title="Traduciendo mensajes de validación" href="translating_validation_messages.html" />
+    <link rel="prev" title="Recetario" href="index.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="../search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="translating_validation_messages.html" title="Traduciendo mensajes de validación"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Recetario"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="aceptando-el-cuerpo-de-una-peticion-json">
+<h1>Aceptando el cuerpo de una petición <em>JSON</em><a class="headerlink" href="#aceptando-el-cuerpo-de-una-peticion-json" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Una necesidad común en la construcción de una <em>API</em> útil es la posibilidad de aceptar una entidad <em>JSON</em> codificada desde el cuerpo de la petición.</p>
+<p>Un ejemplo de este tipo de <em>API</em> podría ser la creación de un <em>blog</em>.</p>
+<div class="section" id="ejemplo-de-api">
+<h2>Ejemplo de <em>API</em><a class="headerlink" href="#ejemplo-de-api" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>En este ejemplo vamos a diseñar una <em>API</em> para crear un <em>blog</em>. La siguiente es una especificación de cómo queremos que funcione.</p>
+<div class="section" id="peticion">
+<h3><tt class="docutils literal"><span class="pre">Petición</span></tt><a class="headerlink" href="#peticion" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>En la petición, enviamos los datos para la entrada en el <em>blog</em> como un objeto <em>JSON</em>. También indicamos que usamos la cabecera <tt class="docutils literal"><span class="pre">Content-Type</span></tt>:</p>
+<div class="highlight-text"><div class="highlight"><pre>POST /blog/posts
+Accept: application/json
+Content-Type: application/json
+Content-Length: 57
+
+{&quot;title&quot;:&quot;Hello World!&quot;,&quot;body&quot;:&quot;This is my first post!&quot;}
+</pre></div>
+</div>
+</div>
+<div class="section" id="respuesta">
+<h3><tt class="docutils literal"><span class="pre">Respuesta</span></tt><a class="headerlink" href="#respuesta" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>El servidor responde con un código de estado 201, el cual nos dice que la entrada fue creada satisfactoriamente. Diciéndonos que el <tt class="docutils literal"><span class="pre">Content-Type</span></tt> de la respuesta, también es <em>JSON</em>:</p>
+<div class="highlight-text"><div class="highlight"><pre>HTTP/1.1 201 Created
+Content-Type: application/json
+Content-Length: 65
+Connection: clocase
+
+{&quot;id&quot;:&quot;1&quot;,&quot;title&quot;:&quot;Hello World!&quot;,&quot;body&quot;:&quot;This is mí first post!&quot;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="analizando-el-cuerpo-de-la-peticion">
+<h2>Analizando el cuerpo de la petición<a class="headerlink" href="#analizando-el-cuerpo-de-la-peticion" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El cuerpo de la petición sólo se debe analizar como <em>JSON</em> si la cabecera <tt class="docutils literal"><span class="pre">Content-Type</span></tt> comienza con <tt class="docutils literal"><span class="pre">application/json</span></tt>. Como queremos hacer esto para cada petición, la solución más fácil es usar un filtro <tt class="docutils literal"><span class="pre">before</span></tt>.</p>
+<p>Simplemente usamos <tt class="docutils literal"><span class="pre">json_decode</span></tt> para analizar el contenido de la petición y luego sustituimos los datos de la petición en el objeto <tt class="docutils literal"><span class="pre">$request</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\ParameterBag</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">===</span> <span class="nb">strpos</span><span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">headers</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">),</span> <span class="s1">&#39;application/json&#39;</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nv">$data</span> <span class="o">=</span> <span class="nx">json_decode</span><span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getContent</span><span class="p">(),</span> <span class="k">true</span><span class="p">);</span>
+        <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">replace</span><span class="p">(</span><span class="nb">is_array</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span> <span class="o">?</span> <span class="nv">$data</span> <span class="o">:</span> <span class="k">array</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="implementando-el-controlador">
+<h2>Implementando el controlador<a class="headerlink" href="#implementando-el-controlador" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Nuestro controlador creará una nueva entrada en el <em>blog</em> basada en los datos proporcionados y devolverá el objeto <tt class="docutils literal"><span class="pre">post</span></tt>, incluyendo su <tt class="docutils literal"><span class="pre">id</span></tt> como <em>JSON</em>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/blog/posts&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$post</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;body&#39;</span>  <span class="o">=&gt;</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">),</span>
+    <span class="p">);</span>
+
+    <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">createPost</span><span class="p">(</span><span class="nv">$post</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">json</span><span class="p">(</span><span class="nv">$post</span><span class="p">,</span> <span class="mi">201</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="probando-manualmente">
+<h2>Probando manualmente<a class="headerlink" href="#probando-manualmente" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Para probar manualmente nuestra <em>API</em>, podemos usar la utilidad <tt class="docutils literal"><span class="pre">curl</span></tt> de la línea de ordenes, la cual nos permite enviar peticiones <em>HTTP</em>.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl http://blog.lo/blog/posts -d <span class="s1">&#39;{&quot;title&quot;:&quot;Hello World!&quot;,&quot;body&quot;:&quot;This is my first post!&quot;}&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span>
+<span class="o">{</span><span class="s2">&quot;id&quot;</span>:<span class="s2">&quot;1&quot;</span>,<span class="s2">&quot;title&quot;</span>:<span class="s2">&quot;Hello World!&quot;</span>,<span class="s2">&quot;body&quot;</span>:<span class="s2">&quot;This is my first post!&quot;</span><span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="translating_validation_messages.html" title="Traduciendo mensajes de validación"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Recetario"
+             >anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

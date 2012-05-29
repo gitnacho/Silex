@@ -16,8 +16,6 @@ namespace Silex;
 
 use Silex\Exception\ControllerFrozenException;
 
-use Symfony\Component\Routing\Route;
-
 /**
  * Una envoltura para un controlador, asignado a una ruta.
  *
@@ -63,6 +61,7 @@ class Controller
      * Establece la ruta del controlador.
      *
      * @param string $routeName
+     *
      * @return Controller $this La instancia de Controller actual
      */
     public function bind($routeName)
@@ -80,12 +79,13 @@ class Controller
      * Establece los requisitos para una ruta variable.
      *
      * @param string $variable El nombre variable
-     * @param string $regexp   La expresión regular por aplicar
+     * @param string $regexp   The regexp to apply
+     *
      * @return Controller $this La instancia del controlador actual
      */
     public function assert($variable, $regexp)
     {
-        $this->route->setRequirement($variable, $regexp);
+        $this->route->assert($variable, $regexp);
 
         return $this;
     }
@@ -94,12 +94,13 @@ class Controller
      * Establece el valor predefinido para una variable de ruta.
      *
      * @param string $variable El nombre variable
-     * @param mixed  $default  El valor predefinido
+     * @param mixed  $default  The default value
+     *
      * @return Controller $this La instancia del controlador actual
      */
     public function value($variable, $default)
     {
-        $this->route->setDefault($variable, $default);
+        $this->route->value($variable, $default);
 
         return $this;
     }
@@ -108,14 +109,13 @@ class Controller
      * Establece un convertidor para una variable de ruta.
      *
      * @param string $variable El nombre variable
-     * @param mixed  $callback Una retrollamada PHP que convierta al valor original
+     * @param mixed  $callback A PHP callback that converts the original value
+     *
      * @return Controller $this La instancia del controlador actual
      */
     public function convert($variable, $callback)
     {
-        $converters = $this->route->getOption('_converters');
-        $converters[$variable] = $callback;
-        $this->route->setOption('_converters', $converters);
+        $this->route->convert($variable, $callback);
 
         return $this;
     }
@@ -123,12 +123,13 @@ class Controller
     /**
      * Establece los requisitos para el método HTTP.
      *
-     * @param string $method El nombre del método HTTP. Puedes suplir múltiples métodos, delimitados por un carácter de tubería '|', p.e. 'GET|POST'.
+     * @param string $method El nombre del método HTTP. Puedes suplir múltiples métodos, delimitados por un carácter de tubería '|', p.e. 'GET|POST'
+     *
      * @return Controller $this La instancia del controlador actual
      */
     public function method($method)
     {
-        $this->route->setRequirement('_method', $method);
+        $this->route->method($method);
 
         return $this;
     }
@@ -140,7 +141,7 @@ class Controller
      */
     public function requireHttp()
     {
-        $this->route->setRequirement('_scheme', 'http');
+        $this->route->requireHttp();
 
         return $this;
     }
@@ -152,7 +153,7 @@ class Controller
      */
     public function requireHttps()
     {
-        $this->route->setRequirement('_scheme', 'https');
+        $this->route->requireHttps();
 
         return $this;
     }
@@ -161,14 +162,13 @@ class Controller
      * Establece una retrollamada para manipular retrollamadas de ruta before.
      * (alias "Lógica intermedia de ruta")
      *
-     * @param mixed  $callback Una retrollamada PHP a lanzar cuando la ruta coincide, justo antes de la retrollamada de la ruta
+     * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
+     *
      * @return Controller $this La instancia del controlador actual
      */
     public function middleware($callback)
     {
-        $middlewareCallbacks = $this->route->getDefault('_middlewares');
-        $middlewareCallbacks[] = $callback;
-        $this->route->setDefault('_middlewares', $middlewareCallbacks);
+        $this->route->middleware($callback);
 
         return $this;
     }
@@ -183,7 +183,7 @@ class Controller
         $this->isFrozen = true;
     }
 
-    public function bindDefaultRouteName($prefix)
+    public function generateRouteName($prefix)
     {
         $requirements = $this->route->getRequirements();
         $method = isset($requirements['_method']) ? $requirements['_method'] : '';
@@ -192,6 +192,6 @@ class Controller
         $routeName = str_replace(array('/', ':', '|', '-'), '_', $routeName);
         $routeName = preg_replace('/[^a-z0-9A-Z_.]+/', '', $routeName);
 
-        $this->routeName = $routeName;
+        return $routeName;
     }
 }

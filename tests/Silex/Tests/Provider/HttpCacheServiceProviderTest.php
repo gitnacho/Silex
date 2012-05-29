@@ -1,0 +1,71 @@
+
+.. code-block:: php
+
+    <?php
+
+/*
+ * Este archivo es parte de la plataforma Silex.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * Este archivo fuente está sujeto a la licencia MIT incluida con
+ * este código fuente en el archivo LICENSE.
+ */
+
+namespace Silex\Tests\Provider;
+
+use Silex\Application;
+use Silex\Provider\HttpCacheServiceProvider;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+/**
+ * HttpCacheProvider test cases.
+ *
+ * @author Igor Wiedler <igor@wiedler.ch>
+ */
+class HttpCacheServiceProviderTest extends \PHPUnit_Framework_TestCase
+{
+    public function testRegister()
+    {
+        $app = new Application();
+
+        $app->register(new HttpCacheServiceProvider(), array(
+            'http_cache.cache_dir' => sys_get_temp_dir().'/silex_http_cache_'.uniqid(),
+        ));
+
+        $this->assertInstanceOf('Silex\HttpCache', $app['http_cache']);
+
+        return $app;
+    }
+
+    /**
+     * @depends testRegister
+     */
+    public function testRunCallsShutdown($app)
+    {
+        $finished = false;
+
+        $app->get('/', function () use ($app, &$finished) {
+            $app->finish(function () use (&$finished) {
+                $finished = true;
+            });
+
+            return new UnsendableResponse('will do something after finish');
+        });
+
+        $request = Request::create('/');
+        $app['http_cache']->run($request);
+
+        $this->assertTrue($finished);
+    }
+}
+
+class UnsendableResponse extends Response
+{
+    public function send()
+    {
+        // do nothing
+    }
+}
