@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="_static/icotnp.ico"/>
     <link rel="top" title="Manual de Silex en Español" href="index.html" />
     <link rel="next" title="Colaborando" href="contributing.html" />
-    <link rel="prev" title="Desactivando la protección CSRF en un formulario utilizando la FormExtension" href="cookbook/form_no_csrf.html" /> 
+    <link rel="prev" title="Cómo usar YAML para configurar la validación" href="cookbook/validator_yaml.html" /> 
   </head>
   <body>
   <div class="imalogo">
@@ -61,7 +61,7 @@
           <a href="contributing.html" title="Colaborando"
              accesskey="N">siguiente</a> |</li>
         <li class="right" >
-          <a href="cookbook/form_no_csrf.html" title="Desactivando la protección CSRF en un formulario utilizando la FormExtension"
+          <a href="cookbook/validator_yaml.html" title="Cómo usar YAML para configurar la validación"
              accesskey="P">anterior</a> |</li>
         <li><a href="index.html">Silex en Español</a> &raquo;</li> 
       </ul>
@@ -81,21 +81,21 @@
 <h2><em>Silex</em><a class="headerlink" href="#silex" title="Enlazar permanentemente con este título">¶</a></h2>
 <div class="section" id="aplicacion">
 <h3>Aplicación<a class="headerlink" href="#aplicacion" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>La aplicación es la interfaz principal de <em>Silex</em>. Implementa la <a class="reference external" href="http://api.symfony.com/2.0/Symfony/Component/HttpKernel/HttpKernelInterface.html">HttpKernelInterface</a> de <em>Symfony2</em>, por lo tanto puedes pasar una <a class="reference external" href="http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Request.html">Petición</a> al método <tt class="docutils literal"><span class="pre">handle</span></tt> y devolverá una <a class="reference external" href="http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Response.html">Respuesta</a>.</p>
-<p>Esta extiende el contenedor de servicios <em>Pimple</em>, lo cual permite flexibilidad tanto en el exterior cómo en el interior. puedes sustituir cualquier servicio, y también serás capaz de leerlo.</p>
+<p>La aplicación es la interfaz principal de <em>Silex</em>. Implementa la <a class="reference external" href="http://api.symfony.com/2.0/Symfony/Component/HttpKernel/HttpKernelInterface.html">HttpKernelInterface</a> de <em>Symfony2</em>, por lo tanto puedes pasar una <a class="reference external" href="http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Request.html">Petición</a> al método <tt class="docutils literal"><span class="pre">handle</span></tt> que devolverá una <a class="reference external" href="http://api.symfony.com/2.0/Symfony/Component/HttpFoundation/Response.html">Respuesta</a>.</p>
+<p>Esta extiende el contenedor de servicios <tt class="docutils literal"><span class="pre">Pimple</span></tt>, el cual permite flexibilidad tanto en el exterior cómo en el interior. Puedes sustituir cualquier servicio, y también serás capaz de leerlo.</p>
 <p>La aplicación usa exhaustivamente el <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/EventDispatcher/EventDispatcher.html">EventDispatcher</a> para engancharse a los eventos <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html">HttpKernel</a> de <em>Symfony2</em>. Esto te permite recuperar la <tt class="docutils literal"><span class="pre">Petición</span></tt>, convertir las cadenas de respuesta en objetos <tt class="docutils literal"><span class="pre">Respuesta</span></tt> y manipular excepciones. También lo usamos para despachar algunos eventos personalizados como los filtros <tt class="docutils literal"><span class="pre">before/after</span></tt> y errores.</p>
 </div>
 <div class="section" id="controlador">
 <h3>Controlador<a class="headerlink" href="#controlador" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>El <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Routing/Route.html">Enrutador</a> de <em>Symfony2</em> en realidad es bastante potente. Puedes nombrar rutas, lo cual te permite generar <em>URL</em>. También puedes tener requisitos para las partes variables. A fin de permitirte una interfaz agradable a través de estos ajustes en el método <tt class="docutils literal"><span class="pre">match</span></tt> (que es utilizado por <tt class="docutils literal"><span class="pre">get</span></tt>, <tt class="docutils literal"><span class="pre">post</span></tt>, etc.) devolviendo una instancia del <tt class="docutils literal"><span class="pre">Controller</span></tt>, que envuelve una ruta.</p>
+<p>El <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Routing/Route.html">Enrutador</a> de <em>Symfony2</em> en realidad es bastante potente. Puedes nombrar rutas, lo cual te permite generar <em>URL</em>.
+También puedes tener requisitos para las partes variables. A fin de permitirte una interfaz agradable a través de estos ajustes en el método <tt class="docutils literal"><span class="pre">match</span></tt> (que es utilizado por <tt class="docutils literal"><span class="pre">get</span></tt>, <tt class="docutils literal"><span class="pre">post</span></tt>, etc.) devolviendo una instancia del <tt class="docutils literal"><span class="pre">Controller</span></tt>, que envuelve una ruta.</p>
 </div>
 <div class="section" id="controllercollection">
 <h3><tt class="docutils literal"><span class="pre">ControllerCollection</span></tt><a class="headerlink" href="#controllercollection" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Uno de los objetivos de exponer el <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html">RouteCollection</a> era hacerlo mutable, para que los proveedores le puedan agregar cosas.
-Aquí, el reto es el hecho de que las rutas no saben nada acerca de su nombre. El nombre sólo tiene sentido en el contexto de la <tt class="docutils literal"><span class="pre">RouteCollection</span></tt> y no se puede cambiar.</p>
-<p>Para resolver este desafío, se nos ocurrió tener una área de estacionamiento para las rutas. La <tt class="docutils literal"><span class="pre">ControllerCollection</span></tt> tiene los controladores hasta que se llama a <tt class="docutils literal"><span class="pre">flush</span></tt>, momento en el cual las rutas se añaden a la <tt class="docutils literal"><span class="pre">RouteCollection</span></tt>. Además, los controladores se congelan. Esto significa que ya no se pueden modificar y se produce una excepción si se intenta hacerlo.</p>
-<p>Desafortunadamente no se ha podido encontrar una buena manera para lavar implícitamente, por lo que el lavado ahora siempre es explícito. La aplicación se debe vaciar, pero si quieres leer la <tt class="docutils literal"><span class="pre">ControllerCollection</span></tt> antes de que se lleve a cabo la petición, tendrás que llamar a <tt class="docutils literal"><span class="pre">flush</span></tt> tú mismo.</p>
-<p>La <tt class="docutils literal"><span class="pre">Appication</span></tt> proporciona un atajo al método <tt class="docutils literal"><span class="pre">flush</span></tt> para el lavado del <tt class="docutils literal"><span class="pre">ControllerCollection</span></tt>.</p>
+<p>Uno de los objetivos de exponer el <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html">RouteCollection</a> era hacerlo mutable, para que los proveedores le puedan agregar cosas. Aquí, el reto es el hecho de que las rutas no saben nada sobre su nombre. El nombre sólo tiene sentido en el contexto de la <tt class="docutils literal"><span class="pre">RouteCollection</span></tt> y no se puede cambiar.</p>
+<p>Para resolver este desafío, se nos ocurrió tener una área de estacionamiento para las rutas. La <tt class="docutils literal"><span class="pre">ControllerCollection</span></tt> contiene los controladores hasta que se llama a <tt class="docutils literal"><span class="pre">flush</span></tt>, momento en el cual las rutas se añaden a la <tt class="docutils literal"><span class="pre">RouteCollection</span></tt>. Además, los controladores se congelan. Esto significa que ya no se pueden modificar y producirá una excepción si intentas hacerlo.</p>
+<p>Desafortunadamente no se ha podido encontrar una buena manera para vaciarla implícitamente, por lo que el vaciado ahora siempre es explícito. La aplicación se debe vaciar, pero si quieres leer la <tt class="docutils literal"><span class="pre">ControllerCollection</span></tt> antes de que se lleve a cabo la petición, tendrás que llamar a <tt class="docutils literal"><span class="pre">flush</span></tt> tú mismo.</p>
+<p>La <tt class="docutils literal"><span class="pre">Appication</span></tt> proporciona un atajo al método <tt class="docutils literal"><span class="pre">flush</span></tt> para vaciar la <tt class="docutils literal"><span class="pre">ControllerCollection</span></tt>.</p>
 </div>
 </div>
 <div class="section" id="symfony2">
@@ -132,7 +132,7 @@ Aquí, el reto es el hecho de que las rutas no saben nada acerca de su nombre. E
           <a href="contributing.html" title="Colaborando"
              >siguiente</a> |</li>
         <li class="right" >
-          <a href="cookbook/form_no_csrf.html" title="Desactivando la protección CSRF en un formulario utilizando la FormExtension"
+          <a href="cookbook/validator_yaml.html" title="Cómo usar YAML para configurar la validación"
              >anterior</a> |</li>
         <li><a href="index.html">Silex en Español</a> &raquo;</li> 
       </ul>

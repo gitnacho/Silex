@@ -29,10 +29,6 @@ Parámetros
 
   Estas y otras opciones se describen en detalle en la documentación de `configurando el DBAL de Doctrine <http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html>`_.
 
-* **db.dbal.class_path** (opcional): Ruta a dónde se encuentra el ``DBAL`` de *Doctrine*.
-
-* **db.common.class_path** (opcional): Ruta a dónde se encuentra *Doctrine Common*.
-
 Servicios
 ---------
 
@@ -45,16 +41,24 @@ Servicios
 Registrando
 -----------
 
-Asegúrate de colocar una copia del ``DBAL`` de *Doctrine* en ``vendor/doctrine-dbal`` y *Doctrine Common* en ``vendor/doctrine-common``::
+.. code-block:: php
 
     $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'db.options'            => array(
             'driver'    => 'pdo_sqlite',
             'path'      => __DIR__.'/app.db',
         ),
-        'db.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
-        'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
+
+.. note::
+
+    *Doctrine* no viene en los archivos ``silex``, por lo tanto necesitas añadir la dependencia de *Doctrine DBAL* a tu archivo ``composer.json``:
+
+    .. code-block:: json
+
+        "require": {
+            "doctrine/dbal": "2.2.*",
+         }
 
 Uso
 ---
@@ -92,8 +96,6 @@ El proveedor *Doctrine* te permite acceder a múltiples bases de datos. Para con
                 'password'  => 'my_password',
             ),
         ),
-        'db.dbal.class_path'    => __DIR__.'/vendor/doctrine-dbal/lib',
-        'db.common.class_path'  => __DIR__.'/vendor/doctrine-common/lib',
     ));
 
 La primer conexión registrada es la predeterminada y puedes acceder a ella como lo harías si hubiera una sola conexión. Teniendo en cuenta la configuración anterior, estas dos líneas son equivalentes::

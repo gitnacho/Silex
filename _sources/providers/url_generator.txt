@@ -11,13 +11,12 @@ Ninguno.
 Servicios
 ---------
 
-* **url_generator**: Una instancia del `UrlGenerator <http://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html>`_, usando la `RouteCollection <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_ proporcionada a través del servicio ``routes``.
-  Tiene un método ``generate``, el cual toma el nombre de la ruta como argumento, seguido por un arreglo de parámetros de la ruta.
+* **url_generator**: Una instancia del `UrlGenerator <http://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html>`_, usando la `RouteCollection <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_ proporcionada a través del servicio ``routes``. Tiene un método ``generate``, que toma el nombre de la ruta como argumento, seguido por un arreglo de parámetros de la ruta.
 
 Registrando
 -----------
 
-::
+.. code-block:: php
 
     $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
@@ -41,3 +40,19 @@ El proveedor ``UrlGenerator`` ofrece un servicio ``url_generator``::
                ' | '.
                '<a href="'.$app['url_generator']->generate('hello', array('name' => 'Igor')).'">Hello Igor</a>';
     });
+
+Cuando usas *Twig*, Puedes usar el servicio así:
+
+.. code-block:: jinja
+
+    {{ app.url_generator.generate('homepage') }}
+
+Por otra parte, si registras el ``SymfonyBridgesServiceProvider``, entonces tienes acceso a las funciones ``path()`` y ``url()``:
+
+.. code-block:: jinja
+
+    {{ path('homepage') }}
+    {{ url('homepage') }} {# genera la url absoluta http://ejemplo.org/ #}
+
+Puedes encontrar más información sobre este tema en la documentación de :doc:`puentes Symfony
+<symfony_bridges>`.

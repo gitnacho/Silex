@@ -3,14 +3,12 @@
 
 El proveedor ``MonologServiceProvider`` proporciona un mecanismo de registro predeterminado a través de la biblioteca `Monolog <https://github.com/Seldaek/monolog>`_ de Jordi Boggiano's.
 
-Esta registrará las peticiones y errores y te permite añadir a tu aplicación el registro de depuración, para que no tengas que usar ``var_dump`` mucho más. Puedes utilizar la versión madura llamada ``tail-f``.
+Esta registrará las peticiones y errores y te permite añadir a tu aplicación el registro de depuración, para que ya no tengas que usar ``var_dump``. Puedes utilizar la versión madura llamada ``tail-f``.
 
 Parámetros
 ----------
 
 * **monolog.logfile**: Archivo donde escribir los registros.
-
-* **monolog.class_path** (opcional): Ruta a la biblioteca donde se encuentra *Monolog*.
 
 * **monolog.level** (opcional): El nivel de registro por omisión es ``DEBUG``. Debe ser uno de ``Logger::DEBUG``, ``Logger::INFO``,
   ``Logger::WARNING``, ``Logger::ERROR``. ``DEBUG`` registra todo, ``INFO`` registrará todo excepto ``DEBUG``, etc.
@@ -20,34 +18,37 @@ Parámetros
 Servicios
 ---------
 
-* **monolog**: La instancia del notario de *Monolog*.
+* **monolog**: La instancia del registro cronológico de *Monolog*.
 
   Ejemplo de uso::
 
-    $app['monolog']->addDebug('Probando el notario de Monolog.');
+    $app['monolog']->addDebug('Probando el registro cronológico de eventos de Monolog.');
 
-* **monolog.configure**: Cierre protegido que toma al notario como argumento. Lo puedes modificar si no deseas el comportamiento por omisión.
+* **monolog.configure**: Cierre protegido que toma al registro cronológico como argumento. Lo puedes modificar si no deseas el comportamiento predefinido.
 
 Registrando
 -----------
 
-Asegúrate de colocar una copia de *Monolog* en el directorio ``vendor/monolog``::
+.. code-block:: php
 
     $app->register(new Silex\Provider\MonologServiceProvider(), array(
-        'monolog.logfile'       => __DIR__.'/development.log',
-        'monolog.class_path'    => __DIR__.'/vendor/monolog/src',
+        'monolog.logfile' => __DIR__.'/development.log',
     ));
 
 .. note::
 
-    *Monolog* no está compilado en el archivo ``silex.phar``. Tienes que añadir tu propia copia de *Monolog* a tu aplicación.
+    *Monolog* no viene en los archivos ``silex``, por lo tanto necesitas añadirlo como dependencia en tu archivo ``composer.json``:
+
+    .. code-block:: json
+
+        "require": {
+            "monolog/monolog": ">=1.0.0",
+        }
 
 Uso
 ---
 
-El proveedor ``MonologServiceProvider`` ofrece un servicio ``monolog``. Lo puedes utilizar para agregar entradas al registro para cualquier nivel de registro a través de ``addDebug()``, ``addInfo()``, ``addWarning()`` y ``addError()``.
-
-::
+El proveedor ``MonologServiceProvider`` ofrece un servicio ``monolog``. Lo puedes utilizar para agregar entradas al registro para cualquier nivel de registro cronológico a través de ``addDebug()``, ``addInfo()``, ``addWarning()`` y ``addError()``::
 
     use Symfony\Component\HttpFoundation\Response;
 

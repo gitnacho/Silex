@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Traduciendo mensajes de validación &mdash; Manual de Silex en Español</title>
+    <title>Cómo usar YAML para configurar la validación &mdash; Manual de Silex en Español</title>
     
     <link rel="stylesheet" href="../_static/tnp.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -27,8 +27,8 @@
     <link rel="shortcut icon" href="../_static/icotnp.ico"/>
     <link rel="top" title="Manual de Silex en Español" href="../index.html" />
     <link rel="up" title="Recetario" href="index.html" />
-    <link rel="next" title="Cómo utilizar PdoSessionStorage para almacenar sesiones en la base de datos" href="session_storage.html" />
-    <link rel="prev" title="Aceptando el cuerpo de una petición JSON" href="json_request_body.html" /> 
+    <link rel="next" title="Funcionamiento interno" href="../internals.html" />
+    <link rel="prev" title="Desactivando la protección CSRF en un formulario utilizando la FormExtension" href="form_no_csrf.html" /> 
   </head>
   <body>
   <div class="imalogo">
@@ -59,10 +59,10 @@
           <a href="../genindex.html" title="Índice General"
              accesskey="I">índice</a></li>
         <li class="right" >
-          <a href="session_storage.html" title="Cómo utilizar PdoSessionStorage para almacenar sesiones en la base de datos"
+          <a href="../internals.html" title="Funcionamiento interno"
              accesskey="N">siguiente</a> |</li>
         <li class="right" >
-          <a href="json_request_body.html" title="Aceptando el cuerpo de una petición JSON"
+          <a href="form_no_csrf.html" title="Desactivando la protección CSRF en un formulario utilizando la FormExtension"
              accesskey="P">anterior</a> |</li>
         <li><a href="../index.html">Silex en Español</a> &raquo;</li>
           <li><a href="index.html" accesskey="U">Recetario</a> &raquo;</li> 
@@ -76,22 +76,33 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="traduciendo-mensajes-de-validacion">
-<h1>Traduciendo mensajes de validación<a class="headerlink" href="#traduciendo-mensajes-de-validacion" title="Enlazar permanentemente con este título">¶</a></h1>
-<p>Cuando trabajas con la validador de <em>Symfony2</em>, debería ser una tarea común mostrar mensajes de validación traducidos.</p>
-<p>Para ello, tendrás que registrar el traductor y apuntar a los recursos traducidos:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\TranslationServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">&#39;locale&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;sr_Latn&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;translator.domains&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
-<span class="p">));</span>
+  <div class="section" id="como-usar-yaml-para-configurar-la-validacion">
+<h1>Cómo usar <em>YAML</em> para configurar la validación<a class="headerlink" href="#como-usar-yaml-para-configurar-la-validacion" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>La simplicidad es el corazón de <em>Silex</em> por lo tanto la solución no está fuera de la caja para usar archivos <em>YAML</em> en la validación. Pero esto no significa que eso no sea posible. Vamos a ver cómo hacerlo.</p>
+<p>Primero, necesitas instalar el componente <em>YAML</em>. Declarándolo como una dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<div class="highlight-json"><pre>"require": {
+    "symfony/yaml": "2.1.*"
+}</pre>
+</div>
+<p>Después, necesitas decirle al Servicio de validación que no estás usando <tt class="docutils literal"><span class="pre">StaticMethodLoader</span></tt> para cargar los metadatos de tu clase, sino un archivo <em>YAML</em>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">ValidatorServiceProvider</span><span class="p">());</span>
 
-<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;translator&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">addLoader</span><span class="p">(</span><span class="s1">&#39;xlf&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Symfony\Component\Translation\Loader\XliffFileLoader</span><span class="p">());</span>
-    <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;translator&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">addResource</span><span class="p">(</span><span class="s1">&#39;xlf&#39;</span><span class="p">,</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/vendor/symfony/src/Symfony/Bundle/FrameworkBundle/Resources/translations/validators.sr_Latn.xlf&#39;</span><span class="p">,</span> <span class="s1">&#39;sr_Latn&#39;</span><span class="p">,</span> <span class="s1">&#39;validators&#39;</span><span class="p">);</span>
-<span class="p">});</span>
+<span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;validator.mapping.class_metadata_factory&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Symfony\Component\Validator\Mapping\ClassMetadataFactory</span><span class="p">(</span>
+    <span class="k">new</span> <span class="nx">Symfony\Component\Validator\Mapping\Loader\YamlFileLoader</span><span class="p">(</span><span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/validation.yml&#39;</span><span class="p">)</span>
+<span class="p">);</span>
 </pre></div>
 </div>
-<p>Y eso es todo lo que necesitas para cargar las traducciones desde archivos <tt class="docutils literal"><span class="pre">xlf</span></tt> a <em>Symfony2</em></p>
+<p>Ahora, podemos sustituir el uso del método estático y mover todas las reglas de validación a <tt class="docutils literal"><span class="pre">validation.yml</span></tt>:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># validation.yml</span>
+<span class="l-Scalar-Plain">Post</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">properties</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">NotNull</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">~</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">NotBlank</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">~</span>
+    <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">Min</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">100</span>
+</pre></div>
+</div>
 </div>
 
 
@@ -111,10 +122,10 @@
           <a href="../genindex.html" title="Índice General"
              >índice</a></li>
         <li class="right" >
-          <a href="session_storage.html" title="Cómo utilizar PdoSessionStorage para almacenar sesiones en la base de datos"
+          <a href="../internals.html" title="Funcionamiento interno"
              >siguiente</a> |</li>
         <li class="right" >
-          <a href="json_request_body.html" title="Aceptando el cuerpo de una petición JSON"
+          <a href="form_no_csrf.html" title="Desactivando la protección CSRF en un formulario utilizando la FormExtension"
              >anterior</a> |</li>
         <li><a href="../index.html">Silex en Español</a> &raquo;</li>
           <li><a href="index.html" >Recetario</a> &raquo;</li> 

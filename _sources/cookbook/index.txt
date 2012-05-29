@@ -11,6 +11,7 @@ La sección del recetario contiene instructivos para resolver problemas específ
     translating_validation_messages
     session_storage
     form_no_csrf
+    validator_yaml
 
 Recetas
 -------
@@ -21,4 +22,6 @@ Recetas
 
 * :doc:`Cómo usar PdoSessionStorage para almacenar sesiones en la base de datos <session_storage>`.
 
-* :doc:`Cómo desactivar la protección CSRF en un formulario utilizando la FormExtension <form_no_csrf>`.
+* :doc:`Cómo desactivar la protección CSRF en un formulario utilizando FormExtension <form_no_csrf>`.
+
+* :doc:`Cómo usar YAML para configurar la validación <validator_yaml>`.

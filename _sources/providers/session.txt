@@ -20,21 +20,21 @@ Parámetros
   * **secure**: ``cookie`` segura (*HTTPS*)
   * **httponly**: Cuando la ``cookie`` únicamente es *http*
 
-  Sin embargo, todas estas son opcionales. Las sesiones duran por siempre, mientras el navegador permanezca abierto. Para evitar esto, establece la opción ``lifetime``.
+  Sin embargo, todas estas son opcionales. Las sesiones duran tanto como el navegador permanezca abierto. Para evitar esto, establece la opción ``lifetime``.
 
 Servicios
 ---------
 
 * **session**: Una instancia de la `Session <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html>`_ de *Symfony2*.
 
-* **session.storage**: Un servicio que se utiliza para persistir los datos de sesión. El predefinido es ``NativeSessionStorage``
-  
+* **session.storage**: Un servicio utilizado para persistir los datos de sesión. El predefinido es ``NativeSessionStorage``
+
 * **session.storage.handler**: Un servicio que utiliza ``session.storage`` para acceder a los datos. El controlador de almacenamiento predefinido es ``NativeFileSessionHandler``.
 
 Registrando
 -----------
 
-::
+.. code-block:: php
 
     $app->register(new Silex\Provider\SessionServiceProvider());
 

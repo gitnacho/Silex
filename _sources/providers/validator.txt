@@ -6,7 +6,7 @@ El ``ValidatorServiceProvider`` ofrece un servicio de validación de datos. Es m
 Parámetros
 ----------
 
-* **validator.class_path** (opcional): Ruta a donde se encuentra el componente ``Validator`` de *Symfony2*.
+ninguno
 
 Servicios
 ---------
@@ -22,11 +22,19 @@ Servicios
 Registrando
 -----------
 
-Asegúrate de colocar una copia del componente ``Validator`` de *Symfony2* en ``vendor/symfony/src``. Puedes simplemente clonar todo *Symfony2* en ``vendor``::
+.. code-block:: php
 
-    $app->register(new Silex\Provider\ValidatorServiceProvider(), array(
-        'validator.class_path'    => __DIR__.'/vendor/symfony/src',
-    ));
+    $app->register(new Silex\Provider\ValidatorServiceProvider());
+
+.. note::
+
+    El componente *Validator* de *Symfony* no viene en los archivos ``silex``, por lo tanto necesitas añadirlo como dependencia en tu archivo :file:`composer.json`:
+
+    .. code-block:: json
+
+        "require": {
+            "symfony/validator": "2.1.*"
+        }
 
 Uso
 ---
@@ -79,4 +87,17 @@ Si deseas añadir validaciones a una clase, puedes implementar un método estát
 
 Tendrás que manipular la presentación de estas violaciones tú mismo. No obstante, puedes utilizar el ``FormServiceProvider`` el cual puede usar el ``ValidatorServiceProvider``.
 
-Para más información, consulta la documentación de `validación de Symfony2 <http://symfony.com/doc/2.0/book/validation.html>`_.
+Traducción
+~~~~~~~~~~
+
+Para poder traducir los mensajes de error, puedes usar el proveedor de traducción y registrar los mensajes bajo el dominio ``validators``::
+
+    $app['translator.domains'] = array(
+        'validators' => array(
+            'fr' => array(
+                'This value should be a valid number.' => 'Cette valeur doit être un nombre.',
+            ),
+        ),
+    );
+
+Para más información, consulta la documentación de `validación de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/validation.html>`_.

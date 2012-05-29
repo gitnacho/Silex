@@ -6,13 +6,11 @@ El ``TranslationServiceProvider`` provee un servicio para traducir tu aplicació
 Parámetros
 ----------
 
-* **translator.messages**: Una asignación de regiones para los arreglos de mensajes. Este parámetro contiene los datos de traducción en todos los idiomas.
+* **translator.domains**: Una asignación de dominios/regiones/mensajes. Este parámetro contiene los datos traducidos de todos los dominios e idiomas.
 
 * **locale** (opcional): La región para el traductor. Lo más probable es que desees establecer este basándote en algún parámetro de la petición. Predeterminada a ``en``.
 
 * **locale_fallback** (opcional): La región de reserva para el traductor. Esta se utiliza cuando la configuración regional actual no tiene ningún conjunto de mensajes.
-
-* **translation.class_path** (opcional): Ruta a donde se encuentra el componente ``Translation`` de *Symfony2*.
 
 Servicios
 ---------
@@ -27,30 +25,46 @@ Servicios
 Registrando
 -----------
 
-Asegúrate de colocar una copia del componente de traducción de *Symfony2* en ``vendor/symfony/src``. Puedes simplemente clonar todo *Symfony2* en ``vendor``::
+.. code-block:: php
 
     $app->register(new Silex\Provider\TranslationServiceProvider(), array(
-        'locale_fallback'           => 'en',
-        'translation.class_path'    => __DIR__.'/vendor/symfony/src',
+        'locale_fallback' => 'en',
     ));
+
+.. note::
+
+    El componente *Translation* de *Symfony* no viene en los archivos ``silex``, por lo tanto necesitas añadirlo como dependencia en tu archivo ``composer.json``:
+
+    .. code-block:: json
+
+        "require": {
+            "symfony/translation": "2.1.*"
+        }
 
 Uso
 ---
 
-El proveedor ``Translation`` ofrece un servicio ``traductor`` y usa el parámetro ``translator.messages``::
+El proveedor ``Translation`` ofrece un servicio ``traductor`` y usa el parámetro ``translator.domains``::
 
-    $app['translator.messages'] = array(
-        'en' => array(
-            'hello'     => 'Hello %name%',
-            'goodbye'   => 'Goodbye %name%',
+    $app['translator.domains'] = array(
+        'messages' => array(
+            'en' => array(
+                'hello'     => 'Hello %name%',
+                'goodbye'   => 'Goodbye %name%',
+            ),
+            'de' => array(
+                'hello'     => 'Hallo %name%',
+                'goodbye'   => 'Tschüss %name%',
+            ),
+            'fr' => array(
+                'hello'     => 'Bonjour %name%',
+                'goodbye'   => 'Au revoir %name%',
+            ),
         ),
-        'de' => array(
-            'hello'     => 'Hallo %name%',
-            'goodbye'   => 'Tschüss %name%',
-        ),
-        'fr' => array(
-            'hello'     => 'Bonjour %name%',
-            'goodbye'   => 'Au revoir %name%',
+        'validators' => array(
+            'fr' => array(
+                'This value should be a valid number.' => 'Cette valeur doit être un nombre.',
+            ),
         ),
     );
 
@@ -82,9 +96,14 @@ Archivos de idioma basados en *YAML*
 
 Tener tu traducción en archivos *PHP* puede ser un inconveniente. Esta receta te muestra cómo cargar traducciones de archivos *YAML* externos.
 
-En primer lugar necesitas los componentes ``Config`` y ``Yaml`` de *Symfony2*. Además, asegúrate de registrarlos en el cargador automático. Puedes clonar el repositorio de *Symfony2* completo en ``vendor/symfony``::
+En primer lugar, añade los componentes ``Config`` y ``Yaml`` a tu archivo composer.
 
-    $app['autoloader']->registerNamespace('Symfony', __DIR__.'/vendor/symfony/src');
+.. code-block:: json
+
+    "require": {
+        "symfony/config": "2.1.*",
+        "symfony/yaml": "2.1.*",
+    }
 
 A continuación, debes crear las asignaciones de idioma en los archivos *YAML*. Un nombre que puedes utilizar es ``locales/en.yml``. Sólo haz la asignación en este archivo de la siguiente manera:
 
@@ -93,20 +112,19 @@ A continuación, debes crear las asignaciones de idioma en los archivos *YAML*. 
     hello: Hello %name%
     goodbye: Goodbye %name%
 
-Repite esto para todos tus idiomas. A continuación, configura el ``translator.messages`` para asignar archivos a los idiomas:
+Repite esto para todos tus idiomas. A continuación, configura el ``translator.domains`` para asignar idiomas a los archivos::
 
-.. code-block:: php
-
-    $app['translator.messages'] = array(
-        'en' => __DIR__.'/locales/en.yml',
-        'de' => __DIR__.'/locales/de.yml',
-        'fr' => __DIR__.'/locales/fr.yml',
+    $app['translator.domains'] = array(
+        'messages' => array(
+            'en' => __DIR__.'/locales/en.yml',
+            'de' => __DIR__.'/locales/de.yml',
+            'fr' => __DIR__.'/locales/fr.yml',
+        ),
     );
 
 Finalmente sobrescribe el ``translator.loader`` para utilizar ``YamlFileLoader`` en lugar del ``ArrayLoader`` predeterminado:
 
 .. code-block:: php
-
 
     use Symfony\Component\Translation\Loader\YamlFileLoader;
 
@@ -116,12 +134,12 @@ Finalmente sobrescribe el ``translator.loader`` para utilizar ``YamlFileLoader``
 
 Y eso es todo lo que necesitas para cargar traducciones desde archivos *YAML*.
 
-Archivos de idioma basados en *YAML*
+Archivos de idioma basados en *XLIFF*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Al igual que lo harías con los archivos de traducción *YAML*, primero tienes que asegurarte de que tienes el componente ``Config`` de *Symfony2*, y haberlo registrado en el cargador automático. Ve arriba para más detalles.
+Al igual que lo harías con los archivos de traducción *YAML*, primero te tienes que asegurar de que tienes como dependencia el componente ``Config`` de *Symfony2* (ve los detalles arriba).
 
-Luego, del mismo modo, crea los archivos *XLIFF* en tu directorio de regiones y configurar la opción ``translator.messages`` para asignarlos.
+Luego, del mismo modo, crea los archivos *XLIFF* en tu directorio de regiones y configura la opción ``translator.domains`` para asignarlos.
 
 Finalmente redefine el ``translator.loader`` para utilizar un ``XliffFileLoader``::
 

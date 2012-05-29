@@ -29,11 +29,7 @@ Convenciones
 
 Necesitas tener cuidado con el orden en que haces ciertas cosas cuando interactúas con proveedores. Sólo sigue estas reglas:
 
-* Rutas de clase (para el cargador automático) las debes definir **antes** de registrar al proveedor. Pasar esta como segundo argumento a ``Application::register`` también califica, ya que ​​en primer lugar establece los parámetros pasados.
-
-  *Razón: El proveedor configurará el cargador automático al momento de registrar al proveedor. Si no estableces la ruta de la clase en ese punto, no puedes registrar un cargador automático.*
-
-* La redefinición de servicios existentes debe ocurrir **después** de haber registrado al proveedor.
+* La redefinición de servicios existentes debe ocurrir **después** de haber registrado el proveedor.
 
   *Razón: Si los servicios ya existen, el proveedor los sobrescribirá.*
 
@@ -44,8 +40,7 @@ Asegúrate de que te adhieres a este comportamiento al crear tus propios proveed
 Proveedores integrados
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Hay algunos proveedores que obtienes fuera de la caja.
-Todos estos están dentro del espacio de nombres ``Silex\Provider``.
+Hay algunos proveedores que obtienes fuera de la caja. Todos ellos están dentro del espacio de nombres ``Silex\Provider``.
 
 * :doc:`DoctrineServiceProvider <providers/doctrine>`
 * :doc:`MonologServiceProvider <providers/monolog>`
@@ -75,7 +70,7 @@ Los proveedores deben implementar el ``Silex\ServiceProviderInterface``::
         function register(Application $app);
     }
 
-Esto es muy sencillo, basta con crear una nueva clase que implemente el método ``register``.  En este método debes definir los servicios de la aplicación que pueden usar otros servicios y parámetros.
+Esto es muy sencillo, basta con crear una nueva clase que implemente el método ``register``. En este método tienes que definir los servicios de la aplicación que pueden usar otros servicios y parámetros.
 
 He aquí un ejemplo de tal proveedor::
 
@@ -115,45 +110,7 @@ Ahora puedes utilizar este proveedor de la siguiente manera:
         return $app['hello']($name);
     });
 
-En este ejemplo estamos obteniendo el parámetro ``name`` de la cadena de consulta, por lo que la ruta de la petición tendría que ser ``/hello?name=Fabien``.
-
-Cargando clases
-~~~~~~~~~~~~~~~
-
-Los proveedores son ideales para atarlos en bibliotecas externas como puedes ver mirando a ``MonologServiceProvider`` y ``TwigServiceProvider``. Si la biblioteca es decente y sigue el `Estándar de nomenclatura PSR-0 <http://groups.google.com/group/php-standards/web/psr-0-final-proposal>`_ o la convención de nomenclatura *PEAR*, es posible cargar automáticamente las clases con el ``UniversalClassLoader``.
-
-Como se describe en el capítulo *Servicios*, hay un *cargador automático* de servicios que puedes utilizar para esto.
-
-He aquí un ejemplo de cómo usarlo (en base a `Buzz <https://github.com/kriswallsmith/Buzz>`_)::
-
-    namespace Acme;
-
-    use Silex\Application;
-    use Silex\ServiceProviderInterface;
-
-    class BuzzServiceProvider implements ServiceProviderInterface
-    {
-        public function register(Application $app)
-        {
-            $app['buzz'] = $app->share(function () { ... });
-
-            if (isset($app['buzz.class_path'])) {
-                $app['autoloader']->registerNamespace('Buzz', $app['buzz.class_path']);
-            }
-        }
-    }
-
-Esto te permite proporcionar sólo la ruta de clases como una opción al registrar el proveedor:
-
-.. code-block:: php
-
-    $app->register(new BuzzServiceProvider(), array(
-        'buzz.class_path' => __DIR__.'/vendor/buzz/lib',
-    ));
-
-.. note::
-
-    Para las bibliotecas que no usan el espacio de nombres de *PHP* 5.3 pueden utilizar ``RegisterPrefix`` en lugar de ``registerNamespace``, el cual utilizará un guión como delimitador de directorio.
+En este ejemplo estamos obteniendo el parámetro ``name`` desde la cadena de consulta, por lo que la ruta de la petición tendría que ser ``/hello?name=Fabien``.
 
 Proveedores de controladores
 ----------------------------

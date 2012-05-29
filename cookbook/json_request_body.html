@@ -85,25 +85,25 @@
 <p>En este ejemplo vamos a diseñar una <em>API</em> para crear un <em>blog</em>. La siguiente es una especificación de cómo queremos que funcione.</p>
 <div class="section" id="peticion">
 <h3><tt class="docutils literal"><span class="pre">Petición</span></tt><a class="headerlink" href="#peticion" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>En la petición, enviamos los datos para la entrada en el <em>blog</em> como un objeto <em>JSON</em>. También indicamos que utilizamos la cabecera <tt class="docutils literal"><span class="pre">Content-Type</span></tt>.</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nx">POST</span> <span class="o">/</span><span class="nx">blog</span><span class="o">/</span><span class="nx">posts</span>
-<span class="nx">Accept</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
-<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
-<span class="nx">Content</span><span class="o">-</span><span class="nx">Length</span><span class="o">:</span> <span class="mi">57</span>
+<p>En la petición, enviamos los datos para la entrada en el <em>blog</em> como un objeto <em>JSON</em>. También indicamos que usamos la cabecera <tt class="docutils literal"><span class="pre">Content-Type</span></tt>:</p>
+<div class="highlight-text"><div class="highlight"><pre>POST /blog/posts
+Accept: application/json
+Content-Type: application/json
+Content-Length: 57
 
-<span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="o">:</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span><span class="s2">&quot;body&quot;</span><span class="o">:</span><span class="s2">&quot;This is my first post!&quot;</span><span class="p">}</span>
+{&quot;title&quot;:&quot;Hello World!&quot;,&quot;body&quot;:&quot;This is my first post!&quot;}
 </pre></div>
 </div>
 </div>
 <div class="section" id="respuesta">
 <h3><tt class="docutils literal"><span class="pre">Respuesta</span></tt><a class="headerlink" href="#respuesta" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>El servidor responde con un código de estado 201, el cual nos dice que la entrada fue creada satisfactoriamente. Nos dice que el <tt class="docutils literal"><span class="pre">Content-Type</span></tt> de la respuesta, también es <em>JSON</em>.</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nx">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">201</span> <span class="nx">Created</span>
-<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">json</span>
-<span class="nx">Content</span><span class="o">-</span><span class="nx">Length</span><span class="o">:</span> <span class="mi">65</span>
-<span class="nx">Connection</span><span class="o">:</span> <span class="nx">clocase</span>
+<p>El servidor responde con un código de estado 201, el cual nos dice que la entrada fue creada satisfactoriamente. Diciéndonos que el <tt class="docutils literal"><span class="pre">Content-Type</span></tt> de la respuesta, también es <em>JSON</em>:</p>
+<div class="highlight-text"><div class="highlight"><pre>HTTP/1.1 201 Created
+Content-Type: application/json
+Content-Length: 65
+Connection: clocase
 
-<span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="s2">&quot;title&quot;</span><span class="o">:</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span><span class="s2">&quot;body&quot;</span><span class="o">:</span><span class="s2">&quot;This is mí first post!&quot;</span><span class="p">}</span>
+{&quot;id&quot;:&quot;1&quot;,&quot;title&quot;:&quot;Hello World!&quot;,&quot;body&quot;:&quot;This is mí first post!&quot;}
 </pre></div>
 </div>
 </div>
@@ -111,7 +111,7 @@
 <div class="section" id="analizando-el-cuerpo-de-la-peticion">
 <h2>Analizando el cuerpo de la petición<a class="headerlink" href="#analizando-el-cuerpo-de-la-peticion" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>El cuerpo de la petición sólo se debe analizar como <em>JSON</em> si la cabecera <tt class="docutils literal"><span class="pre">Content-Type</span></tt> comienza con <tt class="docutils literal"><span class="pre">application/json</span></tt>. Como queremos hacer esto para cada petición, la solución más fácil es usar un filtro <tt class="docutils literal"><span class="pre">before</span></tt>.</p>
-<p>Simplemente usamos <tt class="docutils literal"><span class="pre">json_decode</span></tt> para analizar el contenido de la petición y luego sustituimos los datos de la petición en el objeto <tt class="docutils literal"><span class="pre">$request</span></tt>.</p>
+<p>Simplemente usamos <tt class="docutils literal"><span class="pre">json_decode</span></tt> para analizar el contenido de la petición y luego sustituimos los datos de la petición en el objeto <tt class="docutils literal"><span class="pre">$request</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
 <span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\ParameterBag</span><span class="p">;</span>
 
@@ -126,7 +126,7 @@
 </div>
 <div class="section" id="implementando-el-controlador">
 <h2>Implementando el controlador<a class="headerlink" href="#implementando-el-controlador" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Nuestro controlador creará una nueva entrada en el <em>blog</em> basada en los datos proporcionados y devolverá el objeto <tt class="docutils literal"><span class="pre">post</span></tt>, incluyendo su <tt class="docutils literal"><span class="pre">id</span></tt>, como <em>JSON</em>.</p>
+<p>Nuestro controlador creará una nueva entrada en el <em>blog</em> basada en los datos proporcionados y devolverá el objeto <tt class="docutils literal"><span class="pre">post</span></tt>, incluyendo su <tt class="docutils literal"><span class="pre">id</span></tt> como <em>JSON</em>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
 <span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
 
@@ -145,9 +145,9 @@
 </div>
 <div class="section" id="probando-manualmente">
 <h2>Probando manualmente<a class="headerlink" href="#probando-manualmente" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Con el fin de probar manualmente nuestra <em>API</em>, podemos usar la utilidad <tt class="docutils literal"><span class="pre">curl</span></tt> de la línea de ordenes, la cual nos permite enviar peticiones <em>HTTP</em>.</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="err">$</span> <span class="nx">curl</span> <span class="nx">http</span><span class="o">://</span><span class="nx">blog</span><span class="o">.</span><span class="nx">lo</span><span class="o">/</span><span class="nx">blog</span><span class="o">/</span><span class="nx">posts</span> <span class="o">-</span><span class="nx">d</span> <span class="s1">&#39;{&quot;title&quot;:&quot;Hello World!&quot;,&quot;body&quot;:&quot;This is my first post!&quot;}&#39;</span> <span class="o">-</span><span class="nx">H</span> <span class="s1">&#39;Content-Type: application/json&#39;</span>
-<span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="s2">&quot;title&quot;</span><span class="o">:</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span><span class="s2">&quot;body&quot;</span><span class="o">:</span><span class="s2">&quot;This is my first post!&quot;</span><span class="p">}</span>
+<p>Para probar manualmente nuestra <em>API</em>, podemos usar la utilidad <tt class="docutils literal"><span class="pre">curl</span></tt> de la línea de ordenes, la cual nos permite enviar peticiones <em>HTTP</em>.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl http://blog.lo/blog/posts -d <span class="s1">&#39;{&quot;title&quot;:&quot;Hello World!&quot;,&quot;body&quot;:&quot;This is my first post!&quot;}&#39;</span> -H <span class="s1">&#39;Content-Type: application/json&#39;</span>
+<span class="o">{</span><span class="s2">&quot;id&quot;</span>:<span class="s2">&quot;1&quot;</span>,<span class="s2">&quot;title&quot;</span>:<span class="s2">&quot;Hello World!&quot;</span>,<span class="s2">&quot;body&quot;</span>:<span class="s2">&quot;This is my first post!&quot;</span><span class="o">}</span>
 </pre></div>
 </div>
 </div>

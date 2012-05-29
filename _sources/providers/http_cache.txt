@@ -18,7 +18,7 @@ Servicios
 Registrando
 -----------
 
-::
+.. code-block:: php
 
     $app->register(new Silex\Provider\HttpCacheServiceProvider(), array(
         'http_cache.cache_dir' => __DIR__.'/cache/',
@@ -27,7 +27,9 @@ Registrando
 Uso
 ---
 
-*Silex*, fuera de la caja, ya es compatible con cualquier delegado inverso como *Varnish* ajustando las cabeceras de caché *HTTP* de la Respuesta::
+*Silex*, fuera de la caja, ya es compatible con cualquier delegado inverso como *Varnish* ajustando las cabeceras de caché *HTTP* de la ``Respuesta``::
+
+    use Symfony\Component\HttpFoundation\Response;
 
     $app->get('/', function() {
         return new Response('Foo', 200, array(
@@ -35,11 +37,20 @@ Uso
         ));
     });
 
+.. tip::
+
+    Si quieres que *Silex* confíe en las cabeceras ``X-Forwarded-For*`` de tu servidor delegado inverso, tendrás que ejecutar tu aplicación de la siguiente manera::
+
+        use Symfony\Component\HttpFoundation\Request;
+
+        Request::trustProxyData();
+        $app->run();
+
 Este proveedor te permite utilizar el delegado inverso nativo de *Symfony2* con aplicaciones *Silex* usando el servicio ``http_cache``::
 
     $app['http_cache']->run();
 
-El proveedor también proporciona apoyo *ESI*::
+El proveedor también ofrece compatibilidad con *ESI*::
 
     $app->get('/', function() {
         return new Response(<<<EOF

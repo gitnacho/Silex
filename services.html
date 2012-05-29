@@ -104,11 +104,11 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>En este sencillo ejemplo la dependencia es la propiedad <tt class="docutils literal"><span class="pre">basePath</span></tt>.
-Esta se pasa al constructor. Esto significa que puedes crear varias instancias independientes con diferentes rutas base. Por supuesto, las dependencias no tienen que ser simples cadenas de texto. Muy a menudo estas, de hecho, se encuentran en otros servicios.</p>
+<p>En este sencillo ejemplo la dependencia es la propiedad <tt class="docutils literal"><span class="pre">basePath</span></tt>. Esta se pasa al constructor. Esto significa que puedes crear varias instancias independientes con diferentes rutas base. Por supuesto, las dependencias no tienen que ser simples cadenas de texto. Muy a menudo estas, de hecho, se encuentran en otros servicios.</p>
 <div class="section" id="contenedor">
 <h3>Contenedor<a class="headerlink" href="#contenedor" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Un <tt class="docutils literal"><span class="pre">IDC</span></tt> o contenedor de servicio es responsable de crear y almacenar servicios. Este puede crear recurrentemente dependencias de los servicios solicitados e inyectarlos. Lo hace de manera diferida, lo cual significa que un servicio sólo se crea cuando realmente se necesita.</p>
+<p>Un <tt class="docutils literal"><span class="pre">IDC</span></tt> o contenedor de servicio es responsable de crear y almacenar servicios.
+Este puede crear dependencias recurrentemente de los servicios solicitados e inyectarlos. Lo hace de manera diferida, lo cual significa que un servicio sólo se crea cuando realmente se necesita.</p>
 <p>La mayoría de los contenedores son muy complejos y se configuran a través de archivos <em>XML</em> o <em>YAML</em>.</p>
 <p><em>Pimple</em> es diferente</p>
 </div>
@@ -126,7 +126,7 @@ Esta se pasa al constructor. Esto significa que puedes crear varias instancias i
 </div>
 <div class="section" id="parametros">
 <h3>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Puedes establecer los parámetros (los cuales suelen ser cadenas) estableciendo una clave en el arreglo del contenedor:</p>
+<p>Puedes ajustar los parámetros (que suelen ser cadenas) estableciendo una clave en el arreglo del contenedor:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algún_parámetro&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;valor&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -141,10 +141,7 @@ Esta se pasa al constructor. Esto significa que puedes crear varias instancias i
 </div>
 <div class="section" id="definiendo-servicios">
 <h3>Definiendo servicios<a class="headerlink" href="#definiendo-servicios" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>La definición de servicios no es diferente de la definición de parámetros.
-Sólo tienes que establecer una clave en el arreglo del contenedor a un cierre.
-Sin embargo, cuando recuperes el servicio, se ejecuta el cierre.
-Esto permite la creación diferida de servicios:</p>
+<p>La definición de servicios no es diferente de la definición de parámetros. Sólo tienes que establecer una clave en el arreglo del contenedor a un cierre. No obstante, cuando recuperes el servicio, se ejecuta el cierre. Esto permite la creación diferida de servicios:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_service&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">new</span> <span class="nx">Service</span><span class="p">();</span>
 <span class="p">};</span>
@@ -158,7 +155,7 @@ Esto permite la creación diferida de servicios:</p>
 </div>
 <div class="section" id="servicios-compartidos">
 <h3>Servicios compartidos<a class="headerlink" href="#servicios-compartidos" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Posiblemente desees utilizar la misma instancia de un servicio a través de todo el código. A fin de que puedas hacer <em>compartido</em> un servicio:</p>
+<p>Posiblemente quieras utilizar la misma instancia de un servicio a través de todo tu código. A fin de que puedas hacer <em>compartido</em> un servicio:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_service&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">new</span> <span class="nx">Service</span><span class="p">();</span>
 <span class="p">});</span>
@@ -175,9 +172,7 @@ Esto permite la creación diferida de servicios:</p>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Aquí puedes ver un ejemplo de Inyección de dependencias.
-<tt class="docutils literal"><span class="pre">some_service</span></tt> depende de <tt class="docutils literal"><span class="pre">some_other_service</span></tt> y toma <tt class="docutils literal"><span class="pre">some_service.config</span></tt> como opciones de configuración.
-La dependencia sólo se crea cuando accedes a <tt class="docutils literal"><span class="pre">some_service</span></tt>, y es posible reemplazar cualquiera de las dependencias simplemente remplazando esas definiciones.</p>
+<p>Aquí puedes ver un ejemplo de Inyección de dependencias. <tt class="docutils literal"><span class="pre">some_service</span></tt> depende de <tt class="docutils literal"><span class="pre">some_other_service</span></tt> y toma <tt class="docutils literal"><span class="pre">some_service.config</span></tt> como opciones de configuración. La dependencia sólo se crea cuando accedes a <tt class="docutils literal"><span class="pre">some_service</span></tt>, y es posible sustituir cualquier dependencia simplemente sustituyendo esas definiciones.</p>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
 <p class="last">Esto también trabaja para los servicios compartidos.</p>
@@ -204,36 +199,33 @@ La dependencia sólo se crea cuando accedes a <tt class="docutils literal"><span
 </div>
 <div class="section" id="servicios-basicos">
 <h2>Servicios básicos<a class="headerlink" href="#servicios-basicos" title="Enlazar permanentemente con este título">¶</a></h2>
-<p><em>Silex</em> define una serie de servicios que puedes utilizar o reemplazar. Es probable que no quieras meterte con la mayoría de ellos.</p>
+<p><em>Silex</em> define una serie de servicios que puedes utilizar o reemplazar. Probablemente no quieras meterte con la mayoría de ellos.</p>
 <ul>
 <li><p class="first"><strong>request</strong>: Contiene el objeto <tt class="docutils literal"><span class="pre">Petición</span></tt> actual, el cual es una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html">Request</a>.
-¡Este proporciona acceso a los parámetros <tt class="docutils literal"><span class="pre">GET</span></tt>, <tt class="docutils literal"><span class="pre">POST</span></tt> y mucho más!</p>
+¡Este proporciona acceso a los parámetros <tt class="docutils literal"><span class="pre">GET</span></tt>, <tt class="docutils literal"><span class="pre">POST</span></tt> y muchos más!</p>
 <p>Ejemplo de uso:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$id</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;request&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Este sólo está disponible cuando se está sirviendo la petición, sólo puedes acceder a él desde dentro de un controlador, antes del filtro, después del filtro o al manejar algún error.</p>
 </li>
-<li><p class="first"><strong>autoloader</strong>: Este servicio te proporciona un <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/ClassLoader/UniversalClassLoader.html">UniversalClassLoader</a> que ya está registrado. Puedes registrar prefijos y espacios de nombres en él.</p>
-<p>Ejemplo de uso, autocargando clases <em>Twig</em>:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;autoloader&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">registerPrefix</span><span class="p">(</span><span class="s1">&#39;Twig_&#39;</span><span class="p">,</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;twig.class_path&#39;</span><span class="p">]);</span>
-</pre></div>
-</div>
-<p>Para más información, consulta la documentación del <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/components/class_loader.html">autocargador de Symfony2</a>.</p>
-</li>
 <li><p class="first"><strong>routes</strong>: El <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html">RouteCollection</a> utilizado internamente. Puedes agregar, modificar y leer rutas.</p>
 </li>
-<li><p class="first"><strong>controllers</strong>: La <tt class="docutils literal"><span class="pre">Silex\ControllerCollection</span></tt> utilizada internamente. Consulta el capítulo <a class="reference internal" href="internals.html"><em>Funcionamiento interno</em></a> para más información.</p>
+<li><p class="first"><strong>controllers</strong>: La <tt class="docutils literal"><span class="pre">Silex\ControllerCollection</span></tt> utilizada internamente.
+Consulta el capítulo <a class="reference internal" href="internals.html"><em>Funcionamiento interno</em></a> para más información.</p>
 </li>
 <li><p class="first"><strong>dispatcher</strong>: El <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/EventDispatcher/EventDispatcher.html">EventDispatcher</a> utilizado internamente. Es el núcleo del sistema <em>Symfony2</em> y se utiliza un poco en <em>Silex</em>.</p>
 </li>
 <li><p class="first"><strong>resolver</strong>: El <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpKernel/Controller/ControllerResolver.html">ControllerResolver</a> utilizado internamente. Se encarga de ejecutar el controlador con los argumentos adecuados.</p>
 </li>
-<li><p class="first"><strong>kernel</strong>: El <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html">HttpKernel</a> utilizado internamente. El <tt class="docutils literal"><span class="pre">HttpKernel</span></tt> es el corazón de <em>Symfony2</em>, este toma una Petición como entrada y devuelve una Respuesta como salida.</p>
+<li><p class="first"><strong>kernel</strong>: El <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html">HttpKernel</a> utilizado internamente. El <tt class="docutils literal"><span class="pre">HttpKernel</span></tt> es el corazón de <em>Symfony2</em>, este toma una <tt class="docutils literal"><span class="pre">Petición</span></tt> como entrada y devuelve una <tt class="docutils literal"><span class="pre">Respuesta</span></tt> como salida.</p>
 </li>
 <li><p class="first"><strong>request_context</strong>: El contexto de la petición es una representación simplificada de la petición que utilizan el <tt class="docutils literal"><span class="pre">Router</span></tt> y el <tt class="docutils literal"><span class="pre">UrlGenerator</span></tt>.</p>
 </li>
 <li><p class="first"><strong>exception_handler</strong>: El controlador de excepciones es el controlador predeterminado que se utiliza cuando no registras uno a través del método <tt class="docutils literal"><span class="pre">error()</span></tt> o si el controlador no devuelve una Respuesta. Lo puedes desactivar con <tt class="docutils literal"><span class="pre">unset($app['exception_handler'])</span></tt>.</p>
+</li>
+<li><p class="first"><strong>logger</strong>: Una instancia de <a href="#id3"><span class="problematic" id="id4">`http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html`_</span></a>. De forma predeterminada, el registro está desactivado ya que el valor se establece en <tt class="docutils literal"><span class="pre">null</span></tt>.
+Cuando el puente <em>Monolog</em> de <em>Symfony2</em> está instalado, se utiliza <em>Monolog</em> automáticamente como el registrador cronológico predeterminado.</p>
 </li>
 </ul>
 <div class="admonition note">

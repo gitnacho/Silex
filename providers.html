@@ -101,10 +101,7 @@
 <h3>Convenciones<a class="headerlink" href="#convenciones" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Necesitas tener cuidado con el orden en que haces ciertas cosas cuando interactúas con proveedores. Sólo sigue estas reglas:</p>
 <ul>
-<li><p class="first">Rutas de clase (para el cargador automático) las debes definir <strong>antes</strong> de registrar al proveedor. Pasar esta como segundo argumento a <tt class="docutils literal"><span class="pre">Application::register</span></tt> también califica, ya que ​​en primer lugar establece los parámetros pasados.</p>
-<p><em>Razón: El proveedor configurará el cargador automático al momento de registrar al proveedor. Si no estableces la ruta de la clase en ese punto, no puedes registrar un cargador automático.</em></p>
-</li>
-<li><p class="first">La redefinición de servicios existentes debe ocurrir <strong>después</strong> de haber registrado al proveedor.</p>
+<li><p class="first">La redefinición de servicios existentes debe ocurrir <strong>después</strong> de haber registrado el proveedor.</p>
 <p><em>Razón: Si los servicios ya existen, el proveedor los sobrescribirá.</em></p>
 </li>
 <li><p class="first">Puedes configurar los parámetros en cualquier momento antes de acceder al servicio.</p>
@@ -114,8 +111,7 @@
 </div>
 <div class="section" id="proveedores-integrados">
 <h3>Proveedores integrados<a class="headerlink" href="#proveedores-integrados" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Hay algunos proveedores que obtienes fuera de la caja.
-Todos estos están dentro del espacio de nombres <tt class="docutils literal"><span class="pre">Silex\Provider</span></tt>.</p>
+<p>Hay algunos proveedores que obtienes fuera de la caja. Todos ellos están dentro del espacio de nombres <tt class="docutils literal"><span class="pre">Silex\Provider</span></tt>.</p>
 <ul class="simple">
 <li><a class="reference internal" href="providers/doctrine.html"><em>DoctrineServiceProvider</em></a></li>
 <li><a class="reference internal" href="providers/monolog.html"><em>MonologServiceProvider</em></a></li>
@@ -143,7 +139,7 @@ Todos estos están dentro del espacio de nombres <tt class="docutils literal"><s
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Esto es muy sencillo, basta con crear una nueva clase que implemente el método <tt class="docutils literal"><span class="pre">register</span></tt>.  En este método debes definir los servicios de la aplicación que pueden usar otros servicios y parámetros.</p>
+<p>Esto es muy sencillo, basta con crear una nueva clase que implemente el método <tt class="docutils literal"><span class="pre">register</span></tt>. En este método tienes que definir los servicios de la aplicación que pueden usar otros servicios y parámetros.</p>
 <p>He aquí un ejemplo de tal proveedor:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">namespace</span> <span class="nx">Acme</span><span class="p">;</span>
 
@@ -179,41 +175,7 @@ Todos estos están dentro del espacio de nombres <tt class="docutils literal"><s
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>En este ejemplo estamos obteniendo el parámetro <tt class="docutils literal"><span class="pre">name</span></tt> de la cadena de consulta, por lo que la ruta de la petición tendría que ser <tt class="docutils literal"><span class="pre">/hello?name=Fabien</span></tt>.</p>
-</div>
-<div class="section" id="cargando-clases">
-<h3>Cargando clases<a class="headerlink" href="#cargando-clases" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Los proveedores son ideales para atarlos en bibliotecas externas como puedes ver mirando a <tt class="docutils literal"><span class="pre">MonologServiceProvider</span></tt> y <tt class="docutils literal"><span class="pre">TwigServiceProvider</span></tt>. Si la biblioteca es decente y sigue el <a class="reference external" href="http://groups.google.com/group/php-standards/web/psr-0-final-proposal">Estándar de nomenclatura PSR-0</a> o la convención de nomenclatura <em>PEAR</em>, es posible cargar automáticamente las clases con el <tt class="docutils literal"><span class="pre">UniversalClassLoader</span></tt>.</p>
-<p>Como se describe en el capítulo <em>Servicios</em>, hay un <em>cargador automático</em> de servicios que puedes utilizar para esto.</p>
-<p>He aquí un ejemplo de cómo usarlo (en base a <a class="reference external" href="https://github.com/kriswallsmith/Buzz">Buzz</a>):</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">namespace</span> <span class="nx">Acme</span><span class="p">;</span>
-
-<span class="k">use</span> <span class="nx">Silex\Application</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Silex\ServiceProviderInterface</span><span class="p">;</span>
-
-<span class="k">class</span> <span class="nc">BuzzServiceProvider</span> <span class="k">implements</span> <span class="nx">ServiceProviderInterface</span>
-<span class="p">{</span>
-    <span class="k">public</span> <span class="k">function</span> <span class="nf">register</span><span class="p">(</span><span class="nx">Application</span> <span class="nv">$app</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;buzz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="o">...</span> <span class="p">});</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;buzz.class_path&#39;</span><span class="p">]))</span> <span class="p">{</span>
-            <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;autoloader&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">registerNamespace</span><span class="p">(</span><span class="s1">&#39;Buzz&#39;</span><span class="p">,</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;buzz.class_path&#39;</span><span class="p">]);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Esto te permite proporcionar sólo la ruta de clases como una opción al registrar el proveedor:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">BuzzServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">&#39;buzz.class_path&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/vendor/buzz/lib&#39;</span><span class="p">,</span>
-<span class="p">));</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Nota</p>
-<p class="last">Para las bibliotecas que no usan el espacio de nombres de <em>PHP</em> 5.3 pueden utilizar <tt class="docutils literal"><span class="pre">RegisterPrefix</span></tt> en lugar de <tt class="docutils literal"><span class="pre">registerNamespace</span></tt>, el cual utilizará un guión como delimitador de directorio.</p>
-</div>
+<p>En este ejemplo estamos obteniendo el parámetro <tt class="docutils literal"><span class="pre">name</span></tt> desde la cadena de consulta, por lo que la ruta de la petición tendría que ser <tt class="docutils literal"><span class="pre">/hello?name=Fabien</span></tt>.</p>
 </div>
 </div>
 <div class="section" id="proveedores-de-controladores">

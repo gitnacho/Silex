@@ -3,12 +3,45 @@ Usándola
 
 Este capítulo describe cómo utilizar *Silex*.
 
+Instalando
+----------
+
+Si  quieres empezar rápidamente, descarga uno de los archivos `silex.zip`_ o `silex.tgz`_ y descomprímelo, deberías tener la siguiente estructura de directorios:
+
+.. code-block:: text
+
+    ├── composer.json
+    ├── composer.lock
+    ├── vendor
+    │   └── ...
+    └── web
+        └── index.php
+
+Si quieres más flexibilidad, en su lugar usa ``Composer``. Crea un archivo :file:`composer.json`:
+
+.. code-block:: json
+
+    {
+        "require": {
+            "silex/silex": "dev-master"
+        }
+    }
+
+Y corre ``Composer`` para instalar *Silex* y todas sus dependencias:
+
+.. code-block:: bash
+
+    $ curl -s http://getcomposer.org/installer | php
+    $ composer.phar install
+
 Arranque
 --------
 
-Para incluir *Silex* todo lo que tienes que hacer es requerir el archivo ``silex.phar`` y crear una instancia de ``Silex\Application``. Después de definir tu controlador, llama al método ``run`` en tu aplicación::
+Para arrancar *Silex*, todo lo que necesitas hacer es requerir el archivo :file:`vendedor/autoload.php` y crear una instancia de ``Silex\Aplicación``. Después de definir tu controlador, llama al método ``run`` en tu aplicación::
 
-    require_once __DIR__.'/silex.phar';
+    // web/index.php
+
+    require_once __DIR__.'/../vendor/autoload.php';
 
     $app = new Silex\Application();
 
@@ -16,32 +49,17 @@ Para incluir *Silex* todo lo que tienes que hacer es requerir el archivo ``silex
 
     $app->run();
 
-Otra cosa que tienes que hacer es configurar tu servidor web. Si estás usando *Apache* puedes utilizar un ``.htaccess`` para esto.
-
-.. code-block:: apache
-
-    <IfModule mod_rewrite.c>
-        Options -MultiViews
-
-        RewriteEngine On
-        #RewriteBase /ruta/a/tu/aplicación
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteRule ^ index.php [L]
-    </IfModule>
-
-.. note::
-
-    Si tu sitio no está a nivel raíz del servidor web, tienes que descomentar la declaración ``RewriteBase`` y ajustar la ruta para que apunte al directorio, relativo a la raíz del servidor web.
+Entonces, tienes que configurar tu servidor web (ve lo consejos para *Apache* e *IIS* más adelante).
 
 .. tip::
 
-    Cuando desarrollas un sitio web, posiblemente desees activar el modo de depuración para facilitar la corrección de errores::
+    Cuando desarrollas un sitio web, posiblemente quieras activar el modo de depuración para que se te facilite la corrección de errores::
 
         $app['debug'] = true;
 
 .. tip::
 
-    Si tu aplicación se encuentra detrás de un delegado inverso y deseas que *Silex* compruebe las cabeceras ``X-Forwarded-For*``, tendrás que ejecutar tu aplicación así::
+    Si tu aplicación se encuentra detrás de un delegado inverso y deseas que *Silex* compruebe las cabeceras ``X-Forwarded-For*``, tendrás que ejecutar tu aplicación de esta manera::
 
         use Symfony\Component\HttpFoundation\Request;
 
@@ -51,12 +69,11 @@ Otra cosa que tienes que hacer es configurar tu servidor web. Si estás usando *
 Enrutado
 --------
 
-En *Silex* defines una ruta y el controlador que se invocará cuando dicha ruta concuerde
+En *Silex* defines simultáneamente una ruta y el controlador que se invocará cuando dicha ruta concuerde
 
 Un patrón de ruta se compone de:
 
-* *Pattern*: El patrón de ruta define una ruta que apunta a un recurso.
-  El patrón puede incluir partes variables y tú podrás establecer los requisitos con expresiones regulares.
+* *Pattern*: El patrón de ruta define una ruta que apunta a un recurso. El patrón puede incluir partes variables y tú podrás establecer los requisitos con expresiones regulares.
 
 * *Method*: Uno de los siguientes métodos *HTTP*: ``GET``, ``POST``, ``PUT``
   ``DELETE``. Este describe la interacción con el recurso. Normalmente sólo se utilizan ``GET`` y ``POST``, pero, también es posible utilizar los otros.
@@ -73,13 +90,12 @@ Los cierres son funciones anónimas que pueden importar el estado desde fuera de
 
 .. note::
 
-    Los cierres que no importan el ámbito se conocen como lambdas.
-    Debido a que en *PHP* todas las funciones anónimas son instancias de la clase ``Closure``, no vamos a hacer una distinción aquí.
+    Los cierres que no importan el ámbito se conocen como lambdas. Debido a que en *PHP* todas las funciones anónimas son instancias de la clase ``Closure``, no vamos a hacer una distinción aquí.
 
 El valor de retorno del cierre se convierte en el contenido de la página.
 
-También existe una forma alterna para definir controladores que utilizan un método de clase. La sintaxis para esto es **NombreClase**::**nombreMétodo**.
-También son posibles los métodos estáticos.
+También existe una forma alterna para definir controladores que utilizan un método de clase.
+La sintaxis para esto es **NombreClase**::**nombreMétodo**. También son posibles los métodos estáticos.
 
 Ejemplo de ruta ``GET``
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -292,8 +308,7 @@ Esto te permitirá coincidir ``/``, en cuyo caso la variable ``nombrePagina`` te
 Rutas con nombre
 ~~~~~~~~~~~~~~~~
 
-Algunos proveedores (como ``UrlGeneratorProvider``) pueden usar rutas con nombre.
-De manera predeterminada *Silex* generará un nombre de ruta para ti, el cual, en realidad, no puedes utilizar. Puedes dar un nombre a una ruta llamando a ``bind`` en el objeto ``Controlador`` devuelto por los métodos de enrutado::
+Algunos proveedores (como ``UrlGeneratorProvider``) pueden usar rutas con nombre. De manera predeterminada *Silex* generará un nombre de ruta para ti, el cual, no puedes utilizar realmente. Puedes dar un nombre a una ruta llamando a ``bind`` en el objeto ``Controlador`` devuelto por los métodos de enrutado::
 
     $app->get('/', function () {
         ...
@@ -310,10 +325,10 @@ De manera predeterminada *Silex* generará un nombre de ruta para ti, el cual, e
 
     Sólo tiene sentido nombrar rutas si utilizas proveedores que usan la ``RouteCollection``.
 
-Filtros ``before`` y ``after``
-------------------------------
+Filtros ``before``, ``after`` y ``finish``
+------------------------------------------
 
-*Silex* te permite ejecutar código antes y después de cada petición. Esto ocurre a través de los filtros ``before`` y ``after``. Todo lo que necesitas hacer es pasar un cierre::
+*Silex* te permite ejecutar código antes e incluso después de enviada la respuesta. Esto ocurre a través de los filtros ``before``, ``after`` y ``finish``. Todo lo que necesitas hacer es pasar un cierre::
 
     $app->before(function () {
         // configuración
@@ -323,9 +338,11 @@ Filtros ``before`` y ``after``
         // destrucción
     });
 
-El filtro ``before`` tiene acceso a la ``Petición`` actual, y puede provocar un cortocircuito en toda la reproducción, devolviendo una ``Respuesta``:
+    $app->finish(function () {
+        // después de enviada la respuesta
+    });
 
-.. code-block:: php
+El filtro ``before`` tiene acceso a la ``Petición`` actual, y puede provocar un cortocircuito en toda la reproducción, devolviendo una ``Respuesta``::
 
     $app->before(function (Request $request) {
         // redirige al usuario al formulario de acceso si el recurso accedido está protegido
@@ -340,6 +357,12 @@ El filtro ``after`` tiene acceso a la ``Petición`` y a la ``Respuesta``:
 
     $app->after(function (Request $request, Response $response) {
         // ajusta la Respuesta
+    });
+
+El filtro ``finish`` tiene acceso a la ``Petición`` y la ``Respuesta``::
+
+    $app->finish(function (Request $request, Response $response) {
+        // envía mensajes de correo electrónico ...
     });
 
 .. note::
@@ -390,14 +413,28 @@ Si alguno de los servicios de lógica intermedia de ruta devuelve una respuesta 
 
 Si un servicio de lógica intermedia de ruta no devuelve una respuesta *HTTP* de *Symfony* o ``null``, se lanza una ``RuntimeException``.
 
-Manipuladores de error
+Configuración global
+--------------------
+
+Si un ajuste del controlador se debe aplicar a todos los controladores (un convertidor, un soporte lógico intermedio, un requisito o un valor predeterminado), los puedes configurar en ``$application['controllers']``, que tiene todos los controladores de la aplicación::
+
+    $app['controllers']
+        ->value('id', '1')
+        ->assert('id', '\d+')
+        ->requireHttps()
+        ->method('get')
+        ->convert('id', function () { // ... })
+        ->middleware(function () { // ... })
+    ;
+
+Estos ajustes se aplican a los controladores que ya están registrados y se convierten en los valores predefinidos para los nuevos controladores.
+
+Controladores de error
 ----------------------
 
-Si alguna parte de tu código produce una excepción de la que desees mostrar algún tipo de página de error al usuario. Esto es lo que hacen los manipuladores de error. También puedes utilizarlos para hacer cosas adicionales, tal como registrar sucesos.
+Si alguna parte de tu código produce una excepción de la que desees mostrar algún tipo de página de error al usuario. Esto es lo que hacen los controladores de error. También los puedes utilizar para hacer cosas adicionales, tal como registrar eventos cronológicamente.
 
-Para registrar un manipulador de error, pasa un cierre al método ``error`` el cual toma un argumento ``Exception`` y devuelve una respuesta:
-
-.. code-block:: php
+Para registrar un controlador de error, pasa un cierre al método ``error`` el cual toma un argumento ``Exception`` y devuelve una respuesta::
 
     use Symfony\Component\HttpFoundation\Response;
 
@@ -421,12 +458,20 @@ También puedes comprobar si hay errores específicos usando el argumento ``$cod
         return new Response($message, $code);
     });
 
-Si deseas configurar el registro puedes utilizar un manipulador de errores independiente para eso.
-Sólo asegúrate de registrarlo antes que los manipuladores que responden a error, porque una vez que se devuelve una respuesta, se omiten los siguientes manipuladores.
+Puedes restringir un controlador de errores para que sólo maneje algunas clases de excepciones estableciendo un tipo de pista más específico para el argumento del ``Cierre``::
+
+    $app->error(function (\LogicException $e, $code) {
+        // este controlador sólo ve excepciones \LogicException
+        // y \LogicException extendidas
+     });
+
+Si deseas configurar el registro puedes utilizar un controlador de errores independiente para eso.
+Sólo asegúrate de registrarlo antes que los controladores que responden al error, porque una vez que se devuelve una respuesta, se omiten los demás controladores.
 
 .. note::
 
-    *Silex* viene con un proveedor para `Monolog <https://github.com/Seldaek/monolog>`_ el cual maneja el registro de errores. Échale un vistazo al capítulo :doc:`providers` para más detalles.
+    *Silex* viene con un proveedor para `Monolog <https://github.com/Seldaek/monolog>`_ el cual maneja el registro de errores.
+    Échale un vistazo al capítulo :doc:`providers` para más detalles.
 
 .. tip::
 
@@ -463,13 +508,89 @@ Puedes redirigir a otra página devolviendo una respuesta de redirección, la cu
 
 Esto redirigirá de ``/`` a ``/hello``.
 
+Reenviando
+----------
+
+Cuando quieres delegar la reproducción a otro controlador, sin una ida y vuelta al navegador (tal como una redirección), utiliza una subpetición::
+
+    use Symfony\Component\HttpKernel\HttpKernelInterface;
+
+    $app->get('/', function () use ($app) {
+        // redirige a /hello
+        $subRequest = Request::create('/hello', 'GET');
+
+        return $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+    });
+
+.. tip::
+
+Si estás usando ``UrlGeneratorProvider``, también puedes generar la *URI*::
+
+    $request = Request::create($app['url_generator']->generate('hello'), 'GET');
+
+Modularidad
+-----------
+
+Cuando tu aplicación comienza a definir muchos controladores, es posible que desees agruparlos lógicamente::
+
+    use Silex\ControllerCollection;
+
+    // define los controladores para un blog
+    $blog = new ControllerCollection();
+    $blog->get('/', function () {
+        return 'Blog home page';
+    });
+    // ...
+
+    // define los controladores de un foro
+    $forum = new ControllerCollection();
+    $forum->get('/', function () {
+        return 'Forum home page';
+    });
+
+    // define controladores 'globales'
+    $app->get('/', function () {
+        return 'Main home page';
+    });
+
+    $app->mount('/blog', $blog);
+    $app->mount('/forum', $forum);
+
+``mount()`` prefija todas las rutas con la cadena dada y las integra en la aplicación principal. Por lo tanto, ``/`` se asignará a la página principal, ``/blog/ `` a la página principal del blog, y ``/forum/`` a la página principal del foro.
+
+.. note::
+
+    Cuando invocas a ``get()``, ``match()``, o cualquier otro método *HTTP* de la aplicación, de hecho, los estás llamando en una instancia predeterminada de ``ControllerCollection`` (almacenado en ``$app['controllers']``).
+
+Otra ventaja es la capacidad para aplicar muy fácilmente la configuración a un conjunto de controladores. Basándonos en el ejemplo de la sección de la lógica intermedia, aquí tienes cómo protegeríamos todos los controladores para la colección ``backend``::
+
+    $backend = new ControllerCollection();
+
+    // protege todos los controladores que requieren usuarios registrados
+    $backend->middleware($mustBeLogged);
+
+.. tip::
+
+    Para mejorar la legibilidad, puedes dividir cada colección de controladores en un archivo independiente::
+
+        // blog.php
+        use Silex\ControllerCollection;
+
+        $blog = new ControllerCollection();
+        $blog->get('/', function () { return 'Blog home page'; });
+
+        return $blog;
+
+        // app.php
+        $app->mount('/blog', include 'blog.php');
+
+    En lugar de necesitar un archivo, también puedes crear una :doc:`Proveedor de controladores </providers#controllers-providers>`.
+
 *JSON*
 ------
 
 Si quieres devolver datos *JSON*, puedes usar el método ayudante ``json``.
 Simplemente le tienes que proporcionar tus datos, código de estado y cabeceras, y este creará una respuesta *JSON* para ti.
-
-.. code-block:: php
 
     $app->get('/users/{id}', function ($id) use ($app) {
         $user = getUser($id);
@@ -485,10 +606,7 @@ Simplemente le tienes que proporcionar tus datos, código de estado y cabeceras,
 Transmitiendo secuencias
 ------------------------
 
-Es posible crear una respuesta para la transmisión de secuencias, lo cual es importante en los casos
-cuando no puedes mantener en memoria los datos que se envían.
-
-.. code-block:: php
+Es posible crear una respuesta para la transmisión de secuencias, la cual es importante en los casos cuando no puedes mantener en memoria los datos enviados::
 
     $app->get('/images/{file}', function ($file) use ($app) {
         if (!file_exists(__DIR__.'/images/'.$file)) {
@@ -502,12 +620,10 @@ cuando no puedes mantener en memoria los datos que se envían.
         return $app->stream($stream, 200, array('Content-Type' => 'image/png'));
     });
 
-Si necesitas enviar trozos, asegúrate de llamar a ``ob_flush`` y ``flush`` después de cada parte.
-
-.. code-block:: php
+Si necesitas enviar fragmentos, asegúrate de llamar a ``ob_flush`` y ``flush`` después de cada parte.
 
     $stream = function () {
-        $fh = fopen('http://www.example.com/', 'rb');
+        $fh = fopen('http://www.ejemplo.com/', 'rb');
         while (!feof($fh)) {
           echo fread($fh, 1024);
           ob_flush();
@@ -543,78 +659,31 @@ Cuando reproduces la entrada del usuario (ya sea en las variables ``GET/POST`` o
           return $app->json(array('name' => $name));
       });
 
-Consola
--------
+Configurando *Apache*
+---------------------
 
-*Silex* incluye una consola ligera para actualizar a la última versión.
+Si estás usando *Apache* puedes utilizar un :file:`.htaccess` para esto:
 
-Para saber qué versión de *Silex* estás utilizando, invoca a ``silex.phar`` en la línea de ordenes con ``version`` como argumento:
+.. code-block:: apache
 
-.. code-block:: text
+    <IfModule mod_rewrite.c>
+        Options -MultiViews
 
-    $ php silex.phar version
-    Silex version 0a243d3 2011-04-17 14:49:31 +0200
-
-Para comprobar si estás utilizando la última versión, ejecuta la orden ``check``:
-
-.. code-block:: text
-
-    $ php silex.phar check
-
-Para actualizar ``silex.phar`` a la última versión, invoca la orden ``update``:
-
-.. code-block:: text
-
-    $ php silex.phar update
-
-Esto descargará automáticamente un nuevo ``silex.phar`` desde ``silex.sensiolabs.org`` y sustituirá al actual.
-
-Trampas
--------
-
-Hay algunas cosas que pueden salir mal. Aquí vamos a tratar de esbozar las más frecuentes.
-
-Configuración de *PHP*
-~~~~~~~~~~~~~~~~~~~~~~
-
-Ciertas distribuciones de *PHP*, de manera predeterminada tienen configurado ``Phar`` muy restrictivamente. Ajustar lo siguiente puede ayudar.
-
-.. code-block:: ini
-
-    detect_unicode = Off
-    phar.readonly = Off
-    phar.require_hash = Off
-
-Si estás en ``Suhosin`` también tendrás que fijar lo siguiente:
-
-.. code-block:: ini
-
-    suhosin.executor.include.whitelist = phar
+        RewriteEngine On
+        #RewriteBase /ruta/a/tu/aplicación
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^ index.php [L]
+    </IfModule>
 
 .. note::
 
-    El *PHP* de *Ubuntu* viene con *Suhosin*, así que si estás usando *Ubuntu*, necesitarás este cambio.
+    Si tu sitio no está a nivel raíz del servidor web, tienes que quitar el comentario de la declaración ``RewriteBase`` y ajustar la ruta para que apunte al directorio, relativo a la raíz del servidor web.
 
-Fallo ``Phar-Stub``
-~~~~~~~~~~~~~~~~~~~
+Alternativamente, si utilizas *Apache* 2.2.16 o más reciente, puedes usar la `Directiva FallbackResource`_ para hacer tu :file:`.htaccess` aún más sencillo:
 
-Algunas instalaciones de *PHP* tienen un error que arroja una ``PharException`` cuando tratas de incluir el ``Phar``. También te dirá que ``Silex\Application`` no se pudo encontrar. Una solución es usar la siguiente línea::
+.. code-block:: apache
 
-    require_once 'phar://'.__DIR__.'/silex.phar/autoload.php';
-
-La causa exacta de esta emisión no se ha podido determinar todavía.
-
-Fallo en el cargador de ``ioncube``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-El cargador de ``Ioncube`` es una extensión que puede decodificar archivos *PHP* codificados.
-Desafortunadamente, las versiones antiguas (anteriores a la versión 4.0.9) no están funcionando bien con archivos ``phar``.
-Debes actualizar tu ``Ioncube Loder`` a la versión  4.0.9  o más reciente o desactivarla comentando o eliminando esta línea en tu archivo ``php.ini``:
-
-.. code-block:: ini
-
-    zend_extension = /usr/lib/php5/20090626+lfs/ioncube_loader_lin_5.3.so
-
+    FallbackResource index.php
 
 Configuración *IIS*
 -------------------
@@ -645,3 +714,5 @@ Si estás utilizando el ``Internet Information Services`` de *Windows*, puedes u
             </rewrite>
         </system.webServer>
     </configuration>
+
+.. _`Directiva FallbackResource`: http://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/ _silex.zip: http://silex.sensiolabs.org/get/silex.zip _silex.tgz: http://silex.sensiolabs.org/get/silex.tgz

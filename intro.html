@@ -77,17 +77,17 @@
   <div class="section" id="introduccion">
 <h1>Introducción<a class="headerlink" href="#introduccion" title="Enlazar permanentemente con este título">¶</a></h1>
 <p><em>Silex</em> es una microplataforma <em>PHP</em> para <em>PHP</em> 5.3. Está construida sobre los hombros de <em>Symfony2</em> y <em>Pimple</em> además de inspirada en <em>Sinatra</em>.</p>
-<p>Una microplataforma proporciona la base para construir aplicaciones simples de un solo archivo.
-<em>Silex</em> pretende ser:</p>
+<p>Una microplataforma proporciona la base para construir aplicaciones simples de un solo archivo. <em>Silex</em> pretende ser:</p>
 <ul class="simple">
 <li><em>Concisa</em>: Silex expone una intuitiva y concisa API que es divertido utilizar.</li>
 <li><em>Extensible</em>: <em>Silex</em> cuenta con un sistema de extensión en torno al microcontenedor de servicios <em>Pimple</em> que lo hace aún más fácil de encajar con bibliotecas de terceros.</li>
-<li><em>Comprobable</em>: <em>Silex</em> utiliza el <tt class="docutils literal"><span class="pre">HttpKernel</span></tt> de <em>Symfony2</em> el cual abstrae las peticiones y respuestas. Esto hace que sea muy fácil probar las aplicaciones y la propia plataforma.
-También respeta la especificación <em>HTTP</em> y alienta su uso adecuado.</li>
+<li><em>Comprobable</em>: <em>Silex</em> utiliza el <tt class="docutils literal"><span class="pre">HttpKernel</span></tt> de <em>Symfony2</em> el cual abstrae las peticiones y respuestas. Esto hace que sea muy fácil probar las aplicaciones y la propia plataforma. También respeta la especificación <em>HTTP</em> y alienta su uso adecuado.</li>
 </ul>
 <p>En pocas palabras, tú defines controladores y asignas rutas, en un solo paso.</p>
-<p><strong>¡Comencemos!</strong></p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">require_once</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/silex.phar&#39;</span><span class="p">;</span>
+<p><strong>¡Comencemos!</strong>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="c1">// web/index.php</span>
+
+<span class="k">require_once</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/../vendor/autoload.php&#39;</span><span class="p">;</span>
 
 <span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silex\Application</span><span class="p">();</span>
 
@@ -98,11 +98,11 @@ También respeta la especificación <em>HTTP</em> y alienta su uso adecuado.</li
 <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
 </pre></div>
 </div>
-<p>Todo lo que necesitas para acceder a la plataforma es incluir <tt class="docutils literal"><span class="pre">silex.phar</span></tt>. Este archivo <tt class="docutils literal"><span class="pre">phar</span></tt> (archivo <em>PHP</em>) se encargará del resto.</p>
-<p>A continuación defines una ruta a <tt class="docutils literal"><span class="pre">/hello/{name}</span></tt> que corresponde con las peticiones <tt class="docutils literal"><span class="pre">GET</span></tt>. Cuando la ruta coincide, se ejecuta la función y el valor de retorno se devuelve al cliente.</p>
-<p>Por último, se ejecuta la aplicación. Visita <tt class="docutils literal"><span class="pre">/hello/world</span></tt> para ver el resultado.
-¡Así de fácil!</p>
-<p>Instalar Silex es tan fácil como lo puedas obtener. ¡Descarga el archivo <a class="reference external" href="http://silex.sensiolabs.org/get/silex.phar">silex.phar</a> y listo!</p>
+<p>Todo lo que necesitas para acceder a la plataforma es incluir el cargador automático.</p>
+<p>A continuación defines una ruta a <tt class="docutils literal"><span class="pre">/hello/{name}</span></tt> que corresponde a las peticiones <tt class="docutils literal"><span class="pre">GET</span></tt>.
+Cuando la ruta coincide, se ejecuta la función y el valor de retorno se devuelve al cliente.</p>
+<p>Por último, se ejecuta la aplicación. Visita <tt class="docutils literal"><span class="pre">/hello/world</span></tt> para ver el resultado. ¡Así de fácil!</p>
+<p>Instalar Silex es tan fácil como lo puedas obtener. Descarga el archivo <a class="reference external" href="http://silex.sensiolabs.org/get/silex.zip">silex.zip</a>, ¡descomprímelo y listo!</p>
 </div>
 
 

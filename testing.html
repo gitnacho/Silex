@@ -80,13 +80,12 @@
 <div class="section" id="por-que">
 <h2>¿Por qué?<a class="headerlink" href="#por-que" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>Si no estás familiarizado con las pruebas de software, puedes preguntarte por qué tendrías que necesitarlas. Cada vez que haces un cambio a tu aplicación, tienes que probarlo. Esto significa recorrer todas las páginas y asegurarte de que todavía están trabajando. Las pruebas funcionales te ahorran un montón de tiempo, ya que te permiten probar la aplicación en general, en menos de un segundo ejecutando una única orden.</p>
-<p>Para más información sobre las pruebas funcionales, pruebas unitarias y pruebas automatizadas de software en general, consulta <a class="reference external" href="https://github.com/sebastianbergmann/phpunit">PHPUnit</a> y <a class="reference external" href="http://www.slideshare.net/avalanche123/clean-code-5609451">Bulat Shakirzyanov habla en código limpio</a>.</p>
+<p>Para más información sobre las pruebas funcionales, pruebas unitarias y pruebas automatizadas de software en general, consulta <a class="reference external" href="https://github.com/sebastianbergmann/phpunit">PHPUnit</a> y <a class="reference external" href="http://www.slideshare.net/avalanche123/clean-code-5609451">Bulat Shakirzyanov hablando en código limpio</a>.</p>
 </div>
 <div class="section" id="id1">
 <h2><em>PHPUnit</em><a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h2>
 <p><a class="reference external" href="https://github.com/sebastianbergmann/phpunit">PHPUnit</a>
-Es de facto la plataforma de pruebas estándar para <em>PHP</em>. Fue construido para escribir pruebas unitarias, pero también lo puedes utilizar para pruebas funcionales. Escribes tus pruebas creando una nueva clase, que extienda a <tt class="docutils literal"><span class="pre">PHPUnit_Framework_TestCase</span></tt>.
-Tus casos de prueba son los métodos prefijados con <tt class="docutils literal"><span class="pre">test</span></tt>:</p>
+Es la plataforma de pruebas estándar de facto para <em>PHP</em>. Fue construida para escribir pruebas unitarias, pero también la puedes utilizar para pruebas funcionales. Escribes tus pruebas creando una nueva clase, que extiende a <tt class="docutils literal"><span class="pre">PHPUnit_Framework_TestCase</span></tt>. Tus casos de prueba son los métodos prefijados con <tt class="docutils literal"><span class="pre">test</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ContactFormTest</span> <span class="k">extends</span> <span class="nx">PHPUnit_Framework_TestCase</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">function</span> <span class="nf">testInitialPage</span><span class="p">()</span>
@@ -172,8 +171,8 @@ Tus casos de prueba son los métodos prefijados con <tt class="docutils literal"
     <span class="nv">$crawler</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">request</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">);</span>
 
     <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertTrue</span><span class="p">(</span><span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getResponse</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">isOk</span><span class="p">());</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">count</span><span class="p">(</span><span class="nv">$crawler</span><span class="o">-&gt;</span><span class="na">filter</span><span class="p">(</span><span class="s1">&#39;h1:contains(&quot;Contact us&quot;)&#39;</span><span class="p">)));</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertEquals</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">count</span><span class="p">(</span><span class="nv">$crawler</span><span class="o">-&gt;</span><span class="na">filter</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">)));</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertCount</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">$crawler</span><span class="o">-&gt;</span><span class="na">filter</span><span class="p">(</span><span class="s1">&#39;h1:contains(&quot;Contact us&quot;)&#39;</span><span class="p">));</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">assertCount</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">$crawler</span><span class="o">-&gt;</span><span class="na">filter</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">));</span>
     <span class="o">...</span>
 <span class="p">}</span>
 </pre></div>
@@ -199,8 +198,7 @@ Tus casos de prueba son los métodos prefijados con <tt class="docutils literal"
 </div>
 <div class="section" id="configurando">
 <h2>Configurando<a class="headerlink" href="#configurando" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>La forma sugerida para configurar <em>PHPUnit</em> es crear un archivo <tt class="docutils literal"><span class="pre">phpunit.xml.dist</span></tt>, un directorio <tt class="docutils literal"><span class="pre">tests</span></tt> y tus pruebas en <tt class="docutils literal"><span class="pre">tests/TuAp/Tests/TuPruebaTest.php</span></tt>.
-El archivo <tt class="docutils literal"><span class="pre">phpunit.xml.dist</span></tt> debe tener este aspecto:</p>
+<p>La forma sugerida para configurar <em>PHPUnit</em> es crear un archivo <tt class="docutils literal"><span class="pre">phpunit.xml.dist</span></tt>, un directorio <tt class="docutils literal"><span class="pre">tests</span></tt> y tus pruebas en <tt class="docutils literal"><span class="pre">tests/TuAp/Tests/TuPruebaTest.php</span></tt>. El archivo <tt class="docutils literal"><span class="pre">phpunit.xml.dist</span></tt> debe tener el siguiente aspecto:</p>
 <div class="highlight-xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="nt">&lt;phpunit</span> <span class="na">backupGlobals=</span><span class="s">&quot;false&quot;</span>
          <span class="na">backupStaticAttributes=</span><span class="s">&quot;false&quot;</span>

@@ -3,6 +3,23 @@ Registro de cambios
 
 Este registro de cambios refiere todas las incompatibilidades con versiones anteriores conforme se presentaron:
 
+* **2012-05-26**: se agregó el ``boot()`` a ``ServiceProviderInterface``
+
+* **2012-05-26**: se quitó ``SymfonyBridgesServiceProvider``
+
+* **2012-05-26**: Se quitó el parámetro ``translator.messages`` (en su lugar usa ``translator.domains``).
+
+* **2012-05-24**: Se quitó el servicio ``autoloader`` (en su lugar usa composer).
+  Las opciones ``*.class_path`` en todos los proveedores integrados también se han quitado en favor de Composer.
+
+* **2012-05-21**: Se cambió error() para permitir la manipulación de excepciones específicas.
+
+* **2012-05-20**: Se añadió una manera para definir la configuración en una colección de controladores.
+
+* **2012-05-20**: La instancia de la petición ya no está disponible en la aplicación después de que se ha manipulado.
+
+* **2012-04-01**: Agregados los filtros ``finish``.
+
 * **2012-03-20**: Añadido el ayudante ``json``::
 
         $data = array('some' => 'data');

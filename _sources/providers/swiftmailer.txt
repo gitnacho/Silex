@@ -3,13 +3,12 @@
 
 El proveedor ``SwiftmailerServiceProvider`` ofrece un servicio para enviar correo electrónico a través de la biblioteca de correo `Swift Mailer <http://swiftmailer.org>`_.
 
-Puedes utilizar el servicio ``mailer`` (cliente de correo) para enviar mensajes fácilmente.
-Por omisión, este tratará de enviar el correo electrónico a través de *SMTP*.
+Puedes utilizar el servicio ``mailer`` (cliente de correo) para enviar mensajes fácilmente. Por omisión, este tratará de enviar el correo electrónico a través de *SMTP*.
 
 Parámetros
 ----------
 
-* **swiftmailer.options**: Una matriz de opciones para la configuración predeterminada basada en *SMTP*.
+* **swiftmailer.options**: Un arreglo de opciones para la configuración predeterminada basada en *SMTP*.
 
   Puedes ajustar las siguientes opciones:
 
@@ -46,24 +45,26 @@ Servicios
 Registrando
 -----------
 
-Asegúrate de colocar una copia de *Swift Mailer*  en el directorio ``vendor/SwiftMailer``. Asegúrate de apuntar la ruta de tu clase a ``/lib/classes``.
-
-::
+.. code-block:: php
 
     $app->register(new Silex\Provider\SwiftmailerServiceProvider(), array(
-        'swiftmailer.class_path'  => __DIR__.'/vendor/swiftmailer/lib/classes',
+        'swiftmailer.class_path'  => __DIR__.'/vendor/swiftmailer/swiftmailer/lib/classes',
     ));
 
 .. note::
 
-    ``Swift Mailer`` no está compilado en el archivo ``silex.phar``. Tienes que añadir tu propia copia de ``Swift Mailer`` para tu aplicación.
+    *SwiftMailer* no viene en los archivos ``silex``, por lo tanto necesitas añadirlo como dependencia en tu archivo ``composer.json``:
+
+    .. code-block:: json
+
+        "require": {
+            "swiftmailer/swiftmailer": ">=4.1.2,<4.2-dev"
+        }
 
 Uso
 ---
 
-El proveedor ``Swiftmailer`` proporciona un servicio ``mailer``.
-
-::
+El proveedor ``Swiftmailer`` proporciona un servicio ``mailer`` o cliente de correo.
 
     $app->post('/feedback', function () use ($app) {
         $request = $app['request'];

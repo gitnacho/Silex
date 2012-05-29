@@ -12,8 +12,6 @@ Parámetros
 
 * **twig.options** (opcional): Una matriz asociativa de opciones *Twig*. Echa un vistazo a la documentación de *Twig* para más información.
 
-* **twig.class_path** (opcional): Ruta a dónde se encuentra la biblioteca *Twig*.
-
 * **twig.form.templates** (opcional): Una matriz de plantillas utilizada para reproducir formularios (disponible únicamente cuando está habilitado el ``FormServiceProvider``).
 
 Servicios
@@ -21,23 +19,47 @@ Servicios
 
 * **twig**: La instancia de ``Twig_Environment``. La principal forma de interactuar con *Twig*.
 
-* **twig.configure**: :ref:`Cierre protegido <cierres-protegidos>` que toma el entorno *Twig* como argumento. Lo puedes utilizar para agregar más globales personalizadas.
+* **twig.configure**: :ref:`Cierre protegido </services#cierres-protegidos>` que toma el entorno *Twig* como argumento. Lo puedes utilizar para agregar más globales personalizadas.
 
-* **twig.loader**: El cargador de plantillas *Twig* que utilizan las opciones ``twig.path`` y ``twig.templates``. También puedes reemplazar el cargador completamente.
+* **twig.loader**: El cargador de plantillas *Twig* utiliza las opciones ``twig.path`` y ``twig.templates``. También puedes reemplazar el cargador completamente.
 
 Registrando
 -----------
 
-Asegúrate de colocar una copia de *Twig* en el directorio ``vendor/twig``::
+.. code-block:: php
 
     $app->register(new Silex\Provider\TwigServiceProvider(), array(
-        'twig.path'       => __DIR__.'/views',
-        'twig.class_path' => __DIR__.'/vendor/twig/lib',
+        'twig.path' => __DIR__.'/views',
     ));
 
 .. note::
 
-    *Twig* no está compilado en el archivo ``silex.phar``. Tienes que añadir tu propia copia de *Twig* a tu aplicación.
+    *Twig* no viene en los archivos ``silex``, por lo tanto necesitas añadirlo como dependencia en tu archivo :file:`composer.json`:
+
+    .. code-block:: json
+
+        "require": {
+            "twig/twig": ">=1.8,<2.0-dev"
+        }
+
+Integrando componentes de *Symfony2*
+------------------------------------
+
+*Symfony* incluye un puente a *Twig* que proporciona integración adicional entre algunos componentes de *Symfony2* y *Twig*. Añádelo como dependencia a tu archivo :file:`composer.json`:
+
+.. code-block:: json
+
+    "require": {
+        "symfony/twig-bridge": "2.1.*",
+    }
+
+Cuando está presente el ``TwigServiceProvider`` te proporcionará las siguientes capacidades adicionales:
+
+* **UrlGeneratorServiceProvider**: Si estás usando el ``UrlGeneratorServiceProvider``, tendrás acceso a las funciones ``path()`` y ``url()`` functions. Puedes encontrar más información en la documentación de `enrutado de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/routing.html#generando-url-desde-una-plantilla>`_.
+
+* **TranslationServiceProvider**: Si estás usando el ``TranslationServiceProvider``, obtendrás las funciones ``trans()`` y ``transchoice()`` para traducción en plantillas *Twig*. Puedes encontrar más información en la documentación de `traducción de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/translation.html#plantillas-twig>`_.
+
+* **FormServiceProvider**: Si estás usando el ``FormServiceProvider``, recibirás un conjunto de ayudantes para trabajar con formularios en plantillas. Puedes encontrar más información en la `referencia de formularios de Symfony2 <http://gitnacho.github.com/symfony-docs-es/reference/forms/twig_reference.html>`_.
 
 Uso
 ---
