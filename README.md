@@ -45,4 +45,4 @@ Silex se libera bajo la licencia MIT.
 
 [1]: http://symfony.com
 [2]: http://silex.sensiolabs.org/get/silex.zip
-[3]: http://gitnacho.github.com/silex
+[3]: http://gitnacho.github.com/Silex
