@@ -3,8 +3,7 @@ Silex, una sencilla plataforma web
 
 [![Build Status](https://secure.travis-ci.org/fabpot/Silex.png?branch=master)](http://travis-ci.org/fabpot/Silex)
 
-Silex es una sencilla plataforma web para desarrollar sencillos
-sitios web basados en componentes de [Symfony2][1]:
+Silex es una microplataforma web para desarrollar sencillos sitios web basados en componentes de [Symfony2][1]:
 
 
 ```php
