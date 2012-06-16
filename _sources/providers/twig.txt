@@ -34,7 +34,7 @@ Registrando
 
     *Twig* viene con el archivo "gordo" de *Silex* pero no con el normal. Si estás usando ``Composer``, añádelo como dependencia a tu archivo ``composer.json``:
 
-    .. code-block:: json
+    .. code-block:: javascript
 
         "require": {
             "twig/twig": ">=1.8,<2.0-dev"
@@ -45,7 +45,7 @@ Integrando componentes de *Symfony2*
 
 *Symfony* incluye un puente a *Twig* que proporciona integración adicional entre algunos componentes de *Symfony2* y *Twig*. Añádelo como dependencia a tu archivo :file:`composer.json`:
 
-.. code-block:: json
+.. code-block:: javascript
 
     "require": {
         "symfony/twig-bridge": "2.1.*",
@@ -53,7 +53,7 @@ Integrando componentes de *Symfony2*
 
 Cuando está presente el ``TwigServiceProvider`` te proporcionará las siguientes capacidades adicionales:
 
-* **UrlGeneratorServiceProvider**: Si estás usando el ``UrlGeneratorServiceProvider``, tendrás acceso a las funciones ``path()`` y ``url()`` functions. Puedes encontrar más información en la documentación de `enrutado de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/routing.html#generando-url-desde-una-plantilla>`_.
+* **UrlGeneratorServiceProvider**: Si estás usando el ``UrlGeneratorServiceProvider``, tendrás acceso a las funciones ``path()`` y ``url()``. Puedes encontrar más información en la documentación de `enrutado de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/routing.html#generando-url-desde-una-plantilla>`_.
 
 * **TranslationServiceProvider**: Si estás usando el ``TranslationServiceProvider``, obtendrás las funciones ``trans()`` y ``transchoice()`` para traducción en plantillas *Twig*. Puedes encontrar más información en la documentación de `traducción de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/translation.html#plantillas-twig>`_.
 

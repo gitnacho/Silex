@@ -82,7 +82,7 @@
 <div class="section" id="parametros">
 <h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul class="simple">
-<li><strong>form.secret</strong>: Esto el valor secreto se utiliza para generar y validar el fragmento <tt class="docutils literal"><span class="pre">CSRF</span></tt> para una página específica. Es muy importante para ti para ajustar este valor a un valor estático generado aleatoriamente, para impedir el secuestro de tus formularios. Por omisión es <tt class="docutils literal"><span class="pre">md5(__DIR__)</span></tt>.</li>
+<li><strong>form.secret</strong>: Este valor secreto se utiliza para generar y validar el fragmento <tt class="docutils literal"><span class="pre">CSRF</span></tt> para una página específica. Es muy importante para que ajustes este valor a un valor estático generado aleatoriamente, para impedir el secuestro de tus formularios. Por omisión es <tt class="docutils literal"><span class="pre">md5(__DIR__)</span></tt>.</li>
 </ul>
 </div>
 <div class="section" id="servicios">
@@ -102,10 +102,18 @@
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
 <p>El Componente <tt class="docutils literal"><span class="pre">Form</span></tt> de <em>Symfony</em> viene con el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal. Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
-<div class="last highlight-json"><pre>"require": {
-    "symfony/form": "2.1.*"
-}</pre>
+<div class="last highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;symfony/form&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
+</div>
+<p>Si vas a utilizar la extensión de validación con formularios, también debes registrar los componentes <tt class="docutils literal"><span class="pre">symfony/config</span></tt> y <tt class="docutils literal"><span class="pre">symfony/translation</span></tt>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;symfony/config&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;symfony/translation&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="uso">

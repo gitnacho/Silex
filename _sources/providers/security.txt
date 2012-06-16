@@ -1,12 +1,12 @@
 ``SecurityServiceProvider``
 ===========================
 
-El ``SecurityServiceProvider`` gestiona la authentication y autorización de tus aplicaciones.
+El ``SecurityServiceProvider`` gestiona la autenticación y autorización de tus aplicaciones.
 
 Parámetros
 ----------
 
-n/a
+no disponible
 
 Servicios
 ---------
@@ -40,7 +40,7 @@ Registrando
 
     El Componente ``Security`` de *Symfony* viene con el archivo "gordo" de *Silex* pero no en el normal. Si estás usando ``Composer``, añádelo como dependencia a tu archivo ``composer.json``:
 
-    .. code-block:: json
+    .. code-block:: javascript
 
         "require": {
             "symfony/security": "2.1.*"
@@ -70,12 +70,12 @@ Si no hay ninguna información sobre el usuario, la ficha es ``null``. Si el usu
         $user = $token->getUser();
     }
 
-El usuario puede ser una cadena, y objeto con un método ``_toString()``, o una instancia de `UserInterface <http://api.symfony.com/master/Symfony/Component/Security/Core/User/UserInterface.html>`_.
+El usuario puede ser una cadena, y un objeto con un método ``_toString()``, o una instancia de `UserInterface <http://api.symfony.com/master/Symfony/Component/Security/Core/User/UserInterface.html>`_.
 
-Asegurando una ruta con autenticación *HTTP*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Protegiendo una ruta con autenticación *HTTP*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-La siguiente configuración de autenticación *HTTP* básica para asegurar direcciones *URL* bajo ``/admin/``::
+La siguiente configuración usa autenticación *HTTP* básica para proteger las direcciones *URL* bajo ``/admin/``::
 
     $app['security.firewalls'] = array(
         'admin' => array(
@@ -88,7 +88,7 @@ La siguiente configuración de autenticación *HTTP* básica para asegurar direc
         ),
     );
 
-``pattern`` es una expresión regular; la opción ``http`` le dice a la capa de seguridad que utilice autenticación *HTTP* básica y opción ``users`` define usuarios válidos.
+``pattern`` es una expresión regular; la opción ``http`` le dice a la capa de seguridad que utilice autenticación *HTTP* básica y la opción ``users`` define usuarios válidos.
 
 Cada usuario está definido con la siguiente información:
 
@@ -102,24 +102,24 @@ Cada usuario está definido con la siguiente información:
 
 La configuración predeterminada de la extensión obliga a codificar las contraseñas. Para generar una contraseña codificada válida desde una contraseña cruda, usa el servicio ``security.encoder``::
 
-    // Encuentra la contraseña codificada para foo
+    // genera la contraseña codificada para foo
     $password = $app['security.encoder']->encodePassword('foo', null);
 
 El segundo argumento es la sal a utilizar para el usuario (de manera predeterminada es ``null``).
 
 Cuándo el usuario está autenticado, el usuario almacenado en la ficha es una instancia de `User <http://api.symfony.com/master/Symfony/Component/Security/Core/User/User.html>`_
 
-Asegurando una ruta con un formulario
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Protegiendo una ruta con un formulario
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Utilizar un formulario para autenticar usuarios es muy similar a la configuración anterior.
 En vez de utilizar la versión ``http``, usa ``form`` y define estos dos parámetros:
 
-* **login_path**: La ruta de inicio de sesión a dónde el usuario es redirigido cuándo está accediendo a una área asegurada sin estar autenticado de modo que pueda introducir sus credenciales;
+* **login_path**: La ruta de inicio de sesión a dónde el usuario es redirigido cuándo está accediendo a una área protegida sin estar autenticado a modo de que pueda introducir sus credenciales;
 
 * **check_path**: La *URL* utilizada por *Symfony* para validar las credenciales del usuario.
 
-Aquí tienes cómo para asegurar con una formulario todas las direcciones *URL* bajo ``/admin/``::
+Aquí tienes cómo proteger con un formulario todas las direcciones *URL* bajo ``/admin/``::
 
     $app['security.firewalls'] = array(
         'admin' => array(
@@ -133,9 +133,9 @@ Aquí tienes cómo para asegurar con una formulario todas las direcciones *URL* 
 
 Siempre ten en cuenta las siguientes dos reglas de oro:
 
-* La ruta ``login_path`` siempre se tiene que definido **fuera** del área asegurada (o si está en el área asegurada, tienes que habilitar el mecanismo de autenticación ``anónimo`` -- ve más abajo);
+* La ruta ``login_path`` siempre se tiene que definir **fuera** del área protegida (o si está en el área protegida, tienes que habilitar el mecanismo de autenticación ``anónimo`` -- ve más abajo);
 
-* La ruta ``check_path`` siempre se debe definir **dentro** del área asegurada.
+* La ruta ``check_path`` siempre se debe definir **dentro** del área protegida.
 
 Para que trabaje el formulario de inicio de sesión, crea un controlador donde inicies la sesión::
 
@@ -241,7 +241,7 @@ También puedes comprobar roles en las plantillas *Twig*:
         <a href="/secured?_switch_user=fabien">Switch to Fabien</a>
     {% endif %}
 
-Puede comprobar si un usuario está "plenamente autenticado" (no es un usuario anónimo, por ejemplo) con el rol especial ``IS_AUTHENTICATED_FULLY``:
+Puedes comprobar si un usuario está "plenamente autenticado" (no es un usuario anónimo, por ejemplo) con el rol especial ``IS_AUTHENTICATED_FULLY``:
 
 .. code-block:: jinja
 
@@ -262,7 +262,7 @@ Puede comprobar si un usuario está "plenamente autenticado" (no es un usuario a
 Suplantando a un usuario
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Si quieres ser capaz de cambiar a otro usuario (sin el conocer las credenciales del usuario), habilita la estrategia de autenticación ``switch_user``::
+Si quieres ser capaz de cambiar a otro usuario (sin conocer las credenciales del usuario), habilita la estrategia de autenticación ``switch_user``::
 
     $app['security.firewalls'] = array(
         'unsecured' => array(
@@ -298,12 +298,12 @@ Definir una jerarquía de roles te permite garantizar automáticamente algunos r
         'ROLE_ADMIN' => array('ROLE_USER', 'ROLE_ALLOWED_TO_SWITCH'),
     );
 
-Con esta configuración, todos los usuarios con el rol ``ROLE_ADMIN`` además, automáticamente tener los roles ``ROLE_USER`` y ``ROLE_ALLOWED_TO_SWITCH``.
+Con esta configuración, todos los usuarios con el rol ``ROLE_ADMIN`` además, automáticamente tendrán los roles ``ROLE_USER`` y ``ROLE_ALLOWED_TO_SWITCH``.
 
 Definiendo reglas de acceso
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Los roles son una gran manera de adaptar el comportamiento de tu sitio *web* que depende de grupos de usuarios, pero también se suele usar para proteger algunas áreas definiendo reglas de acceso::
+Los roles son una gran manera de adaptar el comportamiento de tu sitio *web* que depende de grupos de usuarios, pero también se suele usarlos para proteger algunas áreas definiendo reglas de acceso::
 
     $app['security.access_rules'] = array(
         array('^/admin', 'ROLE_ADMIN', 'https'),
@@ -390,4 +390,4 @@ Y aquí está el código que puedes utilizar para crear el esquema de la base de
 
 .. tip::
 
-    Si estás utilizando el *ORM* de *Doctrine*, el puente de *Symfony* para *Doctrine* proporciona una clase proveedora del usuarios que es capaz de cargar usuarios desde tus entidades.
+    Si estás utilizando el *ORM* de *Doctrine*, el puente de *Symfony* para *Doctrine* proporciona una clase proveedora de usuarios que es capaz de cargar usuarios desde tus entidades.

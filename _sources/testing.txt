@@ -52,7 +52,7 @@ Aquí puedes ver algunas de las aserciones disponibles. Hay una lista completa e
 
 .. note::
 
-    Para hacer comprobable tu aplicación, es necesario asegurarte de que sigue las instrucciones de "reutilización de aplicaciones" de :doc:`usage`.
+    Para hacer comprobable tu aplicación, es necesario asegurarte de que sigues las instrucciones de "reutilización de aplicaciones" de :doc:`usage`.
 
 Para tu ``WebTestCase``, tendrás que implementar un método ``createApplication``, el cual devuelve tu aplicación. Este, probablemente, se verá así::
 
@@ -113,7 +113,7 @@ El cliente representa un navegador. Este mantiene tu historial de navegación, `
 
 .. note::
 
-    Puedes encontrar alguna documentación para esto en la sección `cliente del capítulo de pruebas de la documentación de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/testing.html#el-cliente-de-pruebas>`_.
+    Puedes encontrar alguna documentación para esto en la sección `cliente del capítulo de pruebas de la documentación de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/testing.html#trabajando-con-el-cliente-de-pruebas>`_.
 
 ``Rastreador``
 --------------
@@ -122,7 +122,7 @@ El ``rastreador`` te permite inspeccionar el contenido de una página. Lo puedes
 
 .. note::
 
-    Puedes encontrar alguna documentación para este en la sección `rastreador del capítulo de pruebas de la documentación de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/testing.html#el-cliente-de-pruebas>`_.
+    Puedes encontrar alguna documentación para este en la sección `rastreador del capítulo de pruebas de la documentación de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/testing.html#el-crawler>`_.
 
 Configurando
 ------------

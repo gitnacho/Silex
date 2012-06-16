@@ -35,7 +35,7 @@ Registrando
 
     El componente de traducción de *Symfony* viene en el archivo "gordo" de *Silex* pero no en el normal. Si estás usando ``Composer``, añádelo como dependencia a tu archivo ``composer.json``:
 
-    .. code-block:: json
+    .. code-block:: javascript
 
         "require": {
             "symfony/translation": "2.1.*"
@@ -98,11 +98,11 @@ Tener tu traducción en archivos *PHP* puede ser un inconveniente. Esta receta t
 
 En primer lugar, añade los componentes ``Config`` y ``Yaml`` a tu archivo composer.
 
-.. code-block:: json
+.. code-block:: javascript
 
     "require": {
         "symfony/config": "2.1.*",
-        "symfony/yaml": "2.1.*",
+        "symfony/yaml": "2.1.*"
     }
 
 A continuación, debes crear las asignaciones de idioma en los archivos *YAML*. Un nombre que puedes utilizar es ``locales/en.yml``. Sólo haz la asignación en este archivo de la siguiente manera:
@@ -112,44 +112,35 @@ A continuación, debes crear las asignaciones de idioma en los archivos *YAML*. 
     hello: Hello %name%
     goodbye: Goodbye %name%
 
-Repite esto para todos tus idiomas. A continuación, configura el ``translator.domains`` para asignar idiomas a los archivos::
-
-    $app['translator.domains'] = array(
-        'messages' => array(
-            'en' => __DIR__.'/locales/en.yml',
-            'de' => __DIR__.'/locales/de.yml',
-            'fr' => __DIR__.'/locales/fr.yml',
-        ),
-    );
-
-Finalmente sobrescribe el ``translator.loader`` para utilizar ``YamlFileLoader`` en lugar del ``ArrayLoader`` predeterminado:
-
-.. code-block:: php
+Luego, registra el ``YamlFileLoader`` en el ``traductor`` y añade todos tus archivos de traducción::
 
     use Symfony\Component\Translation\Loader\YamlFileLoader;
 
-    $app['translator.loader'] = $app->share(function () {
-        return new YamlFileLoader();
-    });
+    $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+        $translator->addLoader('yaml', return new YamlFileLoader());
 
-Y eso es todo lo que necesitas para cargar traducciones desde archivos *YAML*.
+        $translator->addResource('yaml', __DIR__.'/locales/en.yml', 'en');
+        $translator->addResource('yaml', __DIR__.'/locales/de.yml', 'de');
+        $translator->addResource('yaml', __DIR__.'/locales/fr.yml', 'fr');
+
+        return $translator;
+    }));
 
 Archivos de idioma basados en *XLIFF*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Al igual que lo harías con los archivos de traducción *YAML*, primero te tienes que asegurar de que tienes como dependencia el componente ``Config`` de *Symfony2* (ve los detalles arriba).
 
-Luego, del mismo modo, crea los archivos *XLIFF* en tu directorio de regiones y configura la opción ``translator.domains`` para asignarlos.
+Luego, de igual manera, crea los archivos *XLIFF* en tu directorio de regiones y agrégalos al
+traductor::
 
-Finalmente redefine el ``translator.loader`` para utilizar un ``XliffFileLoader``::
+    $translator->addResource('xliff', __DIR__.'/locales/en.xlf', 'en');
+    $translator->addResource('xliff', __DIR__.'/locales/de.xlf', 'de');
+    $translator->addResource('xliff', __DIR__.'/locales/fr.xlf', 'fr');
 
-    use Symfony\Component\Translation\Loader\XliffFileLoader;
+.. note::
 
-    $app['translator.loader'] = $app->share(function () {
-        return new XliffFileLoader();
-    });
-
-¡Eso es todo!
+    El cargador *XLIFF* ya está preconfigurado por la extensión.
 
 Accediendo a las traducciones en las plantillas *Twig*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

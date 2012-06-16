@@ -1,7 +1,7 @@
 ``DoctrineServiceProvider``
 ===========================
 
-El ``DoctrineServiceProvider`` proporciona integración con *Doctrine* `DBAL <http://www.doctrine-project.org/projects/dbal>`_ para acceder fácilmente a la base de datos.
+El ``DoctrineServiceProvider`` proporciona integración con el `DBAL <http://www.doctrine-project.org/projects/dbal>`_ de *Doctrine* para acceder fácilmente a la base de datos.
 
 .. note::
 
@@ -54,7 +54,7 @@ Registrando
 
     El *DBAL* de *Doctrine* viene con el archivo "gordo" de *Silex* pero no en el normal. Si  estás usando ``Composer``, añádelo como dependencia en tu archivo ``composer.json``:
 
-    .. code-block:: json
+    .. code-block:: javascript
 
         "require": {
             "doctrine/dbal": "2.2.*",
@@ -117,4 +117,4 @@ Usando múltiples conexiones::
                 "<p>{$post['body']}</p>";
     });
 
-Para más información, consulta la `Documentación DBAL de Doctrine <http://www.doctrine-project.org/docs/dbal/2.0/en/>`_.
+Para más información, consulta la `Documentación del DBAL de Doctrine <http://www.doctrine-project.org/docs/dbal/2.0/en/>`_.

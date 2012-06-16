@@ -106,9 +106,10 @@
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
 <p>El componente de traducción de <em>Symfony</em> viene en el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal. Si estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia a tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
-<div class="last highlight-json"><pre>"require": {
-    "symfony/translation": "2.1.*"
-}</pre>
+<div class="last highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;symfony/translation&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -162,49 +163,46 @@
 <h3>Archivos de idioma basados en <em>YAML</em><a class="headerlink" href="#archivos-de-idioma-basados-en-yaml" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Tener tu traducción en archivos <em>PHP</em> puede ser un inconveniente. Esta receta te muestra cómo cargar traducciones de archivos <em>YAML</em> externos.</p>
 <p>En primer lugar, añade los componentes <tt class="docutils literal"><span class="pre">Config</span></tt> y <tt class="docutils literal"><span class="pre">Yaml</span></tt> a tu archivo composer.</p>
-<div class="highlight-json"><pre>"require": {
-    "symfony/config": "2.1.*",
-    "symfony/yaml": "2.1.*",
-}</pre>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;symfony/config&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;symfony/yaml&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 <p>A continuación, debes crear las asignaciones de idioma en los archivos <em>YAML</em>. Un nombre que puedes utilizar es <tt class="docutils literal"><span class="pre">locales/en.yml</span></tt>. Sólo haz la asignación en este archivo de la siguiente manera:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">hello</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Hello %name%</span>
 <span class="l-Scalar-Plain">goodbye</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Goodbye %name%</span>
 </pre></div>
 </div>
-<p>Repite esto para todos tus idiomas. A continuación, configura el <tt class="docutils literal"><span class="pre">translator.domains</span></tt> para asignar idiomas a los archivos:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;translator.domains&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">&#39;messages&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="s1">&#39;en&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/en.yml&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;de&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/de.yml&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;fr&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/fr.yml&#39;</span><span class="p">,</span>
-    <span class="p">),</span>
-<span class="p">);</span>
-</pre></div>
-</div>
-<p>Finalmente sobrescribe el <tt class="docutils literal"><span class="pre">translator.loader</span></tt> para utilizar <tt class="docutils literal"><span class="pre">YamlFileLoader</span></tt> en lugar del <tt class="docutils literal"><span class="pre">ArrayLoader</span></tt> predeterminado:</p>
+<p>Luego, registra el <tt class="docutils literal"><span class="pre">YamlFileLoader</span></tt> en el <tt class="docutils literal"><span class="pre">traductor</span></tt> y añade todos tus archivos de traducción:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\Translation\Loader\YamlFileLoader</span><span class="p">;</span>
 
-<span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;translator.loader&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nx">YamlFileLoader</span><span class="p">();</span>
-<span class="p">});</span>
+<span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;translator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">extend</span><span class="p">(</span><span class="s1">&#39;translator&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$translator</span><span class="p">,</span> <span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$translator</span><span class="o">-&gt;</span><span class="na">addLoader</span><span class="p">(</span><span class="s1">&#39;yaml&#39;</span><span class="p">,</span> <span class="k">return</span> <span class="k">new</span> <span class="nx">YamlFileLoader</span><span class="p">());</span>
+
+    <span class="nv">$translator</span><span class="o">-&gt;</span><span class="na">addResource</span><span class="p">(</span><span class="s1">&#39;yaml&#39;</span><span class="p">,</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/en.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;en&#39;</span><span class="p">);</span>
+    <span class="nv">$translator</span><span class="o">-&gt;</span><span class="na">addResource</span><span class="p">(</span><span class="s1">&#39;yaml&#39;</span><span class="p">,</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/de.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;de&#39;</span><span class="p">);</span>
+    <span class="nv">$translator</span><span class="o">-&gt;</span><span class="na">addResource</span><span class="p">(</span><span class="s1">&#39;yaml&#39;</span><span class="p">,</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/fr.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;fr&#39;</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nv">$translator</span><span class="p">;</span>
+<span class="p">}));</span>
 </pre></div>
 </div>
-<p>Y eso es todo lo que necesitas para cargar traducciones desde archivos <em>YAML</em>.</p>
 </div>
 <div class="section" id="archivos-de-idioma-basados-en-xliff">
 <h3>Archivos de idioma basados en <em>XLIFF</em><a class="headerlink" href="#archivos-de-idioma-basados-en-xliff" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Al igual que lo harías con los archivos de traducción <em>YAML</em>, primero te tienes que asegurar de que tienes como dependencia el componente <tt class="docutils literal"><span class="pre">Config</span></tt> de <em>Symfony2</em> (ve los detalles arriba).</p>
-<p>Luego, del mismo modo, crea los archivos <em>XLIFF</em> en tu directorio de regiones y configura la opción <tt class="docutils literal"><span class="pre">translator.domains</span></tt> para asignarlos.</p>
-<p>Finalmente redefine el <tt class="docutils literal"><span class="pre">translator.loader</span></tt> para utilizar un <tt class="docutils literal"><span class="pre">XliffFileLoader</span></tt>:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\Translation\Loader\XliffFileLoader</span><span class="p">;</span>
-
-<span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;translator.loader&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nx">XliffFileLoader</span><span class="p">();</span>
-<span class="p">});</span>
+<p>Luego, de igual manera, crea los archivos <em>XLIFF</em> en tu directorio de regiones y agrégalos al
+traductor:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$translator</span><span class="o">-&gt;</span><span class="na">addResource</span><span class="p">(</span><span class="s1">&#39;xliff&#39;</span><span class="p">,</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/en.xlf&#39;</span><span class="p">,</span> <span class="s1">&#39;en&#39;</span><span class="p">);</span>
+<span class="nv">$translator</span><span class="o">-&gt;</span><span class="na">addResource</span><span class="p">(</span><span class="s1">&#39;xliff&#39;</span><span class="p">,</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/de.xlf&#39;</span><span class="p">,</span> <span class="s1">&#39;de&#39;</span><span class="p">);</span>
+<span class="nv">$translator</span><span class="o">-&gt;</span><span class="na">addResource</span><span class="p">(</span><span class="s1">&#39;xliff&#39;</span><span class="p">,</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/fr.xlf&#39;</span><span class="p">,</span> <span class="s1">&#39;fr&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>¡Eso es todo!</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">El cargador <em>XLIFF</em> ya está preconfigurado por la extensión.</p>
+</div>
 </div>
 <div class="section" id="accediendo-a-las-traducciones-en-las-plantillas-twig">
 <h3>Accediendo a las traducciones en las plantillas <em>Twig</em><a class="headerlink" href="#accediendo-a-las-traducciones-en-las-plantillas-twig" title="Enlazar permanentemente con este título">¶</a></h3>

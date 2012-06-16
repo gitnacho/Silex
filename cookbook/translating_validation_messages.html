@@ -78,7 +78,7 @@
             
   <div class="section" id="traduciendo-mensajes-de-validacion">
 <h1>Traduciendo mensajes de validación<a class="headerlink" href="#traduciendo-mensajes-de-validacion" title="Enlazar permanentemente con este título">¶</a></h1>
-<p>Cuando trabajas con la validador de <em>Symfony2</em>, debería ser una tarea común mostrar mensajes de validación traducidos.</p>
+<p>Cuando trabajas con el validador de <em>Symfony2</em>, debería ser una tarea común mostrar mensajes de validación traducidos.</p>
 <p>Para ello, tendrás que registrar el traductor y apuntar a los recursos traducidos:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\TranslationServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
     <span class="s1">&#39;locale&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;sr_Latn&#39;</span><span class="p">,</span>

@@ -184,11 +184,11 @@
 <p>En este ejemplo estamos obteniendo el parámetro <tt class="docutils literal"><span class="pre">name</span></tt> desde la cadena de consulta, por lo que la ruta de la petición tendría que ser <tt class="docutils literal"><span class="pre">/hello?name=Fabien</span></tt>.</p>
 </div>
 </div>
-<div class="section" id="proveedores-de-controladores">
-<h2>Proveedores de controladores<a class="headerlink" href="#proveedores-de-controladores" title="Enlazar permanentemente con este título">¶</a></h2>
-<div class="section" id="id1">
-<h3>Cargando proveedores<a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Con el fin de cargar y usar un controlador del proveedor, debes &#8220;montar&#8221; tus controladores en una ruta:</p>
+<div class="section" id="proveedor-de-controladores">
+<span id="id1"></span><h2>Proveedor de controladores<a class="headerlink" href="#proveedor-de-controladores" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="id2">
+<h3>Cargando proveedores<a class="headerlink" href="#id2" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Con el fin de cargar y usar un proveedor de controladores, debes &#8220;montar&#8221; tus controladores bajo una ruta:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silex\Application</span><span class="p">();</span>
 
 <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">mount</span><span class="p">(</span><span class="s1">&#39;/blog&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Acme\BlogControllerProvider</span><span class="p">());</span>
@@ -196,8 +196,8 @@
 </div>
 <p>Todos los controladores definidos por el proveedor ahora estarán disponibles bajo la ruta <tt class="docutils literal"><span class="pre">/blog</span></tt>.</p>
 </div>
-<div class="section" id="id2">
-<h3>Creando un proveedor<a class="headerlink" href="#id2" title="Enlazar permanentemente con este título">¶</a></h3>
+<div class="section" id="id3">
+<h3>Creando un proveedor<a class="headerlink" href="#id3" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Los proveedores deben implementar la <tt class="docutils literal"><span class="pre">Silex\ControllerProviderInterface</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">interface</span> <span class="nx">ControllerProviderInterface</span>
 <span class="p">{</span>
@@ -228,7 +228,7 @@
 </pre></div>
 </div>
 <p>El método <tt class="docutils literal"><span class="pre">connect</span></tt> debe regresar una instancia de <tt class="docutils literal"><span class="pre">ControllerCollection</span></tt>.
-<tt class="docutils literal"><span class="pre">ControllerCollection</span></tt> es la clase donde todos los métodos controladores relacionados están definidos (como <tt class="docutils literal"><span class="pre">get</span></tt>, <tt class="docutils literal"><span class="pre">post</span></tt>, <tt class="docutils literal"><span class="pre">match</span></tt>, ...).</p>
+<tt class="docutils literal"><span class="pre">ControllerCollection</span></tt> es la clase donde están definidos todos los métodos controladores relacionados (como <tt class="docutils literal"><span class="pre">get</span></tt>, <tt class="docutils literal"><span class="pre">post</span></tt>, <tt class="docutils literal"><span class="pre">match</span></tt>, ...).</p>
 <div class="admonition tip">
 <p class="first admonition-title">Truco</p>
 <p class="last">La clase <tt class="docutils literal"><span class="pre">Application</span></tt> de hecho actúa en un delegado para estos métodos.</p>

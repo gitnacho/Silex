@@ -79,7 +79,7 @@
 <p>Este capítulo describe cómo utilizar <em>Silex</em>.</p>
 <div class="section" id="instalando">
 <h2>Instalando<a class="headerlink" href="#instalando" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Si quieres empezar rápidamente, <a class="reference external" href="http://silex.sensiolabs.org/download">descarga</a> <em>Silex</em> como un archivo y extraerlo, deberías tener la siguiente estructura de directorios:</p>
+<p>Si quieres empezar rápidamente, <a class="reference external" href="http://silex.sensiolabs.org/download">descarga</a> <em>Silex</em> como un archivo y descomprímelo, deberías tener la siguiente estructura de directorios:</p>
 <div class="highlight-text"><div class="highlight"><pre>├── composer.json
 ├── composer.lock
 ├── vendor
@@ -89,11 +89,12 @@
 </pre></div>
 </div>
 <p>Si quieres más flexibilidad, en su lugar usa <tt class="docutils literal"><span class="pre">Composer</span></tt>. Crea un archivo <tt class="file docutils literal"><span class="pre">composer.json</span></tt>:</p>
-<div class="highlight-json"><pre>{
-    "require": {
-        "silex/silex": "1.0.*"
-    }
-}</pre>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;silex/silex&quot;</span><span class="o">:</span> <span class="s2">&quot;1.0.*&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 <p>Y corre <tt class="docutils literal"><span class="pre">Composer</span></tt> para instalar <em>Silex</em> y todas sus dependencias:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -s http://getcomposer.org/installer | php
@@ -110,7 +111,7 @@
 </div>
 <div class="section" id="arranque">
 <h2>Arranque<a class="headerlink" href="#arranque" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Para arrancar <em>Silex</em>, todo lo que necesitas hacer es requerir el archivo <tt class="file docutils literal"><span class="pre">vendedor/autoload.php</span></tt> y crear una instancia de <tt class="docutils literal"><span class="pre">Silex\Application</span></tt>. Después de definir tu controlador, llama al método <tt class="docutils literal"><span class="pre">run</span></tt> en tu aplicación:</p>
+<p>Para arrancar <em>Silex</em>, todo lo que necesitas hacer es requerir el archivo <tt class="file docutils literal"><span class="pre">vendor/autoload.php</span></tt> y crear una instancia de <tt class="docutils literal"><span class="pre">Silex\Application</span></tt>. Después de definir tu controlador, llama al método <tt class="docutils literal"><span class="pre">run</span></tt> en tu aplicación:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="c1">// web/index.php</span>
 
 <span class="k">require_once</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/../vendor/autoload.php&#39;</span><span class="p">;</span>
@@ -122,7 +123,7 @@
 <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
 </pre></div>
 </div>
-<p>Entonces, tienes que configurar tu servidor <em>web</em> (ve lo consejos para <em>Apache</em> e <em>IIS</em> más adelante).</p>
+<p>Entonces, tienes que configurar tu servidor <em>web</em> (ve los consejos para <em>Apache</em> e <em>IIS</em> más adelante).</p>
 <div class="admonition tip">
 <p class="first admonition-title">Truco</p>
 <p>Cuando desarrollas un sitio <em>web</em>, posiblemente quieras activar el modo de depuración para que se te facilite la corrección de errores:</p>
@@ -147,8 +148,7 @@
 <p>Un patrón de ruta se compone de:</p>
 <ul class="simple">
 <li><em>Pattern</em>: El patrón de ruta define una ruta que apunta a un recurso. El patrón puede incluir partes variables y tú podrás establecer los requisitos con expresiones regulares.</li>
-<li><em>Method</em>: Uno de los siguientes métodos <em>HTTP</em>: <tt class="docutils literal"><span class="pre">GET</span></tt>, <tt class="docutils literal"><span class="pre">POST</span></tt>, <tt class="docutils literal"><span class="pre">PUT</span></tt>
-<tt class="docutils literal"><span class="pre">DELETE</span></tt>. Este describe la interacción con el recurso. Normalmente sólo se utilizan <tt class="docutils literal"><span class="pre">GET</span></tt> y <tt class="docutils literal"><span class="pre">POST</span></tt>, pero, también es posible utilizar los otros.</li>
+<li><em>Method</em>: Uno de los siguientes métodos <em>HTTP</em>: <tt class="docutils literal"><span class="pre">GET</span></tt>, <tt class="docutils literal"><span class="pre">POST</span></tt>, <tt class="docutils literal"><span class="pre">PUT</span></tt> o <tt class="docutils literal"><span class="pre">DELETE</span></tt>. Este describe la interacción con el recurso. Normalmente sólo se utilizan <tt class="docutils literal"><span class="pre">GET</span></tt> y <tt class="docutils literal"><span class="pre">POST</span></tt>, pero, también es posible utilizar los otros.</li>
 </ul>
 <p>El controlador se define usando un cierre de esta manera:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
@@ -187,11 +187,11 @@ La sintaxis para esto es <strong>NombreClase</strong>::<strong>nombreMétodo</st
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>Al visitar <tt class="docutils literal"><span class="pre">/blog</span></tt> devolverá una lista con los títulos de los comunicados en el <tt class="docutils literal"><span class="pre">blog</span></tt>. La declaración <tt class="docutils literal"><span class="pre">use</span></tt> significa algo diferente en este contexto. Esta instruye al cierre a importar la variable <tt class="docutils literal"><span class="pre">comunicadosBLog</span></tt> desde el ámbito externo. Esto te permite utilizarla dentro del cierre.</p>
+<p>Al visitar <tt class="docutils literal"><span class="pre">/blog</span></tt> devolverá una lista con los títulos de los artículos en el <tt class="docutils literal"><span class="pre">blog</span></tt>. La declaración <tt class="docutils literal"><span class="pre">use</span></tt> significa algo diferente en este contexto. Esta instruye al cierre para que importe la variable <tt class="docutils literal"><span class="pre">$blogPosts</span></tt> desde el ámbito externo. Esto te permite utilizarla dentro del cierre.</p>
 </div>
 <div class="section" id="enrutado-dinamico">
 <h3>Enrutado dinámico<a class="headerlink" href="#enrutado-dinamico" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Ahora, puedes crear otro controlador para ver comunicados individuales del <tt class="docutils literal"><span class="pre">blog</span></tt>:</p>
+<p>Ahora, puedes crear otro controlador para ver artículos individuales del <tt class="docutils literal"><span class="pre">blog</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Silex\Application</span> <span class="nv">$app</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$blogPosts</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$blogPosts</span><span class="p">[</span><span class="nv">$id</span><span class="p">]))</span> <span class="p">{</span>
         <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;Post </span><span class="si">$id</span><span class="s2"> does not exist.&quot;</span><span class="p">);</span>
@@ -205,7 +205,7 @@ La sintaxis para esto es <strong>NombreClase</strong>::<strong>nombreMétodo</st
 </pre></div>
 </div>
 <p>Esta definición de ruta tiene una parte variable <tt class="docutils literal"><span class="pre">{id}</span></tt> que se pasa al cierre.</p>
-<p>Cuando el comunicado no existe, estamos usando <tt class="docutils literal"><span class="pre">abort()</span></tt> para detener la petición inicial. En realidad, se produce una excepción, la cual veremos cómo manejar más adelante.</p>
+<p>Cuando el artículo no existe, usamos <tt class="docutils literal"><span class="pre">abort()</span></tt> para detener la petición inicial. En realidad, se produce una excepción, la cual veremos cómo manejar más adelante.</p>
 </div>
 <div class="section" id="ejemplo-de-ruta-post">
 <h3>Ejemplo de ruta <tt class="docutils literal"><span class="pre">POST</span></tt><a class="headerlink" href="#ejemplo-de-ruta-post" title="Enlazar permanentemente con este título">¶</a></h3>
@@ -231,12 +231,12 @@ La sintaxis para esto es <strong>NombreClase</strong>::<strong>nombreMétodo</st
 Esto nos permite fijar un código de estado <em>HTTP</em>, en este caso configurado a <tt class="docutils literal"><span class="pre">201</span> <span class="pre">Creado</span></tt>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
-<p class="last"><em>Silex</em> siempre utiliza internamente una <tt class="docutils literal"><span class="pre">Respuesta</span></tt>, la convierte a cadenas para respuestas con código de estado <tt class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></tt>.</p>
+<p class="last">Internamente, <em>Silex</em> siempre utiliza una <tt class="docutils literal"><span class="pre">Respuesta</span></tt>, la convierte a cadenas para respuestas con código de estado <tt class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></tt>.</p>
 </div>
 </div>
 <div class="section" id="otros-metodos">
 <h3>Otros métodos<a class="headerlink" href="#otros-metodos" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Puedes crear controladores para la mayoría de los métodos <em>HTTP</em>. Sólo tienes que llamar uno de estos métodos en tu aplicación: <tt class="docutils literal"><span class="pre">get</span></tt>, <tt class="docutils literal"><span class="pre">post</span></tt>, <tt class="docutils literal"><span class="pre">put</span></tt>, <tt class="docutils literal"><span class="pre">delete</span></tt>. También puedes llamar <tt class="docutils literal"><span class="pre">match</span></tt>, el cual coincidirá con todos los métodos:</p>
+<p>Puedes crear controladores para la mayoría de los métodos <em>HTTP</em>. Sólo tienes que llamar a uno de estos métodos en tu aplicación: <tt class="docutils literal"><span class="pre">get</span></tt>, <tt class="docutils literal"><span class="pre">post</span></tt>, <tt class="docutils literal"><span class="pre">put</span></tt> o <tt class="docutils literal"><span class="pre">delete</span></tt>. También puedes invocar a <tt class="docutils literal"><span class="pre">match</span></tt>, el cual coincidirá con todos los métodos:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">match</span><span class="p">(</span><span class="s1">&#39;/blog&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="o">...</span>
 <span class="p">});</span>
@@ -422,14 +422,14 @@ Esto nos permite fijar un código de estado <em>HTTP</em>, en este caso configur
 <p class="last">Los filtros sólo los ejecuta la <tt class="docutils literal"><span class="pre">Petición</span></tt> &#8220;maestra&#8221;.</p>
 </div>
 </div>
-<div class="section" id="servicios-intermedios-de-logica-para-la-ruta">
-<h2>Servicios intermedios de lógica para la ruta<a class="headerlink" href="#servicios-intermedios-de-logica-para-la-ruta" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Los servicios de lógica intermedios (<tt class="docutils literal"><span class="pre">middlewares</span></tt>) para la ruta son ejecutables <em>PHP</em> que se desencadenan cuando coincide su ruta asociada.</p>
+<div class="section" id="logica-intermedia-para-la-ruta">
+<h2>Lógica intermedia para la ruta<a class="headerlink" href="#logica-intermedia-para-la-ruta" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Los servicios de lógica intermedia (<tt class="docutils literal"><span class="pre">middlewares</span></tt>) para la ruta son ejecutables <em>PHP</em> que se activan cuando coincide su ruta asociada.</p>
 <ul class="simple">
-<li>La lógica intermedia <tt class="docutils literal"><span class="pre">before</span></tt> se lanza justo antes de la ruta retrollamada, pero después de aplicar los filtros <tt class="docutils literal"><span class="pre">before</span></tt>;</li>
-<li>La lógica intermedia <tt class="docutils literal"><span class="pre">after</span></tt> es lanzada justo después de la ruta retrollamada, pero antes de aplicar los filtros <tt class="docutils literal"><span class="pre">after</span></tt>.</li>
+<li>La lógica intermedia <tt class="docutils literal"><span class="pre">before</span></tt> se lanza justo antes de la retrollamada a la ruta, pero después de aplicar los filtros <tt class="docutils literal"><span class="pre">before</span></tt>;</li>
+<li>La lógica intermedia <tt class="docutils literal"><span class="pre">after</span></tt> se activa justo después de la retrollamada a la ruta, pero antes de aplicar los filtros <tt class="docutils literal"><span class="pre">after</span></tt>.</li>
 </ul>
-<p>Los puedes usar en una gran cantidad de situaciones; Por ejemplo, aquí está una simple comprobación de &#8220;usuario anónimo/registrado&#8221;:</p>
+<p>Los puedes usar en una gran cantidad de situaciones; Por ejemplo, aquí está una simple comprobación de &#8220;anónimo/usuario registrado&#8221;:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$mustBeAnonymous</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;session&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">has</span><span class="p">(</span><span class="s1">&#39;userId&#39;</span><span class="p">))</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">redirect</span><span class="p">(</span><span class="s1">&#39;/user/logout&#39;</span><span class="p">);</span>
@@ -458,7 +458,7 @@ Esto nos permite fijar un código de estado <em>HTTP</em>, en este caso configur
 <span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="nv">$mustBeLogged</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Los métodos <tt class="docutils literal"><span class="pre">before</span></tt> y <tt class="docutils literal"><span class="pre">after</span></tt> se pueden invocar varias veces para una ruta dada, en cuyo caso son lanzados en el mismo orden cuando que los añadiste a la
+<p>Los métodos <tt class="docutils literal"><span class="pre">before</span></tt> y <tt class="docutils literal"><span class="pre">after</span></tt> se pueden invocar varias veces para una ruta dada, en cuyo caso son lanzados en el mismo orden que cuando los añadiste a la
 ruta.</p>
 <p>Por comodidad, la lógica intermedia <tt class="docutils literal"><span class="pre">before</span></tt> se invoca con la instancia de la <tt class="docutils literal"><span class="pre">Petición</span></tt> actual como un argumento y la lógica intermedia <tt class="docutils literal"><span class="pre">after</span></tt> se invoca
 con la <tt class="docutils literal"><span class="pre">Petición</span></tt> actual y la instancia de la <tt class="docutils literal"><span class="pre">Respuesta</span></tt> como argumentos.</p>
@@ -470,7 +470,7 @@ con la <tt class="docutils literal"><span class="pre">Petición</span></tt> actu
 </div>
 <div class="section" id="configuracion-global">
 <h2>Configuración global<a class="headerlink" href="#configuracion-global" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Si un ajuste del controlador se debe aplicar a todos los controladores (un convertidor, un soporte lógico intermedio, un requisito o un valor predeterminado), los puedes configurar en <tt class="docutils literal"><span class="pre">$application['controllers']</span></tt>, que tiene todos los controladores de la aplicación:</p>
+<p>Si una opción del controlador se debe aplicar a todos los controladores (un convertidor, un servicio de lógica intermedia, un requisito o un valor predeterminado), los puedes configurar en <tt class="docutils literal"><span class="pre">$application['controllers']</span></tt>, que tiene todos los controladores de la aplicación:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;controllers&#39;</span><span class="p">]</span>
     <span class="o">-&gt;</span><span class="na">value</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
     <span class="o">-&gt;</span><span class="na">assert</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;\d+&#39;</span><span class="p">)</span>
@@ -521,7 +521,7 @@ con la <tt class="docutils literal"><span class="pre">Petición</span></tt> actu
  <span class="p">});</span>
 </pre></div>
 </div>
-<p>Si deseas configurar el registro puedes utilizar un controlador de errores independiente para eso.
+<p>Si deseas configurar el registro cronológico de eventos, para ello, puedes utilizar un controlador de errores independiente.
 Sólo asegúrate de registrarlo antes que los controladores que responden al error, porque una vez que se devuelve una respuesta, se omiten los demás controladores.</p>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
@@ -612,7 +612,7 @@ Sólo asegúrate de registrarlo antes que los controladores que responden al err
 <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">mount</span><span class="p">(</span><span class="s1">&#39;/forum&#39;</span><span class="p">,</span> <span class="nv">$forum</span><span class="p">);</span>
 </pre></div>
 </div>
-<p><tt class="docutils literal"><span class="pre">mount()</span></tt> prefija todas las rutas con la cadena dada y las integra en la aplicación principal. Por lo tanto, <tt class="docutils literal"><span class="pre">/</span></tt> se asignará a la página principal, <tt class="docutils literal"><span class="pre">/blog/</span> <span class="pre">``</span> <span class="pre">a</span> <span class="pre">la</span> <span class="pre">página</span> <span class="pre">principal</span> <span class="pre">del</span> <span class="pre">blog,</span> <span class="pre">y</span> <span class="pre">``/forum/</span></tt> a la página principal del foro.</p>
+<p><tt class="docutils literal"><span class="pre">mount()</span></tt> prefija todas las rutas con la cadena dada y las integra en la aplicación principal. Por lo tanto, <tt class="docutils literal"><span class="pre">/</span></tt> se asignará a la página principal, <tt class="docutils literal"><span class="pre">/blog/</span></tt> a la página principal del blog, y <tt class="docutils literal"><span class="pre">/forum/</span></tt> a la página principal del foro.</p>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
 <p class="last">Cuando invocas a <tt class="docutils literal"><span class="pre">get()</span></tt>, <tt class="docutils literal"><span class="pre">match()</span></tt>, o cualquier otro método <em>HTTP</em> de la aplicación, de hecho, los estás llamando en una instancia predeterminada de <tt class="docutils literal"><span class="pre">ControllerCollection</span></tt> (almacenado en <tt class="docutils literal"><span class="pre">$app['controllers']</span></tt>).</p>
@@ -640,7 +640,7 @@ Sólo asegúrate de registrarlo antes que los controladores que responden al err
 <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">mount</span><span class="p">(</span><span class="s1">&#39;/blog&#39;</span><span class="p">,</span> <span class="k">include</span> <span class="s1">&#39;blog.php&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p class="last">En lugar de necesitar un archivo, también puedes crear una <tt class="xref doc docutils literal"><span class="pre">Proveedor</span> <span class="pre">de</span> <span class="pre">controladores</span></tt>.</p>
+<p class="last">En lugar de necesitar un archivo, también puedes crear un <a class="reference internal" href="providers.html#proveedor-de-controladores"><em>Proveedor de controladores</em></a>.</p>
 </div>
 </div>
 <div class="section" id="json">
@@ -676,7 +676,7 @@ Simplemente le tienes que proporcionar tus datos, código de estado y cabeceras,
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>Si necesitas enviar fragmentos, asegúrate de llamar a <tt class="docutils literal"><span class="pre">ob_flush</span></tt> y <tt class="docutils literal"><span class="pre">flush</span></tt> después de cada parte:</p>
+<p>Si necesitas enviar segmentos, asegúrate de llamar a <tt class="docutils literal"><span class="pre">ob_flush</span></tt> y <tt class="docutils literal"><span class="pre">flush</span></tt> después de cada parte:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$stream</span> <span class="o">=</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="nv">$fh</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="s1">&#39;http://www.ejemplo.com/&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">);</span>
     <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nv">$fh</span><span class="p">))</span> <span class="p">{</span>
@@ -694,7 +694,7 @@ Simplemente le tienes que proporcionar tus datos, código de estado y cabeceras,
 <p>Asegúrate de proteger tu aplicación contra ataques.</p>
 <div class="section" id="escapando">
 <h3>Escapando<a class="headerlink" href="#escapando" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Cuando reproduces la entrada del usuario (ya sea en las variables <tt class="docutils literal"><span class="pre">GET/POST</span></tt> o en variables obtenidas desde la petición), tendrás que asegurarte de escaparlas correctamente, para evitar ataques que exploten vulnerabilidades del sistema.</p>
+<p>Cuando reproduces cualquier aportación de los usuarios (ya sea en las variables <tt class="docutils literal"><span class="pre">GET/POST</span></tt> o en variables obtenidas desde la petición), tendrás que asegurarte de escaparlas correctamente, para evitar ataques que exploten vulnerabilidades del sistema.</p>
 <ul>
 <li><p class="first"><strong>Escapando HTML</strong>: <em>PHP</em> proporciona la función <tt class="docutils literal"><span class="pre">htmlspecialchars</span></tt> para esto.
 <em>Silex</em> ofrece un atajo, el método <tt class="docutils literal"><span class="pre">escape</span></tt>:</p>
@@ -763,7 +763,7 @@ Simplemente le tienes que proporcionar tus datos, código de estado y cabeceras,
 </div>
 <div class="section" id="iis">
 <h3><tt class="docutils literal"><span class="pre">IIS</span></tt><a class="headerlink" href="#iis" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Si estás utilizando el <tt class="docutils literal"><span class="pre">Internet</span> <span class="pre">Information</span> <span class="pre">Services</span></tt> de <em>Windows</em>, puedes utilizar de ejemplo este archivo <tt class="docutils literal"><span class="pre">web.config</span></tt>:</p>
+<p>Si estás utilizando el <tt class="docutils literal"><span class="pre">Internet</span> <span class="pre">Information</span> <span class="pre">Services</span></tt> de <em>Windows</em>, puedes usar como ejemplo el archivo <tt class="file docutils literal"><span class="pre">web.config</span></tt>:</p>
 <div class="highlight-xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
 <span class="nt">&lt;configuration&gt;</span>
     <span class="nt">&lt;system.webServer&gt;</span>

@@ -6,7 +6,7 @@ El ``FormServiceProvider`` proporciona un servicio para construir formularios en
 Parámetros
 ----------
 
-* **form.secret**: Esto el valor secreto se utiliza para generar y validar el fragmento ``CSRF`` para una página específica. Es muy importante para ti para ajustar este valor a un valor estático generado aleatoriamente, para impedir el secuestro de tus formularios. Por omisión es ``md5(__DIR__)``.
+* **form.secret**: Este valor secreto se utiliza para generar y validar el fragmento ``CSRF`` para una página específica. Es muy importante para que ajustes este valor a un valor estático generado aleatoriamente, para impedir el secuestro de tus formularios. Por omisión es ``md5(__DIR__)``.
 
 Servicios
 ---------
@@ -28,11 +28,20 @@ Registrando
 
     El Componente ``Form`` de *Symfony* viene con el archivo "gordo" de *Silex* pero no en el normal. Si  estás usando ``Composer``, añádelo como dependencia en tu archivo ``composer.json``:
 
-    .. code-block:: json
+    .. code-block:: javascript
 
         "require": {
             "symfony/form": "2.1.*"
         }
+
+Si vas a utilizar la extensión de validación con formularios, también debes registrar los componentes ``symfony/config`` y ``symfony/translation``:
+
+.. code-block:: javascript
+
+    "require": {
+        "symfony/config": "2.1.*",
+        "symfony/translation": "2.1.*"
+    }
 
 Uso
 ---

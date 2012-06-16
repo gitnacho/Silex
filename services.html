@@ -110,13 +110,13 @@
 <p>Un <tt class="docutils literal"><span class="pre">IDC</span></tt> o contenedor de servicio es responsable de crear y almacenar servicios.
 Este puede crear dependencias recurrentemente de los servicios solicitados e inyectarlos. Lo hace de manera diferida, lo cual significa que un servicio sólo se crea cuando realmente se necesita.</p>
 <p>La mayoría de los contenedores son muy complejos y se configuran a través de archivos <em>XML</em> o <em>YAML</em>.</p>
-<p><em>Pimple</em> es diferente</p>
+<p><tt class="docutils literal"><span class="pre">Pimple</span></tt> es diferente</p>
 </div>
 </div>
 <div class="section" id="id1">
-<h2><em>Pimple</em><a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h2>
-<p><em>Pimple</em>, probablemente, es el más simple contenedor de servicios que hay. Usa exhaustivamente los cierres que implementan la interfaz <tt class="docutils literal"><span class="pre">ArrayAccess</span></tt>.</p>
-<p>Vamos a empezar por crear una nueva instancia de <em>Pimple</em> &#8211; y puesto que <tt class="docutils literal"><span class="pre">Silex\application</span></tt> extiende a <em>Pimple</em> todo esto se aplica a <em>Silex</em> también:</p>
+<h2><tt class="docutils literal"><span class="pre">Pimple</span></tt><a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">Pimple</span></tt>, probablemente, es el más simple contenedor de servicios que hay. Usa exhaustivamente los cierres que implementan la interfaz <tt class="docutils literal"><span class="pre">ArrayAccess</span></tt>.</p>
+<p>Vamos a empezar por crear una nueva instancia de <tt class="docutils literal"><span class="pre">Pimple</span></tt> &#8211; y puesto que <tt class="docutils literal"><span class="pre">Silex\application</span></tt> extiende a <tt class="docutils literal"><span class="pre">Pimple</span></tt> todo esto se aplica a <em>Silex</em> también:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$container</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pimple</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -127,36 +127,36 @@ Este puede crear dependencias recurrentemente de los servicios solicitados e iny
 <div class="section" id="parametros">
 <h3>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Puedes ajustar los parámetros (que suelen ser cadenas) estableciendo una clave en el arreglo del contenedor:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algún_parámetro&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;valor&#39;</span><span class="p">;</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algun_parametro&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;valor&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>La clave del arreglo puede ser cualquier cosa, por convención se utilizan puntos para denominar los espacios de nombres:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;activo.anfitrión&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;http://cdn.misitio.com/&#39;</span><span class="p">;</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;activo.anfitrion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;http://cdn.misitio.com/&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Es posible leer valores de parámetros con la misma sintaxis:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">echo</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algún_parámetro&#39;</span><span class="p">];</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">echo</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algun_parametro&#39;</span><span class="p">];</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="definiendo-servicios">
 <h3>Definiendo servicios<a class="headerlink" href="#definiendo-servicios" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>La definición de servicios no es diferente de la definición de parámetros. Sólo tienes que establecer una clave en el arreglo del contenedor a un cierre. No obstante, cuando recuperes el servicio, se ejecuta el cierre. Esto permite la creación diferida de servicios:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_service&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algun_servicio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">new</span> <span class="nx">Service</span><span class="p">();</span>
 <span class="p">};</span>
 </pre></div>
 </div>
 <p>Y para recuperar el servicio, utiliza:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$service</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_service&#39;</span><span class="p">];</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$service</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algun_servicio&#39;</span><span class="p">];</span>
 </pre></div>
 </div>
-<p>Cada vez que llames a  <tt class="docutils literal"><span class="pre">$app['some_service']</span></tt>, se crea una nueva instancia del servicio.</p>
+<p>Cada vez que llames a <tt class="docutils literal"><span class="pre">$app['algun_servicio']</span></tt>, se crea una nueva instancia del servicio.</p>
 </div>
 <div class="section" id="servicios-compartidos">
 <h3>Servicios compartidos<a class="headerlink" href="#servicios-compartidos" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Posiblemente quieras utilizar la misma instancia de un servicio a través de todo tu código. A fin de que puedas hacer <em>compartido</em> un servicio:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_service&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algun_servicio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">new</span> <span class="nx">Service</span><span class="p">();</span>
 <span class="p">});</span>
 </pre></div>
@@ -167,12 +167,12 @@ Este puede crear dependencias recurrentemente de los servicios solicitados e iny
 <h3>Accediendo al contenedor desde un cierre<a class="headerlink" href="#accediendo-al-contenedor-desde-un-cierre" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>En muchos casos, desearás acceder al contenedor de servicios dentro de un cierre en la definición del servicio. Por ejemplo, al recuperar servicios de los que depende el servicio actual.</p>
 <p>Debido a esto, el contenedor se pasa al cierre como argumento:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_service&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nx">Service</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_other_service&#39;</span><span class="p">],</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;some_service.config&#39;</span><span class="p">]);</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algun_servicio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Service</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algun_otro_servicio&#39;</span><span class="p">],</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;algun_servicio.config&#39;</span><span class="p">]);</span>
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Aquí puedes ver un ejemplo de Inyección de dependencias. <tt class="docutils literal"><span class="pre">some_service</span></tt> depende de <tt class="docutils literal"><span class="pre">some_other_service</span></tt> y toma <tt class="docutils literal"><span class="pre">some_service.config</span></tt> como opciones de configuración. La dependencia sólo se crea cuando accedes a <tt class="docutils literal"><span class="pre">some_service</span></tt>, y es posible sustituir cualquier dependencia simplemente sustituyendo esas definiciones.</p>
+<p>Aquí puedes ver un ejemplo de Inyección de dependencias. <tt class="docutils literal"><span class="pre">algun_servicio</span></tt> depende de <tt class="docutils literal"><span class="pre">algun_otro_servicio</span></tt> y toma <tt class="docutils literal"><span class="pre">algun_servicio.config</span></tt> como opciones de configuración. La dependencia sólo se crea cuando accedes a <tt class="docutils literal"><span class="pre">algun_servicio</span></tt>, y es posible sustituir cualquier dependencia simplemente sustituyendo esas definiciones.</p>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
 <p class="last">Esto también trabaja para los servicios compartidos.</p>
@@ -182,7 +182,7 @@ Este puede crear dependencias recurrentemente de los servicios solicitados e iny
 <span id="id2"></span><h3>Cierres protegidos<a class="headerlink" href="#cierres-protegidos" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Debido a que el contenedor ve los cierres cómo fábricas de servicios, siempre se deben ejecutar cuando los leas.</p>
 <p>En algunos casos, sin embargo, deseas almacenar un cierre como un parámetro, de modo que lo puedas recuperar y ejecutar tú mismo &#8211; con tus propios argumentos.</p>
-<p>Esta es la razón por la cual <em>Pimple</em> te permite proteger tus cierres de ser ejecutados, usando el método <tt class="docutils literal"><span class="pre">protect</span></tt>:</p>
+<p>Esta es la razón por la cual <tt class="docutils literal"><span class="pre">Pimple</span></tt> te permite proteger tus cierres de ser ejecutados, usando el método <tt class="docutils literal"><span class="pre">protect</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;closure_parameter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">protect</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$a</span><span class="p">,</span> <span class="nv">$b</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nv">$a</span> <span class="o">+</span> <span class="nv">$b</span><span class="p">;</span>
 <span class="p">});</span>
@@ -250,7 +250,7 @@ Cuando el puente <tt class="docutils literal"><span class="pre">Monolog</span></
 <li><p class="first"><strong>debug</strong> (opcional): Indica si o no se ejecuta la aplicación en modo de depuración.</p>
 <p>El valor predeterminado es <tt class="docutils literal"><span class="pre">false</span></tt>.</p>
 </li>
-<li><p class="first"><strong>charset</strong> (opcional): El juego de caracteres a usar para las Respuestas.</p>
+<li><p class="first"><strong>charset</strong> (opcional): El juego de caracteres a usar para las <tt class="docutils literal"><span class="pre">Respuestas</span></tt>.</p>
 <p>Por omisión es UTF-8.</p>
 </li>
 </ul>

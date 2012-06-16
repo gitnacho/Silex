@@ -16,9 +16,9 @@ La sección del recetario contiene instructivos para resolver problemas específ
 Recetas
 -------
 
-* :doc:`Aceptando el cuerpo de una petición JSON <json_request_body>` Una necesidad común en la construcción de una *API* útil es la posibilidad de aceptar una entidad JSON codificada desde el cuerpo de la petición.
+* :doc:`Aceptando el cuerpo de una petición JSON <json_request_body>` Una necesidad común en la construcción de una *API* útil es la posibilidad de aceptar una entidad codificada con *JSON* desde el cuerpo de la petición.
 
-* :doc:`traduciendo los mensajes de validación <translating_validation_messages>`.
+* :doc:`Traduciendo los mensajes de validación <translating_validation_messages>`.
 
 * :doc:`Cómo usar PdoSessionStorage para almacenar sesiones en la base de datos <session_storage>`.
 

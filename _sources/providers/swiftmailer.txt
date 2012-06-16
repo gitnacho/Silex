@@ -53,9 +53,9 @@ Registrando
 
 .. note::
 
-    ``SwiftMailer`` viene con el archivo *Silex* "gordo" pero no en el normal. Si  estás usando ``Composer``, añádelo como dependencia en tu archivo ``composer.json``:
+    ``SwiftMailer`` viene con el archivo "gordo" de *Silex* pero no en el normal. Si  estás usando ``Composer``, añádelo como dependencia en tu archivo ``composer.json``:
 
-    .. code-block:: json
+    .. code-block:: javascript
 
         "require": {
             "swiftmailer/swiftmailer": ">=4.1.2,<4.2-dev"

@@ -42,14 +42,14 @@ Este puede crear dependencias recurrentemente de los servicios solicitados e iny
 
 La mayoría de los contenedores son muy complejos y se configuran a través de archivos *XML* o *YAML*.
 
-*Pimple* es diferente
+``Pimple`` es diferente
 
-*Pimple*
---------
+``Pimple``
+----------
 
-*Pimple*, probablemente, es el más simple contenedor de servicios que hay. Usa exhaustivamente los cierres que implementan la interfaz ``ArrayAccess``.
+``Pimple``, probablemente, es el más simple contenedor de servicios que hay. Usa exhaustivamente los cierres que implementan la interfaz ``ArrayAccess``.
 
-Vamos a empezar por crear una nueva instancia de *Pimple* -- y puesto que ``Silex\application`` extiende a *Pimple* todo esto se aplica a *Silex* también::
+Vamos a empezar por crear una nueva instancia de ``Pimple`` -- y puesto que ``Silex\application`` extiende a ``Pimple`` todo esto se aplica a *Silex* también::
 
     $container = new Pimple();
 
@@ -64,15 +64,15 @@ Parámetros
 
 Puedes ajustar los parámetros (que suelen ser cadenas) estableciendo una clave en el arreglo del contenedor::
 
-    $app['algún_parámetro'] = 'valor';
+    $app['algun_parametro'] = 'valor';
 
 La clave del arreglo puede ser cualquier cosa, por convención se utilizan puntos para denominar los espacios de nombres::
 
-    $app['activo.anfitrión'] = 'http://cdn.misitio.com/';
+    $app['activo.anfitrion'] = 'http://cdn.misitio.com/';
 
 Es posible leer valores de parámetros con la misma sintaxis::
 
-    echo $app['algún_parámetro'];
+    echo $app['algun_parametro'];
 
 Definiendo servicios
 ~~~~~~~~~~~~~~~~~~~~
@@ -80,22 +80,22 @@ Definiendo servicios
 
 La definición de servicios no es diferente de la definición de parámetros. Sólo tienes que establecer una clave en el arreglo del contenedor a un cierre. No obstante, cuando recuperes el servicio, se ejecuta el cierre. Esto permite la creación diferida de servicios::
 
-    $app['some_service'] = function () {
+    $app['algun_servicio'] = function () {
         return new Service();
     };
 
 Y para recuperar el servicio, utiliza::
 
-    $service = $app['some_service'];
+    $service = $app['algun_servicio'];
 
-Cada vez que llames a  ``$app['some_service']``, se crea una nueva instancia del servicio.
+Cada vez que llames a ``$app['algun_servicio']``, se crea una nueva instancia del servicio.
 
 Servicios compartidos
 ~~~~~~~~~~~~~~~~~~~~~
 
 Posiblemente quieras utilizar la misma instancia de un servicio a través de todo tu código. A fin de que puedas hacer *compartido* un servicio::
 
-    $app['some_service'] = $app->share(function () {
+    $app['algun_servicio'] = $app->share(function () {
         return new Service();
     });
 
@@ -108,11 +108,11 @@ En muchos casos, desearás acceder al contenedor de servicios dentro de un cierr
 
 Debido a esto, el contenedor se pasa al cierre como argumento::
 
-    $app['some_service'] = function ($app) {
-        return new Service($app['some_other_service'], $app['some_service.config']);
+    $app['algun_servicio'] = function ($app) {
+        return new Service($app['algun_otro_servicio'], $app['algun_servicio.config']);
     };
 
-Aquí puedes ver un ejemplo de Inyección de dependencias. ``some_service`` depende de ``some_other_service`` y toma ``some_service.config`` como opciones de configuración. La dependencia sólo se crea cuando accedes a ``some_service``, y es posible sustituir cualquier dependencia simplemente sustituyendo esas definiciones.
+Aquí puedes ver un ejemplo de Inyección de dependencias. ``algun_servicio`` depende de ``algun_otro_servicio`` y toma ``algun_servicio.config`` como opciones de configuración. La dependencia sólo se crea cuando accedes a ``algun_servicio``, y es posible sustituir cualquier dependencia simplemente sustituyendo esas definiciones.
 
 .. note::
 
@@ -127,7 +127,7 @@ Debido a que el contenedor ve los cierres cómo fábricas de servicios, siempre 
 
 En algunos casos, sin embargo, deseas almacenar un cierre como un parámetro, de modo que lo puedas recuperar y ejecutar tú mismo -- con tus propios argumentos.
 
-Esta es la razón por la cual *Pimple* te permite proteger tus cierres de ser ejecutados, usando el método ``protect``::
+Esta es la razón por la cual ``Pimple`` te permite proteger tus cierres de ser ejecutados, usando el método ``protect``::
 
     $app['closure_parameter'] = $app->protect(function ($a, $b) {
         return $a + $b;
@@ -200,6 +200,6 @@ Parámetros básicos
 
   El valor predeterminado es ``false``.
 
-* **charset** (opcional): El juego de caracteres a usar para las Respuestas.
+* **charset** (opcional): El juego de caracteres a usar para las ``Respuestas``.
 
   Por omisión es UTF-8.

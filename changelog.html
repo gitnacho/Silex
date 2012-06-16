@@ -77,18 +77,21 @@
   <div class="section" id="registro-de-cambios">
 <h1>Registro de cambios<a class="headerlink" href="#registro-de-cambios" title="Enlazar permanentemente con este título">¶</a></h1>
 <ul>
-<li><p class="first"><strong>2012-06-15</strong>: removed the <tt class="docutils literal"><span class="pre">twig.configure</span></tt> service. Use the <tt class="docutils literal"><span class="pre">extend</span></tt>
-method instead:</p>
+<li><p class="first"><strong>2012-06-16</strong>: Se renombró <tt class="docutils literal"><span class="pre">request.default_locale</span></tt> a <tt class="docutils literal"><span class="pre">locale</span></tt></p>
+</li>
+<li><p class="first"><strong>2012-06-16</strong>: Se eliminó el servicio <tt class="docutils literal"><span class="pre">translator.loader</span></tt>. Ve la documentación para cómo utilizar archivos de traducción basados en <em>XLIFF</em> o <em>YAML</em>.</p>
+</li>
+<li><p class="first"><strong>2012-06-15</strong>: Se quitó el servicio <tt class="docutils literal"><span class="pre">twig.configure</span></tt>. En su lugar usa el método <tt class="docutils literal"><span class="pre">extend</span></tt>:</p>
 <blockquote>
 <div><p>Antes:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;twig.configure&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">protect</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$twig</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// do something</span>
+    <span class="c1">// hace algo</span>
 <span class="p">});</span>
 </pre></div>
 </div>
 <p>Después:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;twig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">extend</span><span class="p">(</span><span class="s1">&#39;twig&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$twig</span><span class="p">,</span> <span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// do something</span>
+    <span class="c1">// hace algo</span>
 
     <span class="k">return</span> <span class="nv">$twig</span><span class="p">;</span>
 <span class="p">}));</span>
@@ -96,17 +99,17 @@ method instead:</p>
 </div>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>2012-06-13</strong>: Añadió una ruta de soporte lógico intermedio <tt class="docutils literal"><span class="pre">before</span></tt></p>
+<li><p class="first"><strong>2012-06-13</strong>: Se añadió una ruta para la lógica intermedia de <tt class="docutils literal"><span class="pre">before</span></tt></p>
 </li>
 <li><p class="first"><strong>2012-06-13</strong>: Se rebautizó la ruta <tt class="docutils literal"><span class="pre">middleware</span></tt> a <tt class="docutils literal"><span class="pre">before</span></tt></p>
 </li>
-<li><p class="first"><strong>2012-06-13</strong>: Añadió una extensión para el componente de Seguridad de <em>Symfony</em></p>
+<li><p class="first"><strong>2012-06-13</strong>: Se añadió una extensión para el componente de Seguridad de <em>Symfony</em></p>
 </li>
 <li><p class="first"><strong>2012-05-31</strong>: Se hicieron opcionales las dependencias <tt class="docutils literal"><span class="pre">BrowserKit</span></tt>, <tt class="docutils literal"><span class="pre">CssSelector</span></tt>, <tt class="docutils literal"><span class="pre">DomCrawler</span></tt>, <tt class="docutils literal"><span class="pre">Finder</span></tt> y <tt class="docutils literal"><span class="pre">Process</span></tt>. Los proyectos que dependen de ellas (por ejemplo, a través de pruebas funcionales) tendrán que añadir esas dependencias a su <tt class="docutils literal"><span class="pre">composer.json</span></tt>.</p>
 </li>
-<li><p class="first"><strong>2012-05-26</strong>: se agregó el <tt class="docutils literal"><span class="pre">boot()</span></tt> a <tt class="docutils literal"><span class="pre">ServiceProviderInterface</span></tt>.</p>
+<li><p class="first"><strong>2012-05-26</strong>: Se agregó el <tt class="docutils literal"><span class="pre">boot()</span></tt> a <tt class="docutils literal"><span class="pre">ServiceProviderInterface</span></tt>.</p>
 </li>
-<li><p class="first"><strong>2012-05-26</strong>: se quitó <tt class="docutils literal"><span class="pre">SymfonyBridgesServiceProvider</span></tt> Ahora, implícitamente comprueba la existencia del puente.</p>
+<li><p class="first"><strong>2012-05-26</strong>: Se quitó <tt class="docutils literal"><span class="pre">SymfonyBridgesServiceProvider</span></tt> Ahora, implícitamente comprueba la existencia del puente.</p>
 </li>
 <li><p class="first"><strong>2012-05-26</strong>: Se quitó el parámetro <tt class="docutils literal"><span class="pre">translator.messages</span></tt> (en su lugar usa <tt class="docutils literal"><span class="pre">translator.domains</span></tt>).</p>
 </li>
@@ -119,23 +122,23 @@ Las opciones <tt class="docutils literal"><span class="pre">*.class_path</span><
 </li>
 <li><p class="first"><strong>2012-05-20</strong>: La instancia de la petición ya no está disponible en la aplicación después de que se ha manipulado.</p>
 </li>
-<li><p class="first"><strong>2012-04-01</strong>: Agregados los filtros <tt class="docutils literal"><span class="pre">finish</span></tt>.</p>
+<li><p class="first"><strong>2012-04-01</strong>: Se agregaron los filtros <tt class="docutils literal"><span class="pre">finish</span></tt>.</p>
 </li>
-<li><p class="first"><strong>2012-03-20</strong>: Añadido el ayudante <tt class="docutils literal"><span class="pre">json</span></tt>:</p>
+<li><p class="first"><strong>2012-03-20</strong>: Se añadió el ayudante <tt class="docutils literal"><span class="pre">json</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;some&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;data&#39;</span><span class="p">);</span>
 <span class="nv">$response</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">json</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first"><strong>2012-03-11</strong>: Añadido soporte lógico intermedio de ruta</p>
+<li><p class="first"><strong>2012-03-11</strong>: Se añadió la lógica intermedia de ruta</p>
 </li>
-<li><p class="first"><strong>2012-03-02</strong>: Ahora utiliza <strong>Composer</strong> para gestionar dependencias</p>
+<li><p class="first"><strong>2012-03-02</strong>: Ahora se utiliza <strong>Composer</strong> para gestionar dependencias</p>
 </li>
-<li><p class="first"><strong>2012-02-27</strong>: Manipulación de sesión actualizada a <em>Symfony 2.1</em>.</p>
+<li><p class="first"><strong>2012-02-27</strong>: Se actualizó la manipulación de sesión a <em>Symfony 2.1</em>.</p>
 </li>
-<li><p class="first"><strong>2012-01-02</strong>: Introdujo el apoyo para respuestas que transmiten secuencias.</p>
+<li><p class="first"><strong>2012-01-02</strong>: Se introdujo el apoyo para respuestas que transmiten secuencias.</p>
 </li>
-<li><p class="first"><strong>2011-09-22</strong>: <tt class="docutils literal"><span class="pre">ExtensionInterface</span></tt> se le cambió el nombre a <tt class="docutils literal"><span class="pre">ServiceProviderInterface</span></tt>. Todas las extensiones integradas se han renombrado consecuentemente (por ejemplo, <tt class="docutils literal"><span class="pre">Silex\Extension\TwigExtension</span></tt> ha cambiado el nombre a <tt class="docutils literal"><span class="pre">Silex\Provider\TwigServiceProvider</span></tt>)</p>
+<li><p class="first"><strong>2011-09-22</strong>: Se cambió el nombre de <tt class="docutils literal"><span class="pre">ExtensionInterface</span></tt> a <tt class="docutils literal"><span class="pre">ServiceProviderInterface</span></tt>. Todas las extensiones integradas se han renombrado consecuentemente (por ejemplo, <tt class="docutils literal"><span class="pre">Silex\Extension\TwigExtension</span></tt> ha cambiado el nombre a <tt class="docutils literal"><span class="pre">Silex\Provider\TwigServiceProvider</span></tt>)</p>
 </li>
 <li><p class="first"><strong>2011-09-22</strong>: La forma de trabajar de las aplicaciones reutilizables ha cambiado. El método <tt class="docutils literal"><span class="pre">mount()</span></tt> ahora toma una instancia de <tt class="docutils literal"><span class="pre">ControllerCollection</span></tt> en lugar de una <tt class="docutils literal"><span class="pre">Application</span></tt>.</p>
 <blockquote>

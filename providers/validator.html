@@ -103,9 +103,10 @@
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
 <p>El componente validator de <em>Symfony</em> viene en el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal. Si estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia a tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
-<div class="last highlight-json"><pre>"require": {
-    "symfony/validator": "2.1.*"
-}</pre>
+<div class="last highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;symfony/validator&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -174,7 +175,7 @@
 </div>
 <div class="section" id="validando-objetos">
 <h3>Validando objetos<a class="headerlink" href="#validando-objetos" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Si quiere añadir validación a una clase, puedes definir restricciones y captadores para las propiedades de la clase, y luego llamar al método <tt class="docutils literal"><span class="pre">validate</span></tt>:</p>
+<p>Si quieres añadir validación a una clase, puedes definir restricciones y captadores para las propiedades de la clase, y luego llamar al método <tt class="docutils literal"><span class="pre">validate</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\Validator\Constraints</span> <span class="k">as</span> <span class="nx">Assert</span><span class="p">;</span>
 
 <span class="nv">$author</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Author</span><span class="p">();</span>
@@ -205,7 +206,7 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>También puede declarar la restricción de clase añadiendo un método estático <tt class="docutils literal"><span class="pre">loadValidatorMetadata</span></tt> a tus clases:</p>
+<p>También puedes declarar la restricción de clase añadiendo un método estático <tt class="docutils literal"><span class="pre">loadValidatorMetadata</span></tt> a tus clases:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\Validator\Mapping\ClassMetadata</span><span class="p">;</span>
 <span class="k">use</span> <span class="nx">Symfony\Component\Validator\Constraints</span> <span class="k">as</span> <span class="nx">Assert</span><span class="p">;</span>
 

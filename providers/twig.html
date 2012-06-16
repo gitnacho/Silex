@@ -105,22 +105,24 @@
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
 <p><em>Twig</em> viene con el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no con el normal. Si estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia a tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
-<div class="last highlight-json"><pre>"require": {
-    "twig/twig": "&gt;=1.8,&lt;2.0-dev"
-}</pre>
+<div class="last highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;twig/twig&quot;</span><span class="o">:</span> <span class="s2">&quot;&gt;=1.8,&lt;2.0-dev&quot;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="integrando-componentes-de-symfony2">
 <h2>Integrando componentes de <em>Symfony2</em><a class="headerlink" href="#integrando-componentes-de-symfony2" title="Enlazar permanentemente con este título">¶</a></h2>
 <p><em>Symfony</em> incluye un puente a <em>Twig</em> que proporciona integración adicional entre algunos componentes de <em>Symfony2</em> y <em>Twig</em>. Añádelo como dependencia a tu archivo <tt class="file docutils literal"><span class="pre">composer.json</span></tt>:</p>
-<div class="highlight-json"><pre>"require": {
-    "symfony/twig-bridge": "2.1.*",
-}</pre>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;symfony/twig-bridge&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 <p>Cuando está presente el <tt class="docutils literal"><span class="pre">TwigServiceProvider</span></tt> te proporcionará las siguientes capacidades adicionales:</p>
 <ul class="simple">
-<li><strong>UrlGeneratorServiceProvider</strong>: Si estás usando el <tt class="docutils literal"><span class="pre">UrlGeneratorServiceProvider</span></tt>, tendrás acceso a las funciones <tt class="docutils literal"><span class="pre">path()</span></tt> y <tt class="docutils literal"><span class="pre">url()</span></tt> functions. Puedes encontrar más información en la documentación de <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/routing.html#generando-url-desde-una-plantilla">enrutado de Symfony2</a>.</li>
+<li><strong>UrlGeneratorServiceProvider</strong>: Si estás usando el <tt class="docutils literal"><span class="pre">UrlGeneratorServiceProvider</span></tt>, tendrás acceso a las funciones <tt class="docutils literal"><span class="pre">path()</span></tt> y <tt class="docutils literal"><span class="pre">url()</span></tt>. Puedes encontrar más información en la documentación de <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/routing.html#generando-url-desde-una-plantilla">enrutado de Symfony2</a>.</li>
 <li><strong>TranslationServiceProvider</strong>: Si estás usando el <tt class="docutils literal"><span class="pre">TranslationServiceProvider</span></tt>, obtendrás las funciones <tt class="docutils literal"><span class="pre">trans()</span></tt> y <tt class="docutils literal"><span class="pre">transchoice()</span></tt> para traducción en plantillas <em>Twig</em>. Puedes encontrar más información en la documentación de <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/translation.html#plantillas-twig">traducción de Symfony2</a>.</li>
 <li><strong>FormServiceProvider</strong>: Si estás usando el <tt class="docutils literal"><span class="pre">FormServiceProvider</span></tt>, recibirás un conjunto de ayudantes para trabajar con formularios en plantillas. Puedes encontrar más información en la <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/reference/forms/twig_reference.html">referencia de formularios de Symfony2</a>.</li>
 <li><strong>SecurityServiceProvider</strong>: Si estás usando el <tt class="docutils literal"><span class="pre">SecurityServiceProvider</span></tt>, tendrá acceso a la función <tt class="docutils literal"><span class="pre">is_granted()</span></tt> en las plantillas. Puedes encontrar más información en la <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/security.html#controlando-el-acceso-en-plantillas">documentación de Seguridad de Symfony2</a></li>

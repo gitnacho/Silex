@@ -80,9 +80,10 @@
 <h1>Cómo usar <em>YAML</em> para configurar la validación<a class="headerlink" href="#como-usar-yaml-para-configurar-la-validacion" title="Enlazar permanentemente con este título">¶</a></h1>
 <p>La simplicidad es el corazón de <em>Silex</em> por lo tanto la solución no está fuera de la caja para usar archivos <em>YAML</em> en la validación. Pero esto no significa que eso no sea posible. Vamos a ver cómo hacerlo.</p>
 <p>Primero, necesitas instalar el componente <em>YAML</em>. Declarándolo como una dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
-<div class="highlight-json"><pre>"require": {
-    "symfony/yaml": "2.1.*"
-}</pre>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;symfony/yaml&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 <p>Después, necesitas decirle al Servicio de validación que no estás usando <tt class="docutils literal"><span class="pre">StaticMethodLoader</span></tt> para cargar los metadatos de tu clase, sino un archivo <em>YAML</em>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">ValidatorServiceProvider</span><span class="p">());</span>

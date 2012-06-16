@@ -6,7 +6,7 @@ Este capítulo describe cómo utilizar *Silex*.
 Instalando
 ----------
 
-Si quieres empezar rápidamente, `descarga`_ *Silex* como un archivo y extraerlo, deberías tener la siguiente estructura de directorios:
+Si quieres empezar rápidamente, `descarga`_ *Silex* como un archivo y descomprímelo, deberías tener la siguiente estructura de directorios:
 
 .. code-block:: text
 
@@ -19,7 +19,7 @@ Si quieres empezar rápidamente, `descarga`_ *Silex* como un archivo y extraerlo
 
 Si quieres más flexibilidad, en su lugar usa ``Composer``. Crea un archivo :file:`composer.json`:
 
-.. code-block:: json
+.. code-block:: javascript
 
     {
         "require": {
@@ -44,7 +44,7 @@ Actualizar *Silex* a la versión más reciente es tan fácil como ejecutar la or
 Arranque
 --------
 
-Para arrancar *Silex*, todo lo que necesitas hacer es requerir el archivo :file:`vendedor/autoload.php` y crear una instancia de ``Silex\Application``. Después de definir tu controlador, llama al método ``run`` en tu aplicación::
+Para arrancar *Silex*, todo lo que necesitas hacer es requerir el archivo :file:`vendor/autoload.php` y crear una instancia de ``Silex\Application``. Después de definir tu controlador, llama al método ``run`` en tu aplicación::
 
     // web/index.php
 
@@ -56,7 +56,7 @@ Para arrancar *Silex*, todo lo que necesitas hacer es requerir el archivo :file:
 
     $app->run();
 
-Entonces, tienes que configurar tu servidor *web* (ve lo consejos para *Apache* e *IIS* más adelante).
+Entonces, tienes que configurar tu servidor *web* (ve los consejos para *Apache* e *IIS* más adelante).
 
 .. tip::
 
@@ -82,8 +82,7 @@ Un patrón de ruta se compone de:
 
 * *Pattern*: El patrón de ruta define una ruta que apunta a un recurso. El patrón puede incluir partes variables y tú podrás establecer los requisitos con expresiones regulares.
 
-* *Method*: Uno de los siguientes métodos *HTTP*: ``GET``, ``POST``, ``PUT``
-  ``DELETE``. Este describe la interacción con el recurso. Normalmente sólo se utilizan ``GET`` y ``POST``, pero, también es posible utilizar los otros.
+* *Method*: Uno de los siguientes métodos *HTTP*: ``GET``, ``POST``, ``PUT`` o ``DELETE``. Este describe la interacción con el recurso. Normalmente sólo se utilizan ``GET`` y ``POST``, pero, también es posible utilizar los otros.
 
 El controlador se define usando un cierre de esta manera:
 
@@ -128,12 +127,12 @@ He aquí un ejemplo de una definición de ruta ``GET``::
         return $output;
     });
 
-Al visitar ``/blog`` devolverá una lista con los títulos de los comunicados en el ``blog``. La declaración ``use`` significa algo diferente en este contexto. Esta instruye al cierre a importar la variable ``comunicadosBLog`` desde el ámbito externo. Esto te permite utilizarla dentro del cierre.
+Al visitar ``/blog`` devolverá una lista con los títulos de los artículos en el ``blog``. La declaración ``use`` significa algo diferente en este contexto. Esta instruye al cierre para que importe la variable ``$blogPosts`` desde el ámbito externo. Esto te permite utilizarla dentro del cierre.
 
 Enrutado dinámico
 ~~~~~~~~~~~~~~~~~
 
-Ahora, puedes crear otro controlador para ver comunicados individuales del ``blog``::
+Ahora, puedes crear otro controlador para ver artículos individuales del ``blog``::
 
     $app->get('/blog/show/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
         if (!isset($blogPosts[$id])) {
@@ -148,7 +147,7 @@ Ahora, puedes crear otro controlador para ver comunicados individuales del ``blo
 
 Esta definición de ruta tiene una parte variable ``{id}`` que se pasa al cierre.
 
-Cuando el comunicado no existe, estamos usando ``abort()`` para detener la petición inicial. En realidad, se produce una excepción, la cual veremos cómo manejar más adelante.
+Cuando el artículo no existe, usamos ``abort()`` para detener la petición inicial. En realidad, se produce una excepción, la cual veremos cómo manejar más adelante.
 
 Ejemplo de ruta ``POST``
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -178,12 +177,12 @@ Esto nos permite fijar un código de estado *HTTP*, en este caso configurado a `
 
 .. note::
 
-    *Silex* siempre utiliza internamente una ``Respuesta``, la convierte a cadenas para respuestas con código de estado ``200 OK``.
+    Internamente, *Silex* siempre utiliza una ``Respuesta``, la convierte a cadenas para respuestas con código de estado ``200 OK``.
 
 Otros métodos
 ~~~~~~~~~~~~~
 
-Puedes crear controladores para la mayoría de los métodos *HTTP*. Sólo tienes que llamar uno de estos métodos en tu aplicación: ``get``, ``post``, ``put``, ``delete``. También puedes llamar ``match``, el cual coincidirá con todos los métodos::
+Puedes crear controladores para la mayoría de los métodos *HTTP*. Sólo tienes que llamar a uno de estos métodos en tu aplicación: ``get``, ``post``, ``put`` o ``delete``. También puedes invocar a ``match``, el cual coincidirá con todos los métodos::
 
     $app->match('/blog', function () {
         ...
@@ -376,16 +375,16 @@ El filtro ``finish`` tiene acceso a la ``Petición`` y la ``Respuesta``::
 
     Los filtros sólo los ejecuta la ``Petición`` "maestra".
 
-Servicios intermedios de lógica para la ruta
---------------------------------------------
+Lógica intermedia para la ruta
+------------------------------
 
-Los servicios de lógica intermedios (``middlewares``) para la ruta son ejecutables *PHP* que se desencadenan cuando coincide su ruta asociada.
+Los servicios de lógica intermedia (``middlewares``) para la ruta son ejecutables *PHP* que se activan cuando coincide su ruta asociada.
 
-* La lógica intermedia ``before`` se lanza justo antes de la ruta retrollamada, pero después de aplicar los filtros ``before``;
+* La lógica intermedia ``before`` se lanza justo antes de la retrollamada a la ruta, pero después de aplicar los filtros ``before``;
 
-* La lógica intermedia ``after`` es lanzada justo después de la ruta retrollamada, pero antes de aplicar los filtros ``after``.
+* La lógica intermedia ``after`` se activa justo después de la retrollamada a la ruta, pero antes de aplicar los filtros ``after``.
 
-Los puedes usar en una gran cantidad de situaciones; Por ejemplo, aquí está una simple comprobación de "usuario anónimo/registrado":
+Los puedes usar en una gran cantidad de situaciones; Por ejemplo, aquí está una simple comprobación de "anónimo/usuario registrado":
 
 .. code-block:: php
 
@@ -416,7 +415,7 @@ Los puedes usar en una gran cantidad de situaciones; Por ejemplo, aquí está un
     })
     ->before($mustBeLogged);
 
-Los métodos ``before`` y ``after`` se pueden invocar varias veces para una ruta dada, en cuyo caso son lanzados en el mismo orden cuando que los añadiste a la
+Los métodos ``before`` y ``after`` se pueden invocar varias veces para una ruta dada, en cuyo caso son lanzados en el mismo orden que cuando los añadiste a la
 ruta.
 
 Por comodidad, la lógica intermedia ``before`` se invoca con la instancia de la ``Petición`` actual como un argumento y la lógica intermedia ``after`` se invoca
@@ -431,7 +430,7 @@ Si cualquiera de las lógicas intermedias ``before`` regresa una ``Respuesta`` *
 Configuración global
 --------------------
 
-Si un ajuste del controlador se debe aplicar a todos los controladores (un convertidor, un soporte lógico intermedio, un requisito o un valor predeterminado), los puedes configurar en ``$application['controllers']``, que tiene todos los controladores de la aplicación::
+Si una opción del controlador se debe aplicar a todos los controladores (un convertidor, un servicio de lógica intermedia, un requisito o un valor predeterminado), los puedes configurar en ``$application['controllers']``, que tiene todos los controladores de la aplicación::
 
     $app['controllers']
         ->value('id', '1')
@@ -484,7 +483,7 @@ Puedes restringir un controlador de errores para que sólo maneje algunas clases
         // y \LogicException extendidas
      });
 
-Si deseas configurar el registro puedes utilizar un controlador de errores independiente para eso.
+Si deseas configurar el registro cronológico de eventos, para ello, puedes utilizar un controlador de errores independiente.
 Sólo asegúrate de registrarlo antes que los controladores que responden al error, porque una vez que se devuelve una respuesta, se omiten los demás controladores.
 
 .. note::
@@ -575,7 +574,7 @@ Cuando tu aplicación comienza a definir muchos controladores, es posible que de
     $app->mount('/blog', $blog);
     $app->mount('/forum', $forum);
 
-``mount()`` prefija todas las rutas con la cadena dada y las integra en la aplicación principal. Por lo tanto, ``/`` se asignará a la página principal, ``/blog/ `` a la página principal del blog, y ``/forum/`` a la página principal del foro.
+``mount()`` prefija todas las rutas con la cadena dada y las integra en la aplicación principal. Por lo tanto, ``/`` se asignará a la página principal, ``/blog/`` a la página principal del blog, y ``/forum/`` a la página principal del foro.
 
 .. note::
 
@@ -604,7 +603,7 @@ Otra ventaja es la capacidad para aplicar muy fácilmente la configuración a un
         // app.php
         $app->mount('/blog', include 'blog.php');
 
-    En lugar de necesitar un archivo, también puedes crear una :doc:`Proveedor de controladores </providers#controllers-providers>`.
+    En lugar de necesitar un archivo, también puedes crear un :ref:`Proveedor de controladores <proveedor-de-controladores>`.
 
 *JSON*
 ------
@@ -640,7 +639,7 @@ Es posible crear una respuesta para la transmisión de secuencias, la cual es im
         return $app->stream($stream, 200, array('Content-Type' => 'image/png'));
     });
 
-Si necesitas enviar fragmentos, asegúrate de llamar a ``ob_flush`` y ``flush`` después de cada parte::
+Si necesitas enviar segmentos, asegúrate de llamar a ``ob_flush`` y ``flush`` después de cada parte::
 
     $stream = function () {
         $fh = fopen('http://www.ejemplo.com/', 'rb');
@@ -660,7 +659,7 @@ Asegúrate de proteger tu aplicación contra ataques.
 Escapando
 ~~~~~~~~~
 
-Cuando reproduces la entrada del usuario (ya sea en las variables ``GET/POST`` o en variables obtenidas desde la petición), tendrás que asegurarte de escaparlas correctamente, para evitar ataques que exploten vulnerabilidades del sistema.
+Cuando reproduces cualquier aportación de los usuarios (ya sea en las variables ``GET/POST`` o en variables obtenidas desde la petición), tendrás que asegurarte de escaparlas correctamente, para evitar ataques que exploten vulnerabilidades del sistema.
 
 * **Escapando HTML**: *PHP* proporciona la función ``htmlspecialchars`` para esto.
   *Silex* ofrece un atajo, el método ``escape``::
@@ -732,7 +731,7 @@ Si estás utilizando ``nginx``, configura tu ``vhost`` para remitir los recursos
 ``IIS``
 ~~~~~~~
 
-Si estás utilizando el ``Internet Information Services`` de *Windows*, puedes utilizar de ejemplo este archivo ``web.config``:
+Si estás utilizando el ``Internet Information Services`` de *Windows*, puedes usar como ejemplo el archivo :file:`web.config`:
 
 .. code-block:: xml
 

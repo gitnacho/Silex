@@ -84,8 +84,7 @@
 <h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul class="simple">
 <li><strong>monolog.logfile</strong>: Archivo donde escribir los registros.</li>
-<li><strong>monolog.level</strong> (opcional): El nivel de registro por omisión es <tt class="docutils literal"><span class="pre">DEBUG</span></tt>. Debe ser uno de <tt class="docutils literal"><span class="pre">Logger::DEBUG</span></tt>, <tt class="docutils literal"><span class="pre">Logger::INFO</span></tt>,
-<tt class="docutils literal"><span class="pre">Logger::WARNING</span></tt>, <tt class="docutils literal"><span class="pre">Logger::ERROR</span></tt>. <tt class="docutils literal"><span class="pre">DEBUG</span></tt> registra todo, <tt class="docutils literal"><span class="pre">INFO</span></tt> registrará todo excepto <tt class="docutils literal"><span class="pre">DEBUG</span></tt>, etc.</li>
+<li><strong>monolog.level</strong> (opcional): El nivel de registro por omisión es <tt class="docutils literal"><span class="pre">DEBUG</span></tt>. Debe ser uno de <tt class="docutils literal"><span class="pre">Logger::DEBUG</span></tt>, <tt class="docutils literal"><span class="pre">Logger::INFO</span></tt>, <tt class="docutils literal"><span class="pre">Logger::WARNING</span></tt>, <tt class="docutils literal"><span class="pre">Logger::ERROR</span></tt>. <tt class="docutils literal"><span class="pre">DEBUG</span></tt> registra todo, <tt class="docutils literal"><span class="pre">INFO</span></tt> registrará todo excepto <tt class="docutils literal"><span class="pre">DEBUG</span></tt>, etc.</li>
 <li><strong>monolog.name</strong> (opcional): Nombre del canal de <em>Monplog</em>, por omisión es <tt class="docutils literal"><span class="pre">myapp</span></tt>.</li>
 </ul>
 </div>
@@ -113,9 +112,10 @@
 <p class="first admonition-title">Nota</p>
 <p><tt class="docutils literal"><span class="pre">Monolog</span></tt> viene con el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal.
 Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
-<div class="last highlight-json"><pre>"require": {
-    "monolog/monolog": "&gt;=1.0.0",
-}</pre>
+<div class="last highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;monolog/monolog&quot;</span><span class="o">:</span> <span class="s2">&quot;&gt;=1.0.0&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </div>
 </div>

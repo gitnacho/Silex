@@ -5,7 +5,7 @@ La simplicidad es el corazón de *Silex* por lo tanto la solución no está fuer
 
 Primero, necesitas instalar el componente *YAML*. Declarándolo como una dependencia en tu archivo ``composer.json``:
 
-.. code-block:: json
+.. code-block:: javascript
 
     "require": {
         "symfony/yaml": "2.1.*"

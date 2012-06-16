@@ -78,7 +78,7 @@
             
   <div class="section" id="doctrineserviceprovider">
 <h1><tt class="docutils literal"><span class="pre">DoctrineServiceProvider</span></tt><a class="headerlink" href="#doctrineserviceprovider" title="Enlazar permanentemente con este título">¶</a></h1>
-<p>El <tt class="docutils literal"><span class="pre">DoctrineServiceProvider</span></tt> proporciona integración con <em>Doctrine</em> <a class="reference external" href="http://www.doctrine-project.org/projects/dbal">DBAL</a> para acceder fácilmente a la base de datos.</p>
+<p>El <tt class="docutils literal"><span class="pre">DoctrineServiceProvider</span></tt> proporciona integración con el <a class="reference external" href="http://www.doctrine-project.org/projects/dbal">DBAL</a> de <em>Doctrine</em> para acceder fácilmente a la base de datos.</p>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
 <p class="last">Sólo hay una <tt class="docutils literal"><span class="pre">DBAL</span></tt> de <em>Doctrine</em>. <strong>No</strong> se suministra un servicio <tt class="docutils literal"><span class="pre">ORM</span></tt>.</p>
@@ -122,9 +122,10 @@ Puede ser alguno de entre: <tt class="docutils literal"><span class="pre">pdo_my
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
 <p>El <em>DBAL</em> de <em>Doctrine</em> viene con el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal. Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
-<div class="last highlight-json"><pre>"require": {
-    "doctrine/dbal": "2.2.*",
- }</pre>
+<div class="last highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;doctrine/dbal&quot;</span><span class="o">:</span> <span class="s2">&quot;2.2.*&quot;</span><span class="p">,</span>
+ <span class="p">}</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -184,7 +185,7 @@ Puede ser alguno de entre: <tt class="docutils literal"><span class="pre">pdo_my
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>Para más información, consulta la <a class="reference external" href="http://www.doctrine-project.org/docs/dbal/2.0/en/">Documentación DBAL de Doctrine</a>.</p>
+<p>Para más información, consulta la <a class="reference external" href="http://www.doctrine-project.org/docs/dbal/2.0/en/">Documentación del DBAL de Doctrine</a>.</p>
 </div>
 </div>
 

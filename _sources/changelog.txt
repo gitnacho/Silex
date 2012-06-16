@@ -1,34 +1,37 @@
 Registro de cambios
 ===================
 
-* **2012-06-15**: removed the ``twig.configure`` service. Use the ``extend``
-  method instead:
+* **2012-06-16**: Se renombró ``request.default_locale`` a ``locale``
+
+* **2012-06-16**: Se eliminó el servicio ``translator.loader``. Ve la documentación para cómo utilizar archivos de traducción basados en *XLIFF* o *YAML*.
+
+* **2012-06-15**: Se quitó el servicio ``twig.configure``. En su lugar usa el método ``extend``:
 
     Antes::
 
         $app['twig.configure'] = $app->protect(function ($twig) use ($app) {
-            // do something
+            // hace algo
         });
 
     Después::
 
         $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
-            // do something
+            // hace algo
 
             return $twig;
         }));
 
-* **2012-06-13**: Añadió una ruta de soporte lógico intermedio ``before``
+* **2012-06-13**: Se añadió una ruta para la lógica intermedia de ``before``
 
 * **2012-06-13**: Se rebautizó la ruta ``middleware`` a ``before``
 
-* **2012-06-13**: Añadió una extensión para el componente de Seguridad de *Symfony*
+* **2012-06-13**: Se añadió una extensión para el componente de Seguridad de *Symfony*
 
 * **2012-05-31**: Se hicieron opcionales las dependencias ``BrowserKit``, ``CssSelector``, ``DomCrawler``, ``Finder`` y ``Process``. Los proyectos que dependen de ellas (por ejemplo, a través de pruebas funcionales) tendrán que añadir esas dependencias a su ``composer.json``.
 
-* **2012-05-26**: se agregó el ``boot()`` a ``ServiceProviderInterface``.
+* **2012-05-26**: Se agregó el ``boot()`` a ``ServiceProviderInterface``.
 
-* **2012-05-26**: se quitó ``SymfonyBridgesServiceProvider`` Ahora, implícitamente comprueba la existencia del puente.
+* **2012-05-26**: Se quitó ``SymfonyBridgesServiceProvider`` Ahora, implícitamente comprueba la existencia del puente.
 
 * **2012-05-26**: Se quitó el parámetro ``translator.messages`` (en su lugar usa ``translator.domains``).
 
@@ -41,22 +44,22 @@ Registro de cambios
 
 * **2012-05-20**: La instancia de la petición ya no está disponible en la aplicación después de que se ha manipulado.
 
-* **2012-04-01**: Agregados los filtros ``finish``.
+* **2012-04-01**: Se agregaron los filtros ``finish``.
 
-* **2012-03-20**: Añadido el ayudante ``json``::
+* **2012-03-20**: Se añadió el ayudante ``json``::
 
         $data = array('some' => 'data');
         $response = $app->json($data);
 
-* **2012-03-11**: Añadido soporte lógico intermedio de ruta
+* **2012-03-11**: Se añadió la lógica intermedia de ruta
 
-* **2012-03-02**: Ahora utiliza **Composer** para gestionar dependencias
+* **2012-03-02**: Ahora se utiliza **Composer** para gestionar dependencias
 
-* **2012-02-27**: Manipulación de sesión actualizada a *Symfony 2.1*.
+* **2012-02-27**: Se actualizó la manipulación de sesión a *Symfony 2.1*.
 
-* **2012-01-02**: Introdujo el apoyo para respuestas que transmiten secuencias.
+* **2012-01-02**: Se introdujo el apoyo para respuestas que transmiten secuencias.
 
-* **2011-09-22**: ``ExtensionInterface`` se le cambió el nombre a ``ServiceProviderInterface``. Todas las extensiones integradas se han renombrado consecuentemente (por ejemplo, ``Silex\Extension\TwigExtension`` ha cambiado el nombre a ``Silex\Provider\TwigServiceProvider``)
+* **2011-09-22**: Se cambió el nombre de ``ExtensionInterface`` a ``ServiceProviderInterface``. Todas las extensiones integradas se han renombrado consecuentemente (por ejemplo, ``Silex\Extension\TwigExtension`` ha cambiado el nombre a ``Silex\Provider\TwigServiceProvider``)
 
 * **2011-09-22**: La forma de trabajar de las aplicaciones reutilizables ha cambiado. El método ``mount()`` ahora toma una instancia de ``ControllerCollection`` en lugar de una ``Application``.
 
