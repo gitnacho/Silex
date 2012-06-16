@@ -23,7 +23,7 @@ interface ControllerProviderInterface
      *
      * @param Application $app Una instancia de Application
      *
-     * @return ControllerCollection A ControllerCollection instance
+     * @return ControllerCollection Una instancia de ControllerCollection
      */
     public function connect(Application $app);
 }

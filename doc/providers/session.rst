@@ -10,7 +10,7 @@ Parámetros
 
 * **session.storage.options**: Un arreglo de opciones que se pasa al constructor del servicio ``session.storage``.
 
-  En caso del `NativeSessionStorage <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_, predeterminado las posibles opciones son:
+  En caso del `NativeSessionStorage <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_ predeterminado, las posibles opciones son:
 
   * **name**: El nombre de la ``cookie`` (por omisión ``_SESS``)
   * **id**: El ``id`` de la sesión (por omisión ``null``)

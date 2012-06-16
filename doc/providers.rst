@@ -118,13 +118,15 @@ Ahora puedes utilizar este proveedor de la siguiente manera:
 
 En este ejemplo estamos obteniendo el parámetro ``name`` desde la cadena de consulta, por lo que la ruta de la petición tendría que ser ``/hello?name=Fabien``.
 
-Proveedores de controladores
-----------------------------
+.. _`proveedor-de-controladores`:
+
+Proveedor de controladores
+--------------------------
 
 Cargando proveedores
 ~~~~~~~~~~~~~~~~~~~~
 
-Con el fin de cargar y usar un controlador del proveedor, debes "montar" tus controladores en una ruta::
+Con el fin de cargar y usar un proveedor de controladores, debes "montar" tus controladores bajo una ruta::
 
     $app = new Silex\Application();
 
@@ -165,7 +167,7 @@ He aquí un ejemplo de tal proveedor::
     }
 
 El método ``connect`` debe regresar una instancia de ``ControllerCollection``.
-``ControllerCollection`` es la clase donde todos los métodos controladores relacionados están definidos (como ``get``, ``post``, ``match``, ...).
+``ControllerCollection`` es la clase donde están definidos todos los métodos controladores relacionados (como ``get``, ``post``, ``match``, ...).
 
 .. tip::
 

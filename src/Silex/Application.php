@@ -85,7 +85,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
                 return $app['url_matcher'];
             });
             $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['logger']));
-            $dispatcher->addSubscriber(new LocaleListener($app['request.default_locale'], $urlMatcher));
+            $dispatcher->addSubscriber(new LocaleListener($app['locale'], $urlMatcher));
 
             return $dispatcher;
         });
@@ -147,8 +147,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             }
         });
 
-        $this['request.default_locale'] = 'en';
-
         $this['request_error'] = $this->protect(function () {
             throw new \RuntimeException('Servicio de respuesta accedido fuera del ámbito de la petición. Intenta moviendo esta llamada a un controlador "before".');
         });
@@ -159,6 +157,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $this['request.https_port'] = 443;
         $this['debug'] = false;
         $this['charset'] = 'UTF-8';
+        $this['locale'] = 'en';
     }
 
     /**
@@ -418,11 +417,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * Escapa un texto para HTML.
      *
      * @param string  $text         El campo de entrada de texto a escapar
-     * @param integer $flags        The flags (@see htmlspecialchars)
+     * @param integer $flags        Los indicadores (@see htmlspecialchars)
      * @param string  $charset      El juego de caracteres
      * @param Boolean $doubleEncode Whether to try to avoid double escaping or not
      *
-     * @return string Escaped text
+     * @return string Escaped texto
      */
     public function escape($text, $flags = ENT_COMPAT, $charset = null, $doubleEncode = true)
     {
@@ -430,11 +429,11 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     }
 
     /**
-     * Convert some data into a JSON response.
+     * Convierte algunos datos en una respuesta JSON.
      *
-     * @param mixed   $data    The response data
-     * @param integer $status  The response status code
-     * @param array   $headers An array of response headers
+     * @param mixed   $data    Los datos de la respuesta
+     * @param integer $status  El código de estado de la respuesta
+     * @param array   $headers Una matriz de cabeceras de la respuesta
      *
      * @see JsonResponse
      */
@@ -537,6 +536,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
+        $this['locale'] = $event->getRequest()->getLocale();
+
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this->beforeDispatched = true;
             $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);

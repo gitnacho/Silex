@@ -41,7 +41,7 @@ El proveedor ``UrlGenerator`` ofrece un servicio ``url_generator``::
                '<a href="'.$app['url_generator']->generate('hello', array('name' => 'Igor')).'">Hello Igor</a>';
     });
 
-Cuando usas *Twig*, Puedes usar el servicio así:
+Cuando usas *Twig*, puedes usar el servicio así:
 
 .. code-block:: jinja
 

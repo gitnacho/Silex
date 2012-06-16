@@ -114,7 +114,7 @@ class ControllerCollection
      * Establece los requisitos para una ruta variable.
      *
      * @param string $variable El nombre variable
-     * @param string $regexp   The regexp to apply
+     * @param string $regexp   La expresión regular por aplicar
      *
      * @return ControllerCollection $this The current Controller instance
      */
@@ -133,7 +133,7 @@ class ControllerCollection
      * Establece el valor predefinido para una variable de ruta.
      *
      * @param string $variable El nombre variable
-     * @param mixed  $default  The default value
+     * @param mixed  $default  El valor predeterminado
      *
      * @return ControllerCollection $this The current Controller instance
      */
@@ -152,7 +152,7 @@ class ControllerCollection
      * Establece un convertidor para una variable de ruta.
      *
      * @param string $variable El nombre variable
-     * @param mixed  $callback A PHP callback that converts the original value
+     * @param mixed  $callback Una retrollamada PHP que convierte el valor original
      *
      * @return ControllerCollection $this The current Controller instance
      */
@@ -220,8 +220,8 @@ class ControllerCollection
     /**
      * Establece una retrollamada para manipular retrollamadas de ruta before.
      *
-     * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
-     *
+     * @param mixed  $callback Una retrollamada PHP a lanzar cuando la ruta coincide,
+     *                         justo antes de la retrollamada de la ruta
      * @return ControllerCollection $this The current ControllerCollection instance
      */
     public function before($callback)
@@ -236,9 +236,9 @@ class ControllerCollection
     }
 
     /**
-     * Sets a callback to handle after the route callback.
+     * Define una retrollamada a manipular después de la retrollamada a la ruta.
      *
-     * @param mixed $callback A PHP callback to be triggered after the route callback
+     * @param mixed $callback Una retrollamada PHP a lanzar después de la retrollamada a la ruta
      *
      * @return ControllerCollection $this The current ControllerCollection instance
      */

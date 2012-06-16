@@ -19,4 +19,4 @@ Eso es todo, tu formulario se puede enviar desde cualquier parte sin protección
 Prosiguiendo
 ------------
 
-Este ejemplo en concreto muestra cómo cambiar la ``csrf_protection`` en el parámetro ``$options`` de la función ``createBuilder()``. Podrías pasar más a través de este parámetro, es tan simple como usar el método ``getDefaultOptions()`` de *Symfony2* en tus clases formulario. `Ve más aquí <http://gitnacho.github.com/symfony-docs-es/book/forms.html#creando-clases-form>`.
+Este ejemplo en concreto muestra cómo cambiar la ``csrf_protection`` en el parámetro ``$options`` de la función ``createBuilder()``. Podrías pasar más a través de este parámetro, es tan simple como usar el método ``getDefaultOptions()`` de *Symfony2* en tus clases formulario. `Ve más aquí <http://gitnacho.github.com/symfony-docs-es/book/forms.html#creando-clases-form>`_.

@@ -10,8 +10,7 @@ Parámetros
 
 * **monolog.logfile**: Archivo donde escribir los registros.
 
-* **monolog.level** (opcional): El nivel de registro por omisión es ``DEBUG``. Debe ser uno de ``Logger::DEBUG``, ``Logger::INFO``,
-  ``Logger::WARNING``, ``Logger::ERROR``. ``DEBUG`` registra todo, ``INFO`` registrará todo excepto ``DEBUG``, etc.
+* **monolog.level** (opcional): El nivel de registro por omisión es ``DEBUG``. Debe ser uno de ``Logger::DEBUG``, ``Logger::INFO``, ``Logger::WARNING``, ``Logger::ERROR``. ``DEBUG`` registra todo, ``INFO`` registrará todo excepto ``DEBUG``, etc.
 
 * **monolog.name** (opcional): Nombre del canal de *Monplog*, por omisión es ``myapp``.
 
@@ -40,7 +39,7 @@ Registrando
     ``Monolog`` viene con el archivo "gordo" de *Silex* pero no en el normal.
     Si  estás usando ``Composer``, añádelo como dependencia en tu archivo ``composer.json``:
 
-    .. code-block:: json
+    .. code-block:: javascript
 
         "require": {
             "monolog/monolog": ">=1.0.0",

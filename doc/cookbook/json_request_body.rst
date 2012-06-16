@@ -1,7 +1,7 @@
 Aceptando el cuerpo de una petición *JSON*
 ==========================================
 
-Una necesidad común en la construcción de una *API* útil es la posibilidad de aceptar una entidad *JSON* codificada desde el cuerpo de la petición.
+Una necesidad común en la construcción de una *API* útil es la posibilidad de aceptar una entidad codificada con *JSON* desde el cuerpo de la petición.
 
 Un ejemplo de este tipo de *API* podría ser la creación de un *blog*.
 

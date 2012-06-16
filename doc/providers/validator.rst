@@ -30,7 +30,7 @@ Registrando
 
     El componente validator de *Symfony* viene en el archivo "gordo" de *Silex* pero no en el normal. Si estás usando ``Composer``, añádelo como dependencia a tu archivo ``composer.json``:
 
-    .. code-block:: json
+    .. code-block:: javascript
 
         "require": {
             "symfony/validator": "2.1.*"
@@ -105,7 +105,7 @@ Validando arreglos
 Validando objetos
 ~~~~~~~~~~~~~~~~~
 
-Si quiere añadir validación a una clase, puedes definir restricciones y captadores para las propiedades de la clase, y luego llamar al método ``validate``::
+Si quieres añadir validación a una clase, puedes definir restricciones y captadores para las propiedades de la clase, y luego llamar al método ``validate``::
 
     use Symfony\Component\Validator\Constraints as Assert;
 
@@ -136,7 +136,7 @@ Si quiere añadir validación a una clase, puedes definir restricciones y captad
         echo 'The author is valid';
     }
 
-También puede declarar la restricción de clase añadiendo un método estático ``loadValidatorMetadata`` a tus clases::
+También puedes declarar la restricción de clase añadiendo un método estático ``loadValidatorMetadata`` a tus clases::
 
     use Symfony\Component\Validator\Mapping\ClassMetadata;
     use Symfony\Component\Validator\Constraints as Assert;

@@ -1,7 +1,7 @@
 Traduciendo mensajes de validación
 ==================================
 
-Cuando trabajas con la validador de *Symfony2*, debería ser una tarea común mostrar mensajes de validación traducidos.
+Cuando trabajas con el validador de *Symfony2*, debería ser una tarea común mostrar mensajes de validación traducidos.
 
 Para ello, tendrás que registrar el traductor y apuntar a los recursos traducidos::
 
