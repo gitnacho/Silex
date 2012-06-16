@@ -37,7 +37,8 @@ Registrando
 
 .. note::
 
-    *Monolog* no viene en los archivos ``silex``, por lo tanto necesitas añadirlo como dependencia en tu archivo ``composer.json``:
+    ``Monolog`` viene con el archivo "gordo" de *Silex* pero no en el normal.
+    Si  estás usando ``Composer``, añádelo como dependencia en tu archivo ``composer.json``:
 
     .. code-block:: json
 
@@ -48,7 +49,7 @@ Registrando
 Uso
 ---
 
-El proveedor ``MonologServiceProvider`` ofrece un servicio ``monolog``. Lo puedes utilizar para agregar entradas al registro para cualquier nivel de registro cronológico a través de ``addDebug()``, ``addInfo()``, ``addWarning()`` y ``addError()``::
+El proveedor ``MonologServiceProvider`` ofrece un servicio ``monolog``. Lo puedes utilizar para agregar entradas al registro a cualquier nivel de registro cronológico a través de ``addDebug()``, ``addInfo()``, ``addWarning()`` y ``addError()``::
 
     use Symfony\Component\HttpFoundation\Response;
 

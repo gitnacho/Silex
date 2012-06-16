@@ -85,7 +85,6 @@
 <li><strong>twig.path</strong> (opcional): Ruta al directorio que contiene archivos de plantilla <em>Twig</em> (también puede ser un arreglo de rutas).</li>
 <li><strong>twig.templates</strong> (opcional): Se trata de una matriz asociativa de nombres de plantilla para el contenido de la plantilla. Usa esta opción si deseas definir tus plantillas en línea.</li>
 <li><strong>twig.options</strong> (opcional): Una matriz asociativa de opciones <em>Twig</em>. Echa un vistazo a la documentación de <em>Twig</em> para más información.</li>
-<li><strong>twig.class_path</strong> (opcional): Ruta a dónde se encuentra la biblioteca <em>Twig</em>.</li>
 <li><strong>twig.form.templates</strong> (opcional): Una matriz de plantillas utilizada para reproducir formularios (disponible únicamente cuando está habilitado el <tt class="docutils literal"><span class="pre">FormServiceProvider</span></tt>).</li>
 </ul>
 </div>
@@ -93,23 +92,39 @@
 <h2>Servicios<a class="headerlink" href="#servicios" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul class="simple">
 <li><strong>twig</strong>: La instancia de <tt class="docutils literal"><span class="pre">Twig_Environment</span></tt>. La principal forma de interactuar con <em>Twig</em>.</li>
-<li><strong>twig.configure</strong>: <a class="reference internal" href="../services.html#cierres-protegidos"><em>Cierre protegido</em></a> que toma el entorno <em>Twig</em> como argumento. Lo puedes utilizar para agregar más globales personalizadas.</li>
-<li><strong>twig.loader</strong>: El cargador de plantillas <em>Twig</em> que utilizan las opciones <tt class="docutils literal"><span class="pre">twig.path</span></tt> y <tt class="docutils literal"><span class="pre">twig.templates</span></tt>. También puedes reemplazar el cargador completamente.</li>
+<li><strong>twig.loader</strong>: El cargador de plantillas <em>Twig</em> utiliza las opciones <tt class="docutils literal"><span class="pre">twig.path</span></tt> y <tt class="docutils literal"><span class="pre">twig.templates</span></tt>. También puedes reemplazar el cargador completamente.</li>
 </ul>
 </div>
 <div class="section" id="registrando">
 <h2>Registrando<a class="headerlink" href="#registrando" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Asegúrate de colocar una copia de <em>Twig</em> en el directorio <tt class="docutils literal"><span class="pre">vendor/twig</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\TwigServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">&#39;twig.path&#39;</span>       <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/views&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;twig.class_path&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/vendor/twig/lib&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;twig.path&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/views&#39;</span><span class="p">,</span>
 <span class="p">));</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
-<p class="last"><em>Twig</em> no está compilado en el archivo <tt class="docutils literal"><span class="pre">silex.phar</span></tt>. Tienes que añadir tu propia copia de <em>Twig</em> a tu aplicación.</p>
+<p><em>Twig</em> viene con el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no con el normal. Si estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia a tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<div class="last highlight-json"><pre>"require": {
+    "twig/twig": "&gt;=1.8,&lt;2.0-dev"
+}</pre>
 </div>
+</div>
+</div>
+<div class="section" id="integrando-componentes-de-symfony2">
+<h2>Integrando componentes de <em>Symfony2</em><a class="headerlink" href="#integrando-componentes-de-symfony2" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><em>Symfony</em> incluye un puente a <em>Twig</em> que proporciona integración adicional entre algunos componentes de <em>Symfony2</em> y <em>Twig</em>. Añádelo como dependencia a tu archivo <tt class="file docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<div class="highlight-json"><pre>"require": {
+    "symfony/twig-bridge": "2.1.*",
+}</pre>
+</div>
+<p>Cuando está presente el <tt class="docutils literal"><span class="pre">TwigServiceProvider</span></tt> te proporcionará las siguientes capacidades adicionales:</p>
+<ul class="simple">
+<li><strong>UrlGeneratorServiceProvider</strong>: Si estás usando el <tt class="docutils literal"><span class="pre">UrlGeneratorServiceProvider</span></tt>, tendrás acceso a las funciones <tt class="docutils literal"><span class="pre">path()</span></tt> y <tt class="docutils literal"><span class="pre">url()</span></tt> functions. Puedes encontrar más información en la documentación de <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/routing.html#generando-url-desde-una-plantilla">enrutado de Symfony2</a>.</li>
+<li><strong>TranslationServiceProvider</strong>: Si estás usando el <tt class="docutils literal"><span class="pre">TranslationServiceProvider</span></tt>, obtendrás las funciones <tt class="docutils literal"><span class="pre">trans()</span></tt> y <tt class="docutils literal"><span class="pre">transchoice()</span></tt> para traducción en plantillas <em>Twig</em>. Puedes encontrar más información en la documentación de <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/translation.html#plantillas-twig">traducción de Symfony2</a>.</li>
+<li><strong>FormServiceProvider</strong>: Si estás usando el <tt class="docutils literal"><span class="pre">FormServiceProvider</span></tt>, recibirás un conjunto de ayudantes para trabajar con formularios en plantillas. Puedes encontrar más información en la <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/reference/forms/twig_reference.html">referencia de formularios de Symfony2</a>.</li>
+<li><strong>SecurityServiceProvider</strong>: Si estás usando el <tt class="docutils literal"><span class="pre">SecurityServiceProvider</span></tt>, tendrá acceso a la función <tt class="docutils literal"><span class="pre">is_granted()</span></tt> en las plantillas. Puedes encontrar más información en la <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/security.html#controlando-el-acceso-en-plantillas">documentación de Seguridad de Symfony2</a></li>
+</ul>
 </div>
 <div class="section" id="uso">
 <h2>Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h2>
@@ -132,6 +147,18 @@ Para que puedas acceder a cualquier servicio desde tu vista. Por ejemplo, para a
 
 <span class="c">{# o si también estás usando UrlGeneratorServiceProvider con el SymfonyBridgesServiceProvider #}</span><span class="x"></span>
 <span class="cp">{{</span> <span class="nv">render</span><span class="o">(</span><span class="nv">path</span><span class="o">(</span><span class="s1">&#39;sidebar&#39;</span><span class="o">))</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="personalizando">
+<h2>Personalizando<a class="headerlink" href="#personalizando" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Puedes configurar el entorno <em>Twig</em> antes de usarlo extendiendo el servicio <tt class="docutils literal"><span class="pre">twig</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;twig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">extend</span><span class="p">(</span><span class="s1">&#39;twig&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$twig</span><span class="p">,</span> <span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$twig</span><span class="o">-&gt;</span><span class="na">addGlobal</span><span class="p">(</span><span class="s1">&#39;pi&#39;</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">);</span>
+    <span class="nv">$twig</span><span class="o">-&gt;</span><span class="na">addFilter</span><span class="p">(</span><span class="s1">&#39;levenshtein&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">\Twig_Filter_Function</span><span class="p">(</span><span class="s1">&#39;levenshtein&#39;</span><span class="p">));</span>
+
+    <span class="k">return</span> <span class="nv">$twig</span><span class="p">;</span>
+<span class="p">}));</span>
 </pre></div>
 </div>
 <p>Para más información, consulta la <a class="reference external" href="http://gitnacho.github.com/Twig/index.html">documentación de

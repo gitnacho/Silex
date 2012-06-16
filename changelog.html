@@ -27,7 +27,7 @@
     <link rel="shortcut icon" href="_static/icotnp.ico"/>
     <link rel="top" title="Manual de Silex en Español" href="index.html" />
     <link rel="next" title="Archivo Phar" href="phar.html" />
-    <link rel="prev" title="HttpCacheServiceProvider" href="providers/http_cache.html" /> 
+    <link rel="prev" title="SecurityServiceProvider" href="providers/security.html" /> 
   </head>
   <body>
   <div class="imalogo">
@@ -61,7 +61,7 @@
           <a href="phar.html" title="Archivo Phar"
              accesskey="N">siguiente</a> |</li>
         <li class="right" >
-          <a href="providers/http_cache.html" title="HttpCacheServiceProvider"
+          <a href="providers/security.html" title="SecurityServiceProvider"
              accesskey="P">anterior</a> |</li>
         <li><a href="index.html">Silex en Español</a> &raquo;</li> 
       </ul>
@@ -76,11 +76,37 @@
             
   <div class="section" id="registro-de-cambios">
 <h1>Registro de cambios<a class="headerlink" href="#registro-de-cambios" title="Enlazar permanentemente con este título">¶</a></h1>
-<p>Este registro de cambios refiere todas las incompatibilidades con versiones anteriores conforme se presentaron:</p>
 <ul>
-<li><p class="first"><strong>2012-05-26</strong>: se agregó el <tt class="docutils literal"><span class="pre">boot()</span></tt> a <tt class="docutils literal"><span class="pre">ServiceProviderInterface</span></tt></p>
+<li><p class="first"><strong>2012-06-15</strong>: removed the <tt class="docutils literal"><span class="pre">twig.configure</span></tt> service. Use the <tt class="docutils literal"><span class="pre">extend</span></tt>
+method instead:</p>
+<blockquote>
+<div><p>Antes:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;twig.configure&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">protect</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$twig</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// do something</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Después:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;twig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">extend</span><span class="p">(</span><span class="s1">&#39;twig&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$twig</span><span class="p">,</span> <span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// do something</span>
+
+    <span class="k">return</span> <span class="nv">$twig</span><span class="p">;</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+</div></blockquote>
 </li>
-<li><p class="first"><strong>2012-05-26</strong>: se quitó <tt class="docutils literal"><span class="pre">SymfonyBridgesServiceProvider</span></tt></p>
+<li><p class="first"><strong>2012-06-13</strong>: Añadió una ruta de soporte lógico intermedio <tt class="docutils literal"><span class="pre">before</span></tt></p>
+</li>
+<li><p class="first"><strong>2012-06-13</strong>: Se rebautizó la ruta <tt class="docutils literal"><span class="pre">middleware</span></tt> a <tt class="docutils literal"><span class="pre">before</span></tt></p>
+</li>
+<li><p class="first"><strong>2012-06-13</strong>: Añadió una extensión para el componente de Seguridad de <em>Symfony</em></p>
+</li>
+<li><p class="first"><strong>2012-05-31</strong>: Se hicieron opcionales las dependencias <tt class="docutils literal"><span class="pre">BrowserKit</span></tt>, <tt class="docutils literal"><span class="pre">CssSelector</span></tt>, <tt class="docutils literal"><span class="pre">DomCrawler</span></tt>, <tt class="docutils literal"><span class="pre">Finder</span></tt> y <tt class="docutils literal"><span class="pre">Process</span></tt>. Los proyectos que dependen de ellas (por ejemplo, a través de pruebas funcionales) tendrán que añadir esas dependencias a su <tt class="docutils literal"><span class="pre">composer.json</span></tt>.</p>
+</li>
+<li><p class="first"><strong>2012-05-26</strong>: se agregó el <tt class="docutils literal"><span class="pre">boot()</span></tt> a <tt class="docutils literal"><span class="pre">ServiceProviderInterface</span></tt>.</p>
+</li>
+<li><p class="first"><strong>2012-05-26</strong>: se quitó <tt class="docutils literal"><span class="pre">SymfonyBridgesServiceProvider</span></tt> Ahora, implícitamente comprueba la existencia del puente.</p>
 </li>
 <li><p class="first"><strong>2012-05-26</strong>: Se quitó el parámetro <tt class="docutils literal"><span class="pre">translator.messages</span></tt> (en su lugar usa <tt class="docutils literal"><span class="pre">translator.domains</span></tt>).</p>
 </li>
@@ -164,7 +190,7 @@ Las opciones <tt class="docutils literal"><span class="pre">*.class_path</span><
           <a href="phar.html" title="Archivo Phar"
              >siguiente</a> |</li>
         <li class="right" >
-          <a href="providers/http_cache.html" title="HttpCacheServiceProvider"
+          <a href="providers/security.html" title="SecurityServiceProvider"
              >anterior</a> |</li>
         <li><a href="index.html">Silex en Español</a> &raquo;</li> 
       </ul>

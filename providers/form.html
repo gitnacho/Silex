@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>FormServiceProvider &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="../_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="../index.html" />
+    <link rel="up" title="Silex" href="index.html" />
+    <link rel="next" title="HttpCacheServiceProvider" href="http_cache.html" />
+    <link rel="prev" title="ValidatorServiceProvider" href="validator.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="../search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="http_cache.html" title="HttpCacheServiceProvider"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="validator.html" title="ValidatorServiceProvider"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U"><em>Silex</em></a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="formserviceprovider">
+<h1><tt class="docutils literal"><span class="pre">FormServiceProvider</span></tt><a class="headerlink" href="#formserviceprovider" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>El <tt class="docutils literal"><span class="pre">FormServiceProvider</span></tt> proporciona un servicio para construir formularios en tu aplicación con el componente <tt class="docutils literal"><span class="pre">Form</span></tt> de <em>Symfony2</em>.</p>
+<div class="section" id="parametros">
+<h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
+<ul class="simple">
+<li><strong>form.secret</strong>: Esto el valor secreto se utiliza para generar y validar el fragmento <tt class="docutils literal"><span class="pre">CSRF</span></tt> para una página específica. Es muy importante para ti para ajustar este valor a un valor estático generado aleatoriamente, para impedir el secuestro de tus formularios. Por omisión es <tt class="docutils literal"><span class="pre">md5(__DIR__)</span></tt>.</li>
+</ul>
+</div>
+<div class="section" id="servicios">
+<h2>Servicios<a class="headerlink" href="#servicios" title="Enlazar permanentemente con este título">¶</a></h2>
+<ul class="simple">
+<li><strong>form.factory</strong>: Una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Form/FormFactory.html">FormFactory</a>, usada para construir un formulario.</li>
+<li><strong>form.csrf_provider</strong>: Una instancia de una implementación del <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Form/Extension/Csrf/CsrfProvider/CsrfProviderInterface.html">CsrfProviderInterface</a>, de manera predeterminada es <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Form/Extension/Csrf/CsrfProvider/DefaultCsrfProvider.html">DefaultCsrfProvider</a>.</li>
+</ul>
+</div>
+<div class="section" id="registrando">
+<h2>Registrando<a class="headerlink" href="#registrando" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Silex\Provider\FormServiceProvider</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">FormServiceProvider</span><span class="p">());</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>El Componente <tt class="docutils literal"><span class="pre">Form</span></tt> de <em>Symfony</em> viene con el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal. Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<div class="last highlight-json"><pre>"require": {
+    "symfony/form": "2.1.*"
+}</pre>
+</div>
+</div>
+</div>
+<div class="section" id="uso">
+<h2>Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El <tt class="docutils literal"><span class="pre">FormServiceProvider</span></tt> proporciona un servicio <tt class="docutils literal"><span class="pre">form.factory</span></tt>. Aquí está un ejemplo de uso:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">match</span><span class="p">(</span><span class="s1">&#39;/form&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// algún dato predefinido para cuando se muestra el formulario por primera vez</span>
+    <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Your name&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;email&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Your email&#39;</span><span class="p">,</span>
+    <span class="p">);</span>
+
+    <span class="nv">$form</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;form.factory&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">createBuilder</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">,</span> <span class="nv">$data</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;choice&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;choices&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="mi">1</span> <span class="o">=&gt;</span> <span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="mi">2</span> <span class="o">=&gt;</span> <span class="s1">&#39;female&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;expanded&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+        <span class="p">))</span>
+        <span class="o">-&gt;</span><span class="na">getForm</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;POST&#39;</span> <span class="o">==</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getMethod</span><span class="p">())</span> <span class="p">{</span>
+        <span class="nv">$form</span><span class="o">-&gt;</span><span class="na">bindRequest</span><span class="p">(</span><span class="nv">$request</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$form</span><span class="o">-&gt;</span><span class="na">isValid</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$form</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
+
+            <span class="c1">// hace algo con los datos</span>
+
+            <span class="c1">// redirige a algún lugar</span>
+            <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">redirect</span><span class="p">(</span><span class="s1">&#39;...&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// muestra el formulario</span>
+    <span class="k">return</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;twig&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;index.twig&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;form&#39;</span> <span class="o">=&gt;</span> <span class="nv">$form</span><span class="o">-&gt;</span><span class="na">createView</span><span class="p">()));</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Y aquí tienes la plantilla del formulario <tt class="docutils literal"><span class="pre">index.twig</span></tt>:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;form action=&quot;#&quot; method=&quot;post&quot;&gt;</span>
+<span class="x">    </span><span class="cp">{{</span> <span class="nv">form_widget</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+
+<span class="x">    &lt;input type=&quot;submit&quot; name=&quot;submit&quot; /&gt;</span>
+<span class="x">&lt;/form&gt;</span>
+</pre></div>
+</div>
+<p>Si estás usando el proveedor de validación, también puedes agregar validación a tu formulario añadiendo restricciones en los campos:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\Validator\Constraints</span> <span class="k">as</span> <span class="nx">Assert</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\ValidatorServiceProvider</span><span class="p">());</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\TranslationServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;translator.messages&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(),</span>
+<span class="p">));</span>
+
+<span class="nv">$form</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;form.factory&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">createBuilder</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;constraints&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="k">new</span> <span class="nx">Assert\NotBlank</span><span class="p">(),</span> <span class="k">new</span> <span class="nx">Assert\MinLength</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+    <span class="p">))</span>
+    <span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;constraints&#39;</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nx">Assert\Email</span><span class="p">()</span>
+    <span class="p">))</span>
+    <span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;choice&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;choices&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="mi">1</span> <span class="o">=&gt;</span> <span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="mi">2</span> <span class="o">=&gt;</span> <span class="s1">&#39;female&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;expanded&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+        <span class="s1">&#39;constraints&#39;</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="nx">Assert\Choice</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
+    <span class="p">))</span>
+    <span class="o">-&gt;</span><span class="na">getForm</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Para más información, consulta la <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/forms.html">documentación de Formularios de Symfony2</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="http_cache.html" title="HttpCacheServiceProvider"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="validator.html" title="ValidatorServiceProvider"
+             >anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" ><em>Silex</em></a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

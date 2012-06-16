@@ -28,7 +28,7 @@ Registrando
 
 .. note::
 
-    El componente *Validator* de *Symfony* no viene en los archivos ``silex``, por lo tanto necesitas añadirlo como dependencia en tu archivo :file:`composer.json`:
+    El componente validator de *Symfony* viene en el archivo "gordo" de *Silex* pero no en el normal. Si estás usando ``Composer``, añádelo como dependencia a tu archivo ``composer.json``:
 
     .. code-block:: json
 
@@ -46,46 +46,149 @@ Validando valores
 
 Puedes validar directamente los valores usando el método de validación ``validateValue``::
 
-    use Symfony\Component\Validator\Constraints;
+    use Symfony\Component\Validator\Constraints as Assert;
 
-    $app->get('/validate-url', function () use ($app) {
-        $violations = $app['validator']->validateValue($app['request']->get('url'), new Constraints\Url());
-        return $violations;
+    $app->get('/validate/{email}', function ($email) use ($app) {
+        $errors = $app['validator']->validateValue($email, new Assert\Email());
+
+        if (count($errors) > 0) {
+            return (string) $errors;
+        } else {
+            return 'The email is valid';
+        }
     });
 
-Esto está limitado relativamente.
+Validando arreglos
+~~~~~~~~~~~~~~~~~~
 
-Validando propiedades de objeto
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: php
 
-Si deseas añadir validaciones a una clase, puedes implementar un método estático ``loadValidatorMetadata`` como se describe en *Servicios*. Esto te permite definir las restricciones para las propiedades de tu objeto. También trabaja con captadores::
+    use Symfony\Component\Validator\Constraints as Assert;
 
-    use Symfony\Component\Validator\Mapping\ClassMetadata;
-    use Symfony\Component\Validator\Constraints;
-
-    class Post
+    class Book
     {
         public $title;
-        public $body;
+        public $author;
+    }
+
+    class Author
+    {
+        public $first_name;
+        public $last_name;
+    }
+
+    $book = array(
+        'title' => 'My Book',
+        'author' => array(
+            'first_name' => 'Fabien',
+            'last_name'  => 'Potencier',
+        ),
+    );
+
+    $constraint = new Assert\Collection(array(
+        'title' => new Assert\MinLength(10),
+        'author' => new Assert\Collection(array(
+            'first_name' => array(new Assert\NotBlank(), new Assert\MinLength(10)),
+            'last_name'  => new Assert\MinLength(10),
+        )),
+    ));
+    $errors = $app['validator']->validateValue($book, $constraint);
+
+    if (count($errors) > 0) {
+        foreach ($errors as $error) {
+            echo $error->getPropertyPath().' '.$error->getMessage()."\n";
+        }
+    } else {
+        echo 'The book is valid';
+    }
+
+Validando objetos
+~~~~~~~~~~~~~~~~~
+
+Si quiere añadir validación a una clase, puedes definir restricciones y captadores para las propiedades de la clase, y luego llamar al método ``validate``::
+
+    use Symfony\Component\Validator\Constraints as Assert;
+
+    $author = new Author();
+    $author->first_name = 'Fabien';
+    $author->last_name = 'Potencier';
+
+    $book = new Book();
+    $book->title = 'My Book';
+    $book->author = $author;
+
+    $metadata = $app['validator.mapping.class_metadata_factory']->getClassMetadata('Author');
+    $metadata->addPropertyConstraint('first_name', new Assert\NotBlank());
+    $metadata->addPropertyConstraint('first_name', new Assert\MinLength(10));
+    $metadata->addPropertyConstraint('last_name', new Assert\MinLength(10));
+
+    $metadata = $app['validator.mapping.class_metadata_factory']->getClassMetadata('Book');
+    $metadata->addPropertyConstraint('title', new Assert\MinLength(10));
+    $metadata->addPropertyConstraint('author', new Assert\Valid());
+
+    $errors = $app['validator']->validate($book);
+
+    if (count($errors) > 0) {
+        foreach ($errors as $error) {
+            echo $error->getPropertyPath().' '.$error->getMessage()."\n";
+        }
+    } else {
+        echo 'The author is valid';
+    }
+
+También puede declarar la restricción de clase añadiendo un método estático ``loadValidatorMetadata`` a tus clases::
+
+    use Symfony\Component\Validator\Mapping\ClassMetadata;
+    use Symfony\Component\Validator\Constraints as Assert;
+
+    class Book
+    {
+        public $title;
+        public $author;
 
         static public function loadValidatorMetadata(ClassMetadata $metadata)
         {
-            $metadata->addPropertyConstraint('title', new Constraints\NotNull());
-            $metadata->addPropertyConstraint('title', new Constraints\NotBlank());
-            $metadata->addPropertyConstraint('body', new Constraints\MinLength(array('limit' => 10)));
+            $metadata->addPropertyConstraint('title', new Assert\MinLength(10));
+            $metadata->addPropertyConstraint('author', new Assert\Valid());
         }
     }
 
-    $app->post('/posts/new', function () use ($app) {
-        $post = new Post();
-        $post->title = $app['request']->get('title');
-        $post->body = $app['request']->get('body');
+    class Author
+    {
+        public $first_name;
+        public $last_name;
 
-        $violations = $app['validator']->validate($post);
-        return $violations;
+        static public function loadValidatorMetadata(ClassMetadata $metadata)
+        {
+            $metadata->addPropertyConstraint('first_name', new Assert\NotBlank());
+            $metadata->addPropertyConstraint('first_name', new Assert\MinLength(10));
+            $metadata->addPropertyConstraint('last_name', new Assert\MinLength(10));
+        }
+    }
+
+    $app->get('/validate/{email}', function ($email) use ($app) {
+        $author = new Author();
+        $author->first_name = 'Fabien';
+        $author->last_name = 'Potencier';
+
+        $book = new Book();
+        $book->title = 'My Book';
+        $book->author = $author;
+
+        $errors = $app['validator']->validate($book);
+
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                echo $error->getPropertyPath().' '.$error->getMessage()."\n";
+            }
+        } else {
+            echo 'The author is valid';
+        }
     });
 
-Tendrás que manipular la presentación de estas violaciones tú mismo. No obstante, puedes utilizar el ``FormServiceProvider`` el cual puede usar el ``ValidatorServiceProvider``.
+.. note::
+
+    Usa ``addGetterConstraint()`` para añadir restricciones en los métodos captadores y ``addConstraint()`` para agregar restricciones a la propia clase.
 
 Traducción
 ~~~~~~~~~~

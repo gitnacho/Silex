@@ -79,12 +79,11 @@
   <div class="section" id="monologserviceprovider">
 <h1><tt class="docutils literal"><span class="pre">MonologServiceProvider</span></tt><a class="headerlink" href="#monologserviceprovider" title="Enlazar permanentemente con este título">¶</a></h1>
 <p>El proveedor <tt class="docutils literal"><span class="pre">MonologServiceProvider</span></tt> proporciona un mecanismo de registro predeterminado a través de la biblioteca <a class="reference external" href="https://github.com/Seldaek/monolog">Monolog</a> de Jordi Boggiano&#8217;s.</p>
-<p>Esta registrará las peticiones y errores y te permite añadir a tu aplicación el registro de depuración, para que no tengas que usar <tt class="docutils literal"><span class="pre">var_dump</span></tt> mucho más. Puedes utilizar la versión madura llamada <tt class="docutils literal"><span class="pre">tail-f</span></tt>.</p>
+<p>Esta registrará las peticiones y errores y te permite añadir a tu aplicación el registro de depuración, para que ya no tengas que usar <tt class="docutils literal"><span class="pre">var_dump</span></tt>. Puedes utilizar la versión madura llamada <tt class="docutils literal"><span class="pre">tail-f</span></tt>.</p>
 <div class="section" id="parametros">
 <h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul class="simple">
 <li><strong>monolog.logfile</strong>: Archivo donde escribir los registros.</li>
-<li><strong>monolog.class_path</strong> (opcional): Ruta a la biblioteca donde se encuentra <em>Monolog</em>.</li>
 <li><strong>monolog.level</strong> (opcional): El nivel de registro por omisión es <tt class="docutils literal"><span class="pre">DEBUG</span></tt>. Debe ser uno de <tt class="docutils literal"><span class="pre">Logger::DEBUG</span></tt>, <tt class="docutils literal"><span class="pre">Logger::INFO</span></tt>,
 <tt class="docutils literal"><span class="pre">Logger::WARNING</span></tt>, <tt class="docutils literal"><span class="pre">Logger::ERROR</span></tt>. <tt class="docutils literal"><span class="pre">DEBUG</span></tt> registra todo, <tt class="docutils literal"><span class="pre">INFO</span></tt> registrará todo excepto <tt class="docutils literal"><span class="pre">DEBUG</span></tt>, etc.</li>
 <li><strong>monolog.name</strong> (opcional): Nombre del canal de <em>Monplog</em>, por omisión es <tt class="docutils literal"><span class="pre">myapp</span></tt>.</li>
@@ -93,33 +92,36 @@
 <div class="section" id="servicios">
 <h2>Servicios<a class="headerlink" href="#servicios" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul>
-<li><p class="first"><strong>monolog</strong>: La instancia del notario de <em>Monolog</em>.</p>
+<li><p class="first"><strong>monolog</strong>: La instancia del registro cronológico de <em>Monolog</em>.</p>
 <p>Ejemplo de uso:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;monolog&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">addDebug</span><span class="p">(</span><span class="s1">&#39;Probando el notario de Monolog.&#39;</span><span class="p">);</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;monolog&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">addDebug</span><span class="p">(</span><span class="s1">&#39;Probando el registro cronológico de eventos de Monolog.&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first"><strong>monolog.configure</strong>: Cierre protegido que toma al notario como argumento. Lo puedes modificar si no deseas el comportamiento por omisión.</p>
+<li><p class="first"><strong>monolog.configure</strong>: Cierre protegido que toma al registro cronológico como argumento. Lo puedes modificar si no deseas el comportamiento predefinido.</p>
 </li>
 </ul>
 </div>
 <div class="section" id="registrando">
 <h2>Registrando<a class="headerlink" href="#registrando" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Asegúrate de colocar una copia de <em>Monolog</em> en el directorio <tt class="docutils literal"><span class="pre">vendor/monolog</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\MonologServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">&#39;monolog.logfile&#39;</span>       <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/development.log&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;monolog.class_path&#39;</span>    <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/vendor/monolog/src&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;monolog.logfile&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/development.log&#39;</span><span class="p">,</span>
 <span class="p">));</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
-<p class="last"><em>Monolog</em> no está compilado en el archivo <tt class="docutils literal"><span class="pre">silex.phar</span></tt>. Tienes que añadir tu propia copia de <em>Monolog</em> a tu aplicación.</p>
+<p><tt class="docutils literal"><span class="pre">Monolog</span></tt> viene con el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal.
+Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<div class="last highlight-json"><pre>"require": {
+    "monolog/monolog": "&gt;=1.0.0",
+}</pre>
+</div>
 </div>
 </div>
 <div class="section" id="uso">
 <h2>Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>El proveedor <tt class="docutils literal"><span class="pre">MonologServiceProvider</span></tt> ofrece un servicio <tt class="docutils literal"><span class="pre">monolog</span></tt>. Lo puedes utilizar para agregar entradas al registro para cualquier nivel de registro a través de <tt class="docutils literal"><span class="pre">addDebug()</span></tt>, <tt class="docutils literal"><span class="pre">addInfo()</span></tt>, <tt class="docutils literal"><span class="pre">addWarning()</span></tt> y <tt class="docutils literal"><span class="pre">addError()</span></tt>.</p>
+<p>El proveedor <tt class="docutils literal"><span class="pre">MonologServiceProvider</span></tt> ofrece un servicio <tt class="docutils literal"><span class="pre">monolog</span></tt>. Lo puedes utilizar para agregar entradas al registro a cualquier nivel de registro cronológico a través de <tt class="docutils literal"><span class="pre">addDebug()</span></tt>, <tt class="docutils literal"><span class="pre">addInfo()</span></tt>, <tt class="docutils literal"><span class="pre">addWarning()</span></tt> y <tt class="docutils literal"><span class="pre">addError()</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
 
 <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/user&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>

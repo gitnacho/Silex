@@ -6,11 +6,11 @@ El proveedor ``SessionServiceProvider`` ofrece un servicio para almacenar datos 
 Parámetros
 ----------
 
-* **session.storage.save_path** (opcional): La trayectoria para el ``NativeFileSessionHandler``, ---por omisión--- es el valor de ``sys_get_temp_dir()``.
+* **session.storage.save_path** (opcional): La ruta para el ``FileSessionHandler``, de manera predeterminada es el valor de ``sys_get_temp_dir()``.
 
 * **session.storage.options**: Un arreglo de opciones que se pasa al constructor del servicio ``session.storage``.
 
-  En caso del predeterminado ``NativeSessionStorage``, las opciones posibles son:
+  En caso del `NativeSessionStorage <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_, predeterminado las posibles opciones son:
 
   * **name**: El nombre de la ``cookie`` (por omisión ``_SESS``)
   * **id**: El ``id`` de la sesión (por omisión ``null``)
@@ -22,14 +22,16 @@ Parámetros
 
   Sin embargo, todas estas son opcionales. Las sesiones duran tanto como el navegador permanezca abierto. Para evitar esto, establece la opción ``lifetime``.
 
+* **session.test**: Cuándo simular sesiones o no (útil cuándo escribes pruebas funcionales).
+
 Servicios
 ---------
 
 * **session**: Una instancia de la `Session <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html>`_ de *Symfony2*.
 
-* **session.storage**: Un servicio utilizado para persistir los datos de sesión. El predefinido es ``NativeSessionStorage``
+* **session.storage**: Un servicio utilizado para persistir los datos de sesión.
 
-* **session.storage.handler**: Un servicio que utiliza ``session.storage`` para acceder a los datos. El controlador de almacenamiento predefinido es ``NativeFileSessionHandler``.
+* **session.storage.handler**: Un servicio que utiliza ``session.storage`` para acceder a los datos. De manera predeterminada el control de almacenamiento es `FileSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/FileSessionHandler.html>`_.
 
 Registrando
 -----------

@@ -86,8 +86,7 @@
 <div class="section" id="servicios">
 <h2>Servicios<a class="headerlink" href="#servicios" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul class="simple">
-<li><strong>url_generator</strong>: Una instancia del <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html">UrlGenerator</a>, usando la <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html">RouteCollection</a> proporcionada a través del servicio <tt class="docutils literal"><span class="pre">routes</span></tt>.
-Tiene un método <tt class="docutils literal"><span class="pre">generate</span></tt>, el cual toma el nombre de la ruta como argumento, seguido por un arreglo de parámetros de la ruta.</li>
+<li><strong>url_generator</strong>: Una instancia del <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Routing/Generator/UrlGenerator.html">UrlGenerator</a>, usando la <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html">RouteCollection</a> proporcionada a través del servicio <tt class="docutils literal"><span class="pre">routes</span></tt>. Tiene un método <tt class="docutils literal"><span class="pre">generate</span></tt>, que toma el nombre de la ruta como argumento, seguido por un arreglo de parámetros de la ruta.</li>
 </ul>
 </div>
 <div class="section" id="registrando">
@@ -114,6 +113,15 @@ Tiene un método <tt class="docutils literal"><span class="pre">generate</span><
            <span class="s1">&#39; | &#39;</span><span class="o">.</span>
            <span class="s1">&#39;&lt;a href=&quot;&#39;</span><span class="o">.</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;url_generator&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">generate</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Igor&#39;</span><span class="p">))</span><span class="o">.</span><span class="s1">&#39;&quot;&gt;Hello Igor&lt;/a&gt;&#39;</span><span class="p">;</span>
 <span class="p">});</span>
+</pre></div>
+</div>
+<p>Cuando usas <em>Twig</em>, Puedes usar el servicio así:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">app.url_generator.generate</span><span class="o">(</span><span class="s1">&#39;homepage&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Además, si utilizas <em>Twig</em>, tendrás acceso a las funciones <tt class="docutils literal"><span class="pre">path()</span></tt> y <tt class="docutils literal"><span class="pre">url()</span></tt>:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;homepage&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">url</span><span class="o">(</span><span class="s1">&#39;homepage&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"> </span><span class="c">{# genera la url absoluta http://ejemplo.org/ #}</span><span class="x"></span>
 </pre></div>
 </div>
 </div>

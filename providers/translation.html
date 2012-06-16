@@ -28,7 +28,7 @@
     <link rel="top" title="Manual de Silex en Español" href="../index.html" />
     <link rel="up" title="Silex" href="index.html" />
     <link rel="next" title="TwigServiceProvider" href="twig.html" />
-    <link rel="prev" title="SymfonyBridgesServiceProvider" href="symfony_bridges.html" /> 
+    <link rel="prev" title="SwiftmailerServiceProvider" href="swiftmailer.html" /> 
   </head>
   <body>
   <div class="imalogo">
@@ -62,7 +62,7 @@
           <a href="twig.html" title="TwigServiceProvider"
              accesskey="N">siguiente</a> |</li>
         <li class="right" >
-          <a href="symfony_bridges.html" title="SymfonyBridgesServiceProvider"
+          <a href="swiftmailer.html" title="SwiftmailerServiceProvider"
              accesskey="P">anterior</a> |</li>
         <li><a href="../index.html">Silex en Español</a> &raquo;</li>
           <li><a href="index.html" accesskey="U"><em>Silex</em></a> &raquo;</li> 
@@ -82,10 +82,9 @@
 <div class="section" id="parametros">
 <h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul class="simple">
-<li><strong>translator.messages</strong>: Una asignación de regiones para los arreglos de mensajes. Este parámetro contiene los datos de traducción en todos los idiomas.</li>
+<li><strong>translator.domains</strong>: Una asignación de dominios/regiones/mensajes. Este parámetro contiene los datos traducidos de todos los dominios e idiomas.</li>
 <li><strong>locale</strong> (opcional): La región para el traductor. Lo más probable es que desees establecer este basándote en algún parámetro de la petición. Predeterminada a <tt class="docutils literal"><span class="pre">en</span></tt>.</li>
 <li><strong>locale_fallback</strong> (opcional): La región de reserva para el traductor. Esta se utiliza cuando la configuración regional actual no tiene ningún conjunto de mensajes.</li>
-<li><strong>translation.class_path</strong> (opcional): Ruta a donde se encuentra el componente <tt class="docutils literal"><span class="pre">Translation</span></tt> de <em>Symfony2</em>.</li>
 </ul>
 </div>
 <div class="section" id="servicios">
@@ -99,29 +98,42 @@
 </div>
 <div class="section" id="registrando">
 <h2>Registrando<a class="headerlink" href="#registrando" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Asegúrate de colocar una copia del componente de traducción de <em>Symfony2</em> en <tt class="docutils literal"><span class="pre">vendor/symfony/src</span></tt>. Puedes simplemente clonar todo <em>Symfony2</em> en <tt class="docutils literal"><span class="pre">vendor</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\TranslationServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">&#39;locale_fallback&#39;</span>           <span class="o">=&gt;</span> <span class="s1">&#39;en&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;translation.class_path&#39;</span>    <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/vendor/symfony/src&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;locale_fallback&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;en&#39;</span><span class="p">,</span>
 <span class="p">));</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>El componente de traducción de <em>Symfony</em> viene en el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal. Si estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia a tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<div class="last highlight-json"><pre>"require": {
+    "symfony/translation": "2.1.*"
+}</pre>
+</div>
 </div>
 </div>
 <div class="section" id="uso">
 <h2>Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>El proveedor <tt class="docutils literal"><span class="pre">Translation</span></tt> ofrece un servicio <tt class="docutils literal"><span class="pre">traductor</span></tt> y usa el parámetro <tt class="docutils literal"><span class="pre">translator.messages</span></tt>:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;translator.messages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">&#39;en&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="s1">&#39;hello&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Hello %name%&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;goodbye&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;Goodbye %name%&#39;</span><span class="p">,</span>
+<p>El proveedor <tt class="docutils literal"><span class="pre">Translation</span></tt> ofrece un servicio <tt class="docutils literal"><span class="pre">traductor</span></tt> y usa el parámetro <tt class="docutils literal"><span class="pre">translator.domains</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;translator.domains&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;messages&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;en&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;hello&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Hello %name%&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;goodbye&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;Goodbye %name%&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="s1">&#39;de&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;hello&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Hallo %name%&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;goodbye&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;Tschüss %name%&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="s1">&#39;fr&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;hello&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Bonjour %name%&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;goodbye&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;Au revoir %name%&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
     <span class="p">),</span>
-    <span class="s1">&#39;de&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="s1">&#39;hello&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Hallo %name%&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;goodbye&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;Tschüss %name%&#39;</span><span class="p">,</span>
-    <span class="p">),</span>
-    <span class="s1">&#39;fr&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="s1">&#39;hello&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Bonjour %name%&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;goodbye&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;Au revoir %name%&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;validators&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;fr&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;This value should be a valid number.&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Cette valeur doit être un nombre.&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
     <span class="p">),</span>
 <span class="p">);</span>
 
@@ -149,20 +161,24 @@
 <div class="section" id="archivos-de-idioma-basados-en-yaml">
 <h3>Archivos de idioma basados en <em>YAML</em><a class="headerlink" href="#archivos-de-idioma-basados-en-yaml" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Tener tu traducción en archivos <em>PHP</em> puede ser un inconveniente. Esta receta te muestra cómo cargar traducciones de archivos <em>YAML</em> externos.</p>
-<p>En primer lugar necesitas los componentes <tt class="docutils literal"><span class="pre">Config</span></tt> y <tt class="docutils literal"><span class="pre">Yaml</span></tt> de <em>Symfony2</em>. Además, asegúrate de registrarlos en el cargador automático. Puedes clonar el repositorio de <em>Symfony2</em> completo en <tt class="docutils literal"><span class="pre">vendor/symfony</span></tt>:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;autoloader&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">registerNamespace</span><span class="p">(</span><span class="s1">&#39;Symfony&#39;</span><span class="p">,</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/vendor/symfony/src&#39;</span><span class="p">);</span>
-</pre></div>
+<p>En primer lugar, añade los componentes <tt class="docutils literal"><span class="pre">Config</span></tt> y <tt class="docutils literal"><span class="pre">Yaml</span></tt> a tu archivo composer.</p>
+<div class="highlight-json"><pre>"require": {
+    "symfony/config": "2.1.*",
+    "symfony/yaml": "2.1.*",
+}</pre>
 </div>
 <p>A continuación, debes crear las asignaciones de idioma en los archivos <em>YAML</em>. Un nombre que puedes utilizar es <tt class="docutils literal"><span class="pre">locales/en.yml</span></tt>. Sólo haz la asignación en este archivo de la siguiente manera:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">hello</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Hello %name%</span>
 <span class="l-Scalar-Plain">goodbye</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Goodbye %name%</span>
 </pre></div>
 </div>
-<p>Repite esto para todos tus idiomas. A continuación, configura el <tt class="docutils literal"><span class="pre">translator.messages</span></tt> para asignar archivos a los idiomas:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;translator.messages&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">&#39;en&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/en.yml&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;de&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/de.yml&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;fr&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/fr.yml&#39;</span><span class="p">,</span>
+<p>Repite esto para todos tus idiomas. A continuación, configura el <tt class="docutils literal"><span class="pre">translator.domains</span></tt> para asignar idiomas a los archivos:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;translator.domains&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;messages&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;en&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/en.yml&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;de&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/de.yml&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;fr&#39;</span> <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/fr.yml&#39;</span><span class="p">,</span>
+    <span class="p">),</span>
 <span class="p">);</span>
 </pre></div>
 </div>
@@ -176,10 +192,10 @@
 </div>
 <p>Y eso es todo lo que necesitas para cargar traducciones desde archivos <em>YAML</em>.</p>
 </div>
-<div class="section" id="id1">
-<h3>Archivos de idioma basados en <em>YAML</em><a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Al igual que lo harías con los archivos de traducción <em>YAML</em>, primero tienes que asegurarte de que tienes el componente <tt class="docutils literal"><span class="pre">Config</span></tt> de <em>Symfony2</em>, y haberlo registrado en el cargador automático. Ve arriba para más detalles.</p>
-<p>Luego, del mismo modo, crea los archivos <em>XLIFF</em> en tu directorio de regiones y configurar la opción <tt class="docutils literal"><span class="pre">translator.messages</span></tt> para asignarlos.</p>
+<div class="section" id="archivos-de-idioma-basados-en-xliff">
+<h3>Archivos de idioma basados en <em>XLIFF</em><a class="headerlink" href="#archivos-de-idioma-basados-en-xliff" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Al igual que lo harías con los archivos de traducción <em>YAML</em>, primero te tienes que asegurar de que tienes como dependencia el componente <tt class="docutils literal"><span class="pre">Config</span></tt> de <em>Symfony2</em> (ve los detalles arriba).</p>
+<p>Luego, del mismo modo, crea los archivos <em>XLIFF</em> en tu directorio de regiones y configura la opción <tt class="docutils literal"><span class="pre">translator.domains</span></tt> para asignarlos.</p>
 <p>Finalmente redefine el <tt class="docutils literal"><span class="pre">translator.loader</span></tt> para utilizar un <tt class="docutils literal"><span class="pre">XliffFileLoader</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\Translation\Loader\XliffFileLoader</span><span class="p">;</span>
 
@@ -196,7 +212,7 @@
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">app.translator.trans</span><span class="o">(</span><span class="s1">&#39;translation_key&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre></div>
 </div>
-<p>Aún mejor: registra el <tt class="xref doc docutils literal"><span class="pre">SymfonyBridgesServiceProvider</span></tt> y obtendrás la <tt class="docutils literal"><span class="pre">TranslationExtension</span></tt> del puente, misma que te permite traducir cadenas a la manera de <em>Twig</em>:</p>
+<p>Además, cuándo utilizas el puente <em>Twig</em> proporcionado por <em>Symfony</em> (ve <a class="reference internal" href="twig.html"><em>TwigServiceProvider</em></a>), te será permitido traducir cadenas a la manera de <em>Twig</em>:</p>
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="s1">&#39;translation_key&#39;</span><span class="o">|</span><span class="nf">trans</span> <span class="cp">}}</span><span class="x"></span>
 <span class="cp">{{</span> <span class="s1">&#39;translation_key&#39;</span><span class="o">|</span><span class="nf">transchoice</span> <span class="cp">}}</span><span class="x"></span>
 <span class="cp">{%</span> <span class="k">trans</span> <span class="cp">%}</span><span class="x">translation_key</span><span class="cp">{%</span> <span class="k">endtrans</span> <span class="cp">%}</span><span class="x"></span>
@@ -226,7 +242,7 @@
           <a href="twig.html" title="TwigServiceProvider"
              >siguiente</a> |</li>
         <li class="right" >
-          <a href="symfony_bridges.html" title="SymfonyBridgesServiceProvider"
+          <a href="swiftmailer.html" title="SwiftmailerServiceProvider"
              >anterior</a> |</li>
         <li><a href="../index.html">Silex en Español</a> &raquo;</li>
           <li><a href="index.html" ><em>Silex</em></a> &raquo;</li> 
