@@ -1,11 +1,34 @@
 Registro de cambios
 ===================
 
-Este registro de cambios refiere todas las incompatibilidades con versiones anteriores conforme se presentaron:
+* **2012-06-15**: removed the ``twig.configure`` service. Use the ``extend``
+  method instead:
 
-* **2012-05-26**: se agregó el ``boot()`` a ``ServiceProviderInterface``
+    Antes::
 
-* **2012-05-26**: se quitó ``SymfonyBridgesServiceProvider``
+        $app['twig.configure'] = $app->protect(function ($twig) use ($app) {
+            // do something
+        });
+
+    Después::
+
+        $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+            // do something
+
+            return $twig;
+        }));
+
+* **2012-06-13**: Añadió una ruta de soporte lógico intermedio ``before``
+
+* **2012-06-13**: Se rebautizó la ruta ``middleware`` a ``before``
+
+* **2012-06-13**: Añadió una extensión para el componente de Seguridad de *Symfony*
+
+* **2012-05-31**: Se hicieron opcionales las dependencias ``BrowserKit``, ``CssSelector``, ``DomCrawler``, ``Finder`` y ``Process``. Los proyectos que dependen de ellas (por ejemplo, a través de pruebas funcionales) tendrán que añadir esas dependencias a su ``composer.json``.
+
+* **2012-05-26**: se agregó el ``boot()`` a ``ServiceProviderInterface``.
+
+* **2012-05-26**: se quitó ``SymfonyBridgesServiceProvider`` Ahora, implícitamente comprueba la existencia del puente.
 
 * **2012-05-26**: Se quitó el parámetro ``translator.messages`` (en su lugar usa ``translator.domains``).
 

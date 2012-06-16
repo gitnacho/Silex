@@ -168,10 +168,10 @@ Servicios básicos
 
 * **request_context**: El contexto de la petición es una representación simplificada de la petición que utilizan el ``Router`` y el ``UrlGenerator``.
 
-* **exception_handler**: El controlador de excepciones es el controlador predeterminado que se utiliza cuando no registras uno a través del método ``error()`` o si el controlador no devuelve una Respuesta. Lo puedes desactivar con ``unset($app['exception_handler'])``.
+* **exception_handler**: El controlador de excepciones es el controlador predeterminado usado cuando no registras uno a través del método ``error()`` o si el controlador no devuelve una ``Respuesta``. Lo puedes desactivar con ``unset($app['exception_handler'])``.
 
-* **logger**: Una instancia de `http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html`_. De forma predeterminada, el registro está desactivado ya que el valor se establece en ``null``.
-  Cuando el puente *Monolog* de *Symfony2* está instalado, se utiliza *Monolog* automáticamente como el registrador cronológico predeterminado.
+* **logger**: Una instancia de `LoggerInterface <http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html>`_. De forma predeterminada, la anotación cronológica de eventos está desactivada ya que el valor se establece en ``null``.
+  Cuando el puente ``Monolog`` de *Symfony2* está instalado, se utiliza ``Monolog`` automáticamente como el registro cronológico predeterminado.
 
 .. note::
 

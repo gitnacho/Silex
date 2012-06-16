@@ -78,18 +78,14 @@ Asegúrate de **no** usar ``require_once`` aquí, ya que este método se ejecuta
 
 .. tip::
 
-    Si tu aplicación usa sesiones, tienes que usar ``FilesystemSessionStorage`` para guardar las sesiones::
-
-        // ...
-        use Symfony\Component\HttpFoundation\SessionStorage\FilesystemSessionStorage;
-        // ...
+    Si tu aplicación usa sesiones, ajusta ``session.test`` a ``true`` para simular sesiones::
 
         public function createApplication()
         {
             // ...
-            $this->app['session.storage'] = $this->app->share(function() {
-                return new FilesystemSessionStorage(sys_get_temp_dir());
-            });
+
+            $this->app['session.test'] = true;
+
             // ...
         }
 

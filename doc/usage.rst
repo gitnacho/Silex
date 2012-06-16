@@ -6,7 +6,7 @@ Este capítulo describe cómo utilizar *Silex*.
 Instalando
 ----------
 
-Si  quieres empezar rápidamente, descarga uno de los archivos `silex.zip`_ o `silex.tgz`_ y descomprímelo, deberías tener la siguiente estructura de directorios:
+Si quieres empezar rápidamente, `descarga`_ *Silex* como un archivo y extraerlo, deberías tener la siguiente estructura de directorios:
 
 .. code-block:: text
 
@@ -23,7 +23,7 @@ Si quieres más flexibilidad, en su lugar usa ``Composer``. Crea un archivo :fil
 
     {
         "require": {
-            "silex/silex": "dev-master"
+            "silex/silex": "1.0.*"
         }
     }
 
@@ -34,10 +34,17 @@ Y corre ``Composer`` para instalar *Silex* y todas sus dependencias:
     $ curl -s http://getcomposer.org/installer | php
     $ composer.phar install
 
+Actualizando
+------------
+
+Actualizar *Silex* a la versión más reciente es tan fácil como ejecutar la orden ``update``::
+
+    $ composer.phar update
+
 Arranque
 --------
 
-Para arrancar *Silex*, todo lo que necesitas hacer es requerir el archivo :file:`vendedor/autoload.php` y crear una instancia de ``Silex\Aplicación``. Después de definir tu controlador, llama al método ``run`` en tu aplicación::
+Para arrancar *Silex*, todo lo que necesitas hacer es requerir el archivo :file:`vendedor/autoload.php` y crear una instancia de ``Silex\Application``. Después de definir tu controlador, llama al método ``run`` en tu aplicación::
 
     // web/index.php
 
@@ -49,11 +56,11 @@ Para arrancar *Silex*, todo lo que necesitas hacer es requerir el archivo :file:
 
     $app->run();
 
-Entonces, tienes que configurar tu servidor web (ve lo consejos para *Apache* e *IIS* más adelante).
+Entonces, tienes que configurar tu servidor *web* (ve lo consejos para *Apache* e *IIS* más adelante).
 
 .. tip::
 
-    Cuando desarrollas un sitio web, posiblemente quieras activar el modo de depuración para que se te facilite la corrección de errores::
+    Cuando desarrollas un sitio *web*, posiblemente quieras activar el modo de depuración para que se te facilite la corrección de errores::
 
         $app['debug'] = true;
 
@@ -372,7 +379,11 @@ El filtro ``finish`` tiene acceso a la ``Petición`` y la ``Respuesta``::
 Servicios intermedios de lógica para la ruta
 --------------------------------------------
 
-Los servicios intermedios de lógica (``middlewares``) para la ruta son ejecutables *PHP* que se desencadenan cuando encaja su ruta asociada. Se disparan justo antes de la retrollamada a la ruta, pero después de aplicar los filtros ``before``.
+Los servicios de lógica intermedios (``middlewares``) para la ruta son ejecutables *PHP* que se desencadenan cuando coincide su ruta asociada.
+
+* La lógica intermedia ``before`` se lanza justo antes de la ruta retrollamada, pero después de aplicar los filtros ``before``;
+
+* La lógica intermedia ``after`` es lanzada justo después de la ruta retrollamada, pero antes de aplicar los filtros ``after``.
 
 Los puedes usar en una gran cantidad de situaciones; Por ejemplo, aquí está una simple comprobación de "usuario anónimo/registrado":
 
@@ -393,25 +404,29 @@ Los puedes usar en una gran cantidad de situaciones; Por ejemplo, aquí está un
     $app->get('/user/subscribe', function () {
         ...
     })
-    ->middleware($mustBeAnonymous);
+    ->before($mustBeAnonymous);
 
     $app->get('/user/login', function () {
         ...
     })
-    ->middleware($mustBeAnonymous);
+    ->before($mustBeAnonymous);
 
     $app->get('/user/my-profile', function () {
         ...
     })
-    ->middleware($mustBeLogged);
+    ->before($mustBeLogged);
 
-Una determinada ruta puede invocar varias veces a la función ``middleware``, en cuyo caso se activa en el mismo orden en que la añadas a la ruta.
+Los métodos ``before`` y ``after`` se pueden invocar varias veces para una ruta dada, en cuyo caso son lanzados en el mismo orden cuando que los añadiste a la
+ruta.
 
-Por conveniencia, las funciones de lógica intermedia de ruta se activan con la instancia de la ``Petición`` actual como su único argumento.
+Por comodidad, la lógica intermedia ``before`` se invoca con la instancia de la ``Petición`` actual como un argumento y la lógica intermedia ``after`` se invoca
+con la ``Petición`` actual y la instancia de la ``Respuesta`` como argumentos.
 
-Si alguno de los servicios de lógica intermedia de ruta devuelve una respuesta *HTTP* de *Symfony*, cortocircuita la reproducción completa: Los siguientes servicios de lógica intermedia no se ejecutarán, ni la retrollamada a la ruta. También puedes redirigir a otra página devolviendo una respuesta de redirección, la cual puedes crear llamando al método ``redirect`` de la aplicación.
+Si cualquiera de las lógicas intermedias ``before`` regresa una ``Respuesta`` *HTTP* de *Symfony*, se saltará el proceso de reproducción completamente: Los siguientes servicios de lógica intermedia no se ejecutarán, ni la retrollamada a la ruta. También puedes redirigir a otra página devolviendo una respuesta de redirección, la cual puedes crear llamando al método ``redirect`` de la aplicación.
 
-Si un servicio de lógica intermedia de ruta no devuelve una respuesta *HTTP* de *Symfony* o ``null``, se lanza una ``RuntimeException``.
+.. note::
+
+    Si la lógica intermedia de un ``before`` no regresa una ``Respuesta`` *HTTP* de *Symfony* o ``null``, se lanza una ``RuntimeException``.
 
 Configuración global
 --------------------
@@ -424,10 +439,14 @@ Si un ajuste del controlador se debe aplicar a todos los controladores (un conve
         ->requireHttps()
         ->method('get')
         ->convert('id', function () { // ... })
-        ->middleware(function () { // ... })
+        ->before(function () { // ... })
     ;
 
 Estos ajustes se aplican a los controladores que ya están registrados y se convierten en los valores predefinidos para los nuevos controladores.
+
+.. note::
+
+    La configuración global no aplica a proveedores de controlador podrías montar tantos como tengas en tu propia configuración global (ve el párrafo sobre la modularidad más adelante).
 
 Controladores de error
 ----------------------
@@ -524,9 +543,9 @@ Cuando quieres delegar la reproducción a otro controlador, sin una ida y vuelta
 
 .. tip::
 
-Si estás usando ``UrlGeneratorProvider``, también puedes generar la *URI*::
+    Si estás usando ``UrlGeneratorProvider``, también puedes generar la *URI*::
 
-    $request = Request::create($app['url_generator']->generate('hello'), 'GET');
+        $request = Request::create($app['url_generator']->generate('hello'), 'GET');
 
 Modularidad
 -----------
@@ -566,8 +585,9 @@ Otra ventaja es la capacidad para aplicar muy fácilmente la configuración a un
 
     $backend = new ControllerCollection();
 
-    // protege todos los controladores que requieren usuarios registrados
-    $backend->middleware($mustBeLogged);
+    // garantiza que todos los controladores requieren usuarios que
+    // hayan iniciado sesión
+    $backend->before($mustBeLogged);
 
 .. tip::
 
@@ -590,7 +610,7 @@ Otra ventaja es la capacidad para aplicar muy fácilmente la configuración a un
 ------
 
 Si quieres devolver datos *JSON*, puedes usar el método ayudante ``json``.
-Simplemente le tienes que proporcionar tus datos, código de estado y cabeceras, y este creará una respuesta *JSON* para ti.
+Simplemente le tienes que proporcionar tus datos, código de estado y cabeceras, y este creará una respuesta *JSON* para ti::
 
     $app->get('/users/{id}', function ($id) use ($app) {
         $user = getUser($id);
@@ -620,7 +640,7 @@ Es posible crear una respuesta para la transmisión de secuencias, la cual es im
         return $app->stream($stream, 200, array('Content-Type' => 'image/png'));
     });
 
-Si necesitas enviar fragmentos, asegúrate de llamar a ``ob_flush`` y ``flush`` después de cada parte.
+Si necesitas enviar fragmentos, asegúrate de llamar a ``ob_flush`` y ``flush`` después de cada parte::
 
     $stream = function () {
         $fh = fopen('http://www.ejemplo.com/', 'rb');
@@ -659,8 +679,11 @@ Cuando reproduces la entrada del usuario (ya sea en las variables ``GET/POST`` o
           return $app->json(array('name' => $name));
       });
 
-Configurando *Apache*
----------------------
+Configurando el servidor *web*
+------------------------------
+
+Apache
+~~~~~~
 
 Si estás usando *Apache* puedes utilizar un :file:`.htaccess` para esto:
 
@@ -677,7 +700,7 @@ Si estás usando *Apache* puedes utilizar un :file:`.htaccess` para esto:
 
 .. note::
 
-    Si tu sitio no está a nivel raíz del servidor web, tienes que quitar el comentario de la declaración ``RewriteBase`` y ajustar la ruta para que apunte al directorio, relativo a la raíz del servidor web.
+    Si tu sitio no está a nivel raíz del servidor *web*, tienes que quitar el comentario de la declaración ``RewriteBase`` y ajustar la ruta para que apunte al directorio, relativo a la raíz del servidor *web*.
 
 Alternativamente, si utilizas *Apache* 2.2.16 o más reciente, puedes usar la `Directiva FallbackResource`_ para hacer tu :file:`.htaccess` aún más sencillo:
 
@@ -685,8 +708,29 @@ Alternativamente, si utilizas *Apache* 2.2.16 o más reciente, puedes usar la `D
 
     FallbackResource index.php
 
-Configuración *IIS*
--------------------
+``nginx``
+~~~~~~~~~
+
+Si estás utilizando ``nginx``, configura tu ``vhost`` para remitir los recursos inexistentes a ``index.php``:
+
+.. code-block:: nginx
+
+    server { 
+        index index.php
+
+        location / {
+            try_files $uri $uri/ /index.php;
+        }
+
+        location ~ index\.php$ {
+            fastcgi_pass   /var/run/php5-fpm.sock;
+            fastcgi_index  index.php;
+            include fastcgi_params;
+        }
+    }
+
+``IIS``
+~~~~~~~
 
 Si estás utilizando el ``Internet Information Services`` de *Windows*, puedes utilizar de ejemplo este archivo ``web.config``:
 
@@ -715,4 +759,5 @@ Si estás utilizando el ``Internet Information Services`` de *Windows*, puedes u
         </system.webServer>
     </configuration>
 
-.. _`Directiva FallbackResource`: http://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/ _silex.zip: http://silex.sensiolabs.org/get/silex.zip _silex.tgz: http://silex.sensiolabs.org/get/silex.tgz
+.. _`Directiva FallbackResource`: http://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/
+.. _`descarga`: http://silex.sensiolabs.org/download

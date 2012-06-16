@@ -112,16 +112,16 @@ Puede ser alguno de entre: <tt class="docutils literal"><span class="pre">pdo_my
 <div class="section" id="registrando">
 <h2>Registrando<a class="headerlink" href="#registrando" title="Enlazar permanentemente con este título">¶</a></h2>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\DoctrineServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">&#39;db.options&#39;</span>            <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="s1">&#39;driver&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;pdo_sqlite&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;path&#39;</span>      <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/app.db&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;db.options&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;driver&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;pdo_sqlite&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;path&#39;</span>     <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/app.db&#39;</span><span class="p">,</span>
     <span class="p">),</span>
 <span class="p">));</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
-<p><em>Doctrine</em> no viene en los archivos <tt class="docutils literal"><span class="pre">silex</span></tt>, por lo tanto necesitas añadir la dependencia de <em>Doctrine DBAL</em> a tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<p>El <em>DBAL</em> de <em>Doctrine</em> viene con el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal. Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
 <div class="last highlight-json"><pre>"require": {
     "doctrine/dbal": "2.2.*",
  }</pre>

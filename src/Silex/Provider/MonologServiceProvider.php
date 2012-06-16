@@ -1,7 +1,4 @@
-
-.. code-block:: php
-
-    <?php
+<?php
 
 /*
  * Este archivo es parte de la plataforma Silex.
@@ -39,7 +36,7 @@ class MonologServiceProvider implements ServiceProviderInterface
         $app['monolog'] = $app->share(function () use ($app, $bridge) {
             $class = $bridge ? 'Symfony\Bridge\Monolog\Logger' : 'Monolog\Logger';
 
-            $log = new $class(isset($app['monolog.name']) ? $app['monolog.name'] : 'myapp');
+            $log = new $class($app['monolog.name']);
 
             $app['monolog.configure']($log);
 
@@ -54,15 +51,20 @@ class MonologServiceProvider implements ServiceProviderInterface
             return new StreamHandler($app['monolog.logfile'], $app['monolog.level']);
         };
 
-        if (!isset($app['monolog.level'])) {
-            $app['monolog.level'] = function () {
-                return Logger::DEBUG;
-            };
-        }
+        $app['monolog.level'] = function () {
+            return Logger::DEBUG;
+        };
+
+        $app['monolog.name'] = 'myapp';
     }
 
     public function boot(Application $app)
     {
+        // BC: to be removed before 1.0
+        if (isset($app['monolog.class_path'])) {
+            throw new \RuntimeException('You have provided the monolog.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
+        }
+
         $app->before(function (Request $request) use ($app) {
             $app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
         });

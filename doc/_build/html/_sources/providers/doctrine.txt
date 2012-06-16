@@ -44,15 +44,15 @@ Registrando
 .. code-block:: php
 
     $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
-        'db.options'            => array(
-            'driver'    => 'pdo_sqlite',
-            'path'      => __DIR__.'/app.db',
+        'db.options' => array(
+            'driver'   => 'pdo_sqlite',
+            'path'     => __DIR__.'/app.db',
         ),
     ));
 
 .. note::
 
-    *Doctrine* no viene en los archivos ``silex``, por lo tanto necesitas añadir la dependencia de *Doctrine DBAL* a tu archivo ``composer.json``:
+    El *DBAL* de *Doctrine* viene con el archivo "gordo" de *Silex* pero no en el normal. Si  estás usando ``Composer``, añádelo como dependencia en tu archivo ``composer.json``:
 
     .. code-block:: json
 

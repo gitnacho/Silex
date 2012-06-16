@@ -111,7 +111,8 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
-<p><em>Monolog</em> no viene en los archivos <tt class="docutils literal"><span class="pre">silex</span></tt>, por lo tanto necesitas añadirlo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<p><tt class="docutils literal"><span class="pre">Monolog</span></tt> viene con el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal.
+Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
 <div class="last highlight-json"><pre>"require": {
     "monolog/monolog": "&gt;=1.0.0",
 }</pre>
@@ -120,7 +121,7 @@
 </div>
 <div class="section" id="uso">
 <h2>Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>El proveedor <tt class="docutils literal"><span class="pre">MonologServiceProvider</span></tt> ofrece un servicio <tt class="docutils literal"><span class="pre">monolog</span></tt>. Lo puedes utilizar para agregar entradas al registro para cualquier nivel de registro cronológico a través de <tt class="docutils literal"><span class="pre">addDebug()</span></tt>, <tt class="docutils literal"><span class="pre">addInfo()</span></tt>, <tt class="docutils literal"><span class="pre">addWarning()</span></tt> y <tt class="docutils literal"><span class="pre">addError()</span></tt>:</p>
+<p>El proveedor <tt class="docutils literal"><span class="pre">MonologServiceProvider</span></tt> ofrece un servicio <tt class="docutils literal"><span class="pre">monolog</span></tt>. Lo puedes utilizar para agregar entradas al registro a cualquier nivel de registro cronológico a través de <tt class="docutils literal"><span class="pre">addDebug()</span></tt>, <tt class="docutils literal"><span class="pre">addInfo()</span></tt>, <tt class="docutils literal"><span class="pre">addWarning()</span></tt> y <tt class="docutils literal"><span class="pre">addError()</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
 
 <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/user&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>

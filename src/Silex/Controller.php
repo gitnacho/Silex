@@ -1,7 +1,4 @@
-
-.. code-block:: php
-
-    <?php
+<?php
 
 /*
  * Este archivo es parte de la plataforma Silex.
@@ -160,15 +157,28 @@ class Controller
 
     /**
      * Establece una retrollamada para manipular retrollamadas de ruta before.
-     * (alias "Lógica intermedia de ruta")
      *
      * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return Controller $this The current Controller instance
      */
-    public function middleware($callback)
+    public function before($callback)
     {
-        $this->route->middleware($callback);
+        $this->route->before($callback);
+
+        return $this;
+    }
+
+    /**
+     * Sets a callback to handle after the route callback.
+     *
+     * @param mixed $callback A PHP callback to be triggered after the route callback
+     *
+     * @return Controller $this The current Controller instance
+     */
+    public function after($callback)
+    {
+        $this->route->after($callback);
 
         return $this;
     }

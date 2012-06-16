@@ -1,7 +1,4 @@
-
-.. code-block:: php
-
-    <?php
+<?php
 
 /*
  * Este archivo es parte de la plataforma Silex.
@@ -149,7 +146,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->checkRouteResponse($app, '/resource', 'delete resource', 'delete');
     }
 
-    public function testRequestShouldBeStoredRegardlessOfRouting() {
+    public function testRequestShouldBeStoredRegardlessOfRouting()
+    {
         $app = new Application();
 
         $app->get('/foo', function () use ($app) {
@@ -243,7 +241,7 @@ class MyController
         return 'foo';
     }
 
-    static public function getBar()
+    public static function getBar()
     {
         return 'bar';
     }

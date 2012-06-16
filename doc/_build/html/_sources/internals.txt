@@ -39,8 +39,6 @@ La ``Appication`` proporciona un atajo al método ``flush`` para vaciar la ``Con
 
 *Silex* utiliza los siguientes componentes de *Symfony2*:
 
-* **ClassLoader**: Para cargar clases automáticamente.
-
 * **HttpFoundation**: Para ``Petición`` y ``Respuesta``.
 
 * **HttpKernel**: Porque necesitamos un corazón.
@@ -49,5 +47,5 @@ La ``Appication`` proporciona un atajo al método ``flush`` para vaciar la ``Con
 
 * **EventDispatcher**: Para conectar al ``HttpKernel``.
 
-Para más información, visita el sitio web de `Symfony
+Para más información, visita el sitio *web* de `Symfony
 <http://symfony.com/>`_.

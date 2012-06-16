@@ -119,12 +119,11 @@
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">app.url_generator.generate</span><span class="o">(</span><span class="s1">&#39;homepage&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre></div>
 </div>
-<p>Por otra parte, si registras el <tt class="docutils literal"><span class="pre">SymfonyBridgesServiceProvider</span></tt>, entonces tienes acceso a las funciones <tt class="docutils literal"><span class="pre">path()</span></tt> y <tt class="docutils literal"><span class="pre">url()</span></tt>:</p>
+<p>Además, si utilizas <em>Twig</em>, tendrás acceso a las funciones <tt class="docutils literal"><span class="pre">path()</span></tt> y <tt class="docutils literal"><span class="pre">url()</span></tt>:</p>
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;homepage&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 <span class="cp">{{</span> <span class="nv">url</span><span class="o">(</span><span class="s1">&#39;homepage&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"> </span><span class="c">{# genera la url absoluta http://ejemplo.org/ #}</span><span class="x"></span>
 </pre></div>
 </div>
-<p>Puedes encontrar más información sobre este tema en la documentación de <a class="reference internal" href="symfony_bridges.html"><em>puentes Symfony</em></a>.</p>
 </div>
 </div>
 

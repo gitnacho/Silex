@@ -19,8 +19,6 @@ Servicios
 
 * **twig**: La instancia de ``Twig_Environment``. La principal forma de interactuar con *Twig*.
 
-* **twig.configure**: :ref:`Cierre protegido </services#cierres-protegidos>` que toma el entorno *Twig* como argumento. Lo puedes utilizar para agregar más globales personalizadas.
-
 * **twig.loader**: El cargador de plantillas *Twig* utiliza las opciones ``twig.path`` y ``twig.templates``. También puedes reemplazar el cargador completamente.
 
 Registrando
@@ -34,7 +32,7 @@ Registrando
 
 .. note::
 
-    *Twig* no viene en los archivos ``silex``, por lo tanto necesitas añadirlo como dependencia en tu archivo :file:`composer.json`:
+    *Twig* viene con el archivo "gordo" de *Silex* pero no con el normal. Si estás usando ``Composer``, añádelo como dependencia a tu archivo ``composer.json``:
 
     .. code-block:: json
 
@@ -60,6 +58,8 @@ Cuando está presente el ``TwigServiceProvider`` te proporcionará las siguiente
 * **TranslationServiceProvider**: Si estás usando el ``TranslationServiceProvider``, obtendrás las funciones ``trans()`` y ``transchoice()`` para traducción en plantillas *Twig*. Puedes encontrar más información en la documentación de `traducción de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/translation.html#plantillas-twig>`_.
 
 * **FormServiceProvider**: Si estás usando el ``FormServiceProvider``, recibirás un conjunto de ayudantes para trabajar con formularios en plantillas. Puedes encontrar más información en la `referencia de formularios de Symfony2 <http://gitnacho.github.com/symfony-docs-es/reference/forms/twig_reference.html>`_.
+
+* **SecurityServiceProvider**: Si estás usando el ``SecurityServiceProvider``, tendrá acceso a la función ``is_granted()`` en las plantillas. Puedes encontrar más información en la `documentación de Seguridad de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/security.html#controlando-el-acceso-en-plantillas>`_
 
 Uso
 ---
@@ -89,6 +89,18 @@ También se registra una función ``render`` para ayudarte a reproducir otro con
 
     {# o si también estás usando UrlGeneratorServiceProvider con el SymfonyBridgesServiceProvider #}
     {{ render(path('sidebar')) }}
+
+Personalizando
+--------------
+
+Puedes configurar el entorno *Twig* antes de usarlo extendiendo el servicio ``twig``::
+
+    $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+        $twig->addGlobal('pi', 3.14);
+        $twig->addFilter('levenshtein', new \Twig_Filter_Function('levenshtein'));
+
+        return $twig;
+    }));
 
 Para más información, consulta la `documentación de
 Twig <http://gitnacho.github.com/Twig/index.html>`_.

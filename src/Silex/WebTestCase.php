@@ -1,7 +1,4 @@
-
-.. code-block:: php
-
-    <?php
+<?php
 
 /*
  * Este archivo es parte de la plataforma Silex.
@@ -15,6 +12,7 @@
 namespace Silex;
 
 use Symfony\Component\HttpKernel\Client;
+use Symfony\Component\HttpKernel\HttpKernel;
 
 /**
  * WebTestCase is the base class for functional tests.
@@ -39,20 +37,19 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Creates the application.
      *
-     * @return Symfony\Component\HttpKernel\HttpKernel
+     * @return HttpKernel
      */
     abstract public function createApplication();
 
     /**
      * Creates a Client.
      *
-     * @param array $options An array of options to pass to the createKernel class
-     * @param array $server  An array of server parameters
+     * @param array $server An array of server parameters
      *
      * @return Client A Client instance
      */
-    public function createClient(array $options = array(), array $server = array())
+    public function createClient(array $server = array())
     {
-        return new Client($this->app);
+        return new Client($this->app, $server);
     }
 }

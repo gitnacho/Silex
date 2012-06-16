@@ -1,7 +1,4 @@
-
-.. code-block:: php
-
-    <?php
+<?php
 
 /*
  * Este archivo es parte de la plataforma Silex.
@@ -26,7 +23,7 @@ interface ControllerProviderInterface
      *
      * @param Application $app Una instancia de Application
      *
-     * @return ControllerCollection Una instancia de ControllerCollection
+     * @return ControllerCollection A ControllerCollection instance
      */
-    function connect(Application $app);
+    public function connect(Application $app);
 }

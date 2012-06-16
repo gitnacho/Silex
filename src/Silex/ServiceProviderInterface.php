@@ -1,7 +1,4 @@
-
-.. code-block:: php
-
-    <?php
+<?php
 
 /*
  * Este archivo es parte de la plataforma Silex.
@@ -29,7 +26,7 @@ interface ServiceProviderInterface
      *
      * @param Application $app An Application instance
      */
-    function register(Application $app);
+    public function register(Application $app);
 
     /**
      * Bootstraps the application.
@@ -38,5 +35,5 @@ interface ServiceProviderInterface
      * and should be used for "dynamic" configuration (whenever
      * a service must be requested).
      */
-    function boot(Application $app);
+    public function boot(Application $app);
 }

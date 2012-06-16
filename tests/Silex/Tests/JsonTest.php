@@ -1,7 +1,4 @@
-
-.. code-block:: php
-
-    <?php
+<?php
 
 /*
  * Este archivo es parte de la plataforma Silex.
@@ -15,7 +12,6 @@
 namespace Silex\Tests;
 
 use Silex\Application;
-
 
 /**
  * JSON test cases.

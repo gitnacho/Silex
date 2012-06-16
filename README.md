@@ -1,4 +1,4 @@
-Silex, una sencilla plataforma Web
+Silex, una sencilla plataforma web
 ==================================
 
 [![Build Status](https://secure.travis-ci.org/fabpot/Silex.png?branch=master)](http://travis-ci.org/fabpot/Silex)
@@ -44,5 +44,5 @@ Para ejecutar el banco de pruebas necesitas
 Silex se libera bajo la licencia MIT.
 
 [1]: http://symfony.com
-[2]: http://silex.sensiolabs.org/get/silex.zip
+[2]: http://silex.sensiolabs.org/download
 [3]: http://gitnacho.github.com/Silex

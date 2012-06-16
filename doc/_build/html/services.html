@@ -222,10 +222,10 @@ Consulta el capítulo <a class="reference internal" href="internals.html"><em>Fu
 </li>
 <li><p class="first"><strong>request_context</strong>: El contexto de la petición es una representación simplificada de la petición que utilizan el <tt class="docutils literal"><span class="pre">Router</span></tt> y el <tt class="docutils literal"><span class="pre">UrlGenerator</span></tt>.</p>
 </li>
-<li><p class="first"><strong>exception_handler</strong>: El controlador de excepciones es el controlador predeterminado que se utiliza cuando no registras uno a través del método <tt class="docutils literal"><span class="pre">error()</span></tt> o si el controlador no devuelve una Respuesta. Lo puedes desactivar con <tt class="docutils literal"><span class="pre">unset($app['exception_handler'])</span></tt>.</p>
+<li><p class="first"><strong>exception_handler</strong>: El controlador de excepciones es el controlador predeterminado usado cuando no registras uno a través del método <tt class="docutils literal"><span class="pre">error()</span></tt> o si el controlador no devuelve una <tt class="docutils literal"><span class="pre">Respuesta</span></tt>. Lo puedes desactivar con <tt class="docutils literal"><span class="pre">unset($app['exception_handler'])</span></tt>.</p>
 </li>
-<li><p class="first"><strong>logger</strong>: Una instancia de <a href="#id3"><span class="problematic" id="id4">`http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html`_</span></a>. De forma predeterminada, el registro está desactivado ya que el valor se establece en <tt class="docutils literal"><span class="pre">null</span></tt>.
-Cuando el puente <em>Monolog</em> de <em>Symfony2</em> está instalado, se utiliza <em>Monolog</em> automáticamente como el registrador cronológico predeterminado.</p>
+<li><p class="first"><strong>logger</strong>: Una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html">LoggerInterface</a>. De forma predeterminada, la anotación cronológica de eventos está desactivada ya que el valor se establece en <tt class="docutils literal"><span class="pre">null</span></tt>.
+Cuando el puente <tt class="docutils literal"><span class="pre">Monolog</span></tt> de <em>Symfony2</em> está instalado, se utiliza <tt class="docutils literal"><span class="pre">Monolog</span></tt> automáticamente como el registro cronológico predeterminado.</p>
 </li>
 </ul>
 <div class="admonition note">

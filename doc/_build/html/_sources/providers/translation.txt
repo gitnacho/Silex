@@ -33,7 +33,7 @@ Registrando
 
 .. note::
 
-    El componente *Translation* de *Symfony* no viene en los archivos ``silex``, por lo tanto necesitas añadirlo como dependencia en tu archivo ``composer.json``:
+    El componente de traducción de *Symfony* viene en el archivo "gordo" de *Silex* pero no en el normal. Si estás usando ``Composer``, añádelo como dependencia a tu archivo ``composer.json``:
 
     .. code-block:: json
 
@@ -135,7 +135,7 @@ Finalmente sobrescribe el ``translator.loader`` para utilizar ``YamlFileLoader``
 Y eso es todo lo que necesitas para cargar traducciones desde archivos *YAML*.
 
 Archivos de idioma basados en *XLIFF*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Al igual que lo harías con los archivos de traducción *YAML*, primero te tienes que asegurar de que tienes como dependencia el componente ``Config`` de *Symfony2* (ve los detalles arriba).
 
@@ -160,7 +160,7 @@ Una vez cargado, el proveedor del servicio de traducción está disponible desde
 
     {{ app.translator.trans('translation_key') }}
 
-Aún mejor: registra el :doc:`SymfonyBridgesServiceProvider <providers/symfony_bridges>` y obtendrás la ``TranslationExtension`` del puente, misma que te permite traducir cadenas a la manera de *Twig*:
+Además, cuándo utilizas el puente *Twig* proporcionado por *Symfony* (ve :doc:`TwigServiceProvider </providers/twig>`), te será permitido traducir cadenas a la manera de *Twig*:
 
 .. code-block:: jinja
 

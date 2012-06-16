@@ -1,7 +1,4 @@
-
-.. code-block:: php
-
-    <?php
+<?php
 
 /*
  * Este archivo es parte de la plataforma Silex.
@@ -34,8 +31,6 @@ class ControllerCollection
 
     /**
      * Constructor.
-     *
-     * @param Route $route
      */
     public function __construct()
     {
@@ -50,7 +45,7 @@ class ControllerCollection
      * @param string $pattern Patrón de ruta coincidente
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function match($pattern, $to)
     {
@@ -69,7 +64,7 @@ class ControllerCollection
      * @param string $pattern Patrón de ruta coincidente
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function get($pattern, $to)
     {
@@ -82,7 +77,7 @@ class ControllerCollection
      * @param string $pattern Patrón de ruta coincidente
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function post($pattern, $to)
     {
@@ -95,7 +90,7 @@ class ControllerCollection
      * @param string $pattern Patrón de ruta coincidente
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function put($pattern, $to)
     {
@@ -108,7 +103,7 @@ class ControllerCollection
      * @param string $pattern Patrón de ruta coincidente
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function delete($pattern, $to)
     {
@@ -121,7 +116,7 @@ class ControllerCollection
      * @param string $variable El nombre variable
      * @param string $regexp   The regexp to apply
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return ControllerCollection $this The current Controller instance
      */
     public function assert($variable, $regexp)
     {
@@ -140,7 +135,7 @@ class ControllerCollection
      * @param string $variable El nombre variable
      * @param mixed  $default  The default value
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return ControllerCollection $this The current Controller instance
      */
     public function value($variable, $default)
     {
@@ -159,7 +154,7 @@ class ControllerCollection
      * @param string $variable El nombre variable
      * @param mixed  $callback A PHP callback that converts the original value
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return ControllerCollection $this The current Controller instance
      */
     public function convert($variable, $callback)
     {
@@ -177,7 +172,7 @@ class ControllerCollection
      *
      * @param string $method El nombre del método HTTP. Puedes suplir múltiples métodos, delimitados por un carácter de tubería '|', p.e. 'GET|POST'
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return ControllerCollection $this The current Controller instance
      */
     public function method($method)
     {
@@ -193,7 +188,7 @@ class ControllerCollection
     /**
      * Establece los requisitos de HTTP (no HTTPS) en este controlador.
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return ControllerCollection $this The current Controller instance
      */
     public function requireHttp()
     {
@@ -209,7 +204,7 @@ class ControllerCollection
     /**
      * Establece los requisitos HTTPS en este controlador.
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return ControllerCollection $this The current Controller instance
      */
     public function requireHttps()
     {
@@ -224,18 +219,35 @@ class ControllerCollection
 
     /**
      * Establece una retrollamada para manipular retrollamadas de ruta before.
-     * (alias "Lógica intermedia de ruta")
      *
      * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return ControllerCollection $this The current ControllerCollection instance
      */
-    public function middleware($callback)
+    public function before($callback)
     {
-        $this->defaultRoute->middleware($callback);
+        $this->defaultRoute->before($callback);
 
         foreach ($this->controllers as $controller) {
-            $controller->middleware($callback);
+            $controller->before($callback);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets a callback to handle after the route callback.
+     *
+     * @param mixed $callback A PHP callback to be triggered after the route callback
+     *
+     * @return ControllerCollection $this The current ControllerCollection instance
+     */
+    public function after($callback)
+    {
+        $this->defaultRoute->after($callback);
+
+        foreach ($this->controllers as $controller) {
+            $controller->after($callback);
         }
 
         return $this;
@@ -243,6 +255,8 @@ class ControllerCollection
 
     /**
      * Persiste y congela controladores congelados.
+     *
+     * @param string $prefix
      *
      * @return RouteCollection Una instancia de RouteCollection
      */

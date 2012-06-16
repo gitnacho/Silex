@@ -76,8 +76,26 @@
 <p class="first admonition-title">Prudencia</p>
 <p class="last">Se desaconseja el uso del archivo <tt class="docutils literal"><span class="pre">phar</span></tt> de <em>Silex</em> En su lugar debes usar <tt class="docutils literal"><span class="pre">Composer</span></tt> para instalar <em>Silex</em> y sus dependencias o descargar uno de los archivos.</p>
 </div>
-<div class="section" id="la-consola">
-<h2>La consola<a class="headerlink" href="#la-consola" title="Enlazar permanentemente con este título">¶</a></h2>
+</div>
+<div class="section" id="instalando">
+<h1>Instalando<a class="headerlink" href="#instalando" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Instalar Silex es tan fácil como puedas descargar el <a class="reference external" href="http://silex.sensiolabs.org/get/silex.phar">phar</a> y guardarlo en algún lugar en tu disco. Luego, inclúyelo en tu programa:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+
+<span class="k">require_once</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/silex.phar&#39;</span><span class="p">;</span>
+
+<span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silex\Application</span><span class="p">();</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/hello/{name}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello &#39;</span><span class="o">.</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">escape</span><span class="p">(</span><span class="nv">$name</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="consola">
+<h1>Consola<a class="headerlink" href="#consola" title="Enlazar permanentemente con este título">¶</a></h1>
 <p><em>Silex</em> incluye una ligera consola para actualizar a la versión más reciente.</p>
 <p>Para saber qué versión de <em>Silex</em> estás usando, invoca a <tt class="docutils literal"><span class="pre">silex.phar</span></tt> en la línea de ordenes con <tt class="docutils literal"><span class="pre">version</span></tt> como argumento:</p>
 <div class="highlight-text"><div class="highlight"><pre>$ php silex.phar version
@@ -95,9 +113,8 @@ Silex version 0a243d3 2011-04-17 14:49:31 +0200
 <p>Esto descargará automáticamente un nuevo <tt class="docutils literal"><span class="pre">silex.phar</span></tt> desde <tt class="docutils literal"><span class="pre">silex.sensiolabs.org</span></tt> y sustituirá al actual.</p>
 </div>
 <div class="section" id="trampas">
-<h2>Trampas<a class="headerlink" href="#trampas" title="Enlazar permanentemente con este título">¶</a></h2>
+<h1>Trampas<a class="headerlink" href="#trampas" title="Enlazar permanentemente con este título">¶</a></h1>
 <p>Hay algunas cosas que pueden salir mal. Aquí vamos a tratar de esbozar las más frecuentes.</p>
-</div>
 <div class="section" id="configuracion-de-php">
 <h2>Configuración de <em>PHP</em><a class="headerlink" href="#configuracion-de-php" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>Ciertas distribuciones de <em>PHP</em>, de manera predeterminada tienen configurado <tt class="docutils literal"><span class="pre">Phar</span></tt> muy restrictivamente. Ajustar lo siguiente puede ayudar.</p>

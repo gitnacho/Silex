@@ -5,8 +5,26 @@ Archivo *Phar*
 
     Se desaconseja el uso del archivo ``phar`` de *Silex* En su lugar debes usar ``Composer`` para instalar *Silex* y sus dependencias o descargar uno de los archivos.
 
-La consola
-~~~~~~~~~~
+Instalando
+----------
+
+Instalar Silex es tan fácil como puedas descargar el `phar
+<http://silex.sensiolabs.org/get/silex.phar>`_ y guardarlo en algún lugar en tu disco. Luego, inclúyelo en tu programa::
+
+    <?php
+
+    require_once __DIR__.'/silex.phar';
+
+    $app = new Silex\Application();
+
+    $app->get('/hello/{name}', function ($name) use ($app) {
+        return 'Hello '.$app->escape($name);
+    });
+
+    $app->run();
+
+Consola
+-------
 
 *Silex* incluye una ligera consola para actualizar a la versión más reciente.
 
@@ -32,7 +50,7 @@ Para actualizar ``silex.phar`` a la última versión, invoca la orden ``update``
 Esto descargará automáticamente un nuevo ``silex.phar`` desde ``silex.sensiolabs.org`` y sustituirá al actual.
 
 Trampas
-~~~~~~~
+-------
 
 Hay algunas cosas que pueden salir mal. Aquí vamos a tratar de esbozar las más frecuentes.
 

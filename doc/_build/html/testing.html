@@ -148,17 +148,13 @@ Es la plataforma de pruebas estándar de facto para <em>PHP</em>. Fue construida
 </div>
 <div class="admonition tip">
 <p class="first admonition-title">Truco</p>
-<p>Si tu aplicación usa sesiones, tienes que usar <tt class="docutils literal"><span class="pre">FilesystemSessionStorage</span></tt> para guardar las sesiones:</p>
-<div class="last highlight-php"><div class="highlight"><pre><span class="c1">// ...</span>
-<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\SessionStorage\FilesystemSessionStorage</span><span class="p">;</span>
-<span class="c1">// ...</span>
-
-<span class="k">public</span> <span class="k">function</span> <span class="nf">createApplication</span><span class="p">()</span>
+<p>Si tu aplicación usa sesiones, ajusta <tt class="docutils literal"><span class="pre">session.test</span></tt> a <tt class="docutils literal"><span class="pre">true</span></tt> para simular sesiones:</p>
+<div class="last highlight-php"><div class="highlight"><pre><span class="k">public</span> <span class="k">function</span> <span class="nf">createApplication</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="c1">// ...</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span><span class="p">[</span><span class="s1">&#39;session.storage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="k">new</span> <span class="nx">FilesystemSessionStorage</span><span class="p">(</span><span class="nx">sys_get_temp_dir</span><span class="p">());</span>
-    <span class="p">});</span>
+
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">app</span><span class="p">[</span><span class="s1">&#39;session.test&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+
     <span class="c1">// ...</span>
 <span class="p">}</span>
 </pre></div>

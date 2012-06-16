@@ -3,7 +3,9 @@ Cómo utilizar ``PdoSessionStorage`` para almacenar sesiones en la base de datos
 
 De manera predeterminada, el :doc:`SessionServiceProvider </providers/session>` escribe en archivos la información de sesión utilizando el ``NativeFileSessionStorage`` de *Symfony2*. La mayoría de los medianos a grandes sitios *web*, utiliza una base de datos para almacenar sesiones en lugar de archivos, porque las bases de datos son más fáciles de usar y escalar en un entorno multiservidor.
 
-``NativeSessionStorage`` de *Symfony2* tiene múltiples soluciones de almacenamiento de sesión y una de ellas utiliza *PDO* para almacenar sesiones, ``PdoSessionHandler``. Para usarla, reemplaza el servicio ``session.storage.handler`` en tu aplicación como se explica a continuación.
+El `NativeSessionStorage <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_ de *Symfony2* tiene controladores para el almacenamiento múltiple y uno de ellos utiliza *PDO* para almacenar sesiones, `PdoSessionHandler
+<http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/PdoSessionHandler.html>`_.
+Para usarla, reemplaza en tu aplicación el servicio ``session.storage.handler`` como se explica a continuación.
 
 Ejemplo
 -------

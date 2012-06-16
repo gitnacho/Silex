@@ -130,7 +130,7 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
-<p><em>SwiftMailer</em> no viene en los archivos <tt class="docutils literal"><span class="pre">silex</span></tt>, por lo tanto necesitas añadirlo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<p><tt class="docutils literal"><span class="pre">SwiftMailer</span></tt> viene con el archivo <em>Silex</em> &#8220;gordo&#8221; pero no en el normal. Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
 <div class="last highlight-json"><pre>"require": {
     "swiftmailer/swiftmailer": "&gt;=4.1.2,&lt;4.2-dev"
 }</pre>
@@ -139,24 +139,22 @@
 </div>
 <div class="section" id="uso">
 <h2>Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>El proveedor <tt class="docutils literal"><span class="pre">Swiftmailer</span></tt> proporciona un servicio <tt class="docutils literal"><span class="pre">mailer</span></tt> o cliente de correo.</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>$app-&gt;post(&#8216;/feedback&#8217;, function () use ($app) {</dt>
-<dd><p class="first">$request = $app[&#8216;request&#8217;];</p>
-<dl class="docutils">
-<dt>$message = Swift_Message::newInstance()</dt>
-<dd>-&gt;setSubject(&#8216;[YourSite] Feedback&#8217;)
--&gt;setFrom(array(<a class="reference external" href="mailto:'noreply&#37;&#52;&#48;yoursite&#46;com">'noreply<span>&#64;</span>yoursite<span>&#46;</span>com</a>&#8216;))
--&gt;setTo(array(<a class="reference external" href="mailto:'feedback&#37;&#52;&#48;yoursite&#46;com">'feedback<span>&#64;</span>yoursite<span>&#46;</span>com</a>&#8216;))
--&gt;setBody($request-&gt;get(&#8216;message&#8217;));</dd>
-</dl>
-<p>$app[&#8216;mailer&#8217;]-&gt;send($message);</p>
-<p class="last">return new Response(&#8216;Thank you for your feedback!&#8217;, 201);</p>
-</dd>
-</dl>
-<p>});</p>
-</div></blockquote>
+<p>El proveedor <tt class="docutils literal"><span class="pre">Swiftmailer</span></tt> proporciona un servicio <tt class="docutils literal"><span class="pre">mailer</span></tt> o cliente de correo:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/feedback&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$request</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;request&#39;</span><span class="p">];</span>
+
+    <span class="nv">$message</span> <span class="o">=</span> <span class="nx">\Swift_Message</span><span class="o">::</span><span class="na">newInstance</span><span class="p">()</span>
+        <span class="o">-&gt;</span><span class="na">setSubject</span><span class="p">(</span><span class="s1">&#39;[YourSite] Feedback&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">setFrom</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;noreply@yoursite.com&#39;</span><span class="p">))</span>
+        <span class="o">-&gt;</span><span class="na">setTo</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;feedback@yoursite.com&#39;</span><span class="p">))</span>
+        <span class="o">-&gt;</span><span class="na">setBody</span><span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">));</span>
+
+    <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;mailer&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="nv">$message</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="s1">&#39;Thank you for your feedback!&#39;</span><span class="p">,</span> <span class="mi">201</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
 <p>Para más información, consulta la <a class="reference external" href="http://swiftmailer.org">Documentación de Swift Mailer</a>.</p>
 </div>
 </div>

@@ -1,7 +1,7 @@
 Proveedores
 ===========
 
-Los proveedores permiten al desarrollador reutilizar partes de una aplicación en otra. Silex ofrece dos tipos de proveedores definidos por dos interfaces:
+Los proveedores permiten al desarrollador reutilizar partes de una aplicación en otra. *Silex* ofrece dos tipos de proveedores definidos por dos interfaces:
 ``ServiceProviderInterface`` para los servicios y ``ControllerProviderInterface`` para los controladores.
 
 Proveedores de servicios
@@ -46,12 +46,12 @@ Hay algunos proveedores que obtienes fuera de la caja. Todos ellos están dentro
 * :doc:`MonologServiceProvider <providers/monolog>`
 * :doc:`SessionServiceProvider <providers/session>`
 * :doc:`SwiftmailerServiceProvider <providers/swiftmailer>`
-* :doc:`SymfonyBridgesServiceProvider <providers/symfony_bridges>`
 * :doc:`TwigServiceProvider <providers/twig>`
 * :doc:`TranslationServiceProvider <providers/translation>`
 * :doc:`UrlGeneratorServiceProvider <providers/url_generator>`
 * :doc:`ValidatorServiceProvider <providers/validator>`
 * :doc:`HttpCacheServiceProvider <providers/http_cache>`
+* :doc:`FormServiceProvider <providers/form>`
 
 Proveedores de terceros
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,9 +68,11 @@ Los proveedores deben implementar el ``Silex\ServiceProviderInterface``::
     interface ServiceProviderInterface
     {
         function register(Application $app);
+
+        function boot(Application $app);
     }
 
-Esto es muy sencillo, basta con crear una nueva clase que implemente el método ``register``. En este método tienes que definir los servicios de la aplicación que pueden usar otros servicios y parámetros.
+Esto es muy sencillo, basta con crear una nueva clase que implemente los dos métodos. En el método ``register()`` tienes que definir los servicios de la aplicación que pueden usar otros servicios y parámetros. En el método ``boot()`` puedes configurar la aplicación, justo antes de manipular una petición.
 
 He aquí un ejemplo de tal proveedor::
 
@@ -89,6 +91,10 @@ He aquí un ejemplo de tal proveedor::
 
                 return 'Hello '.$app->escape($name);
             });
+        }
+
+        public function boot(Application $app)
+        {
         }
     }
 
@@ -124,7 +130,7 @@ Con el fin de cargar y usar un controlador del proveedor, debes "montar" tus con
 
     $app->mount('/blog', new Acme\BlogControllerProvider());
 
-Todos los controladores definidos por el proveedor ahora estarán disponibles bajo la ruta `/blog`.
+Todos los controladores definidos por el proveedor ahora estarán disponibles bajo la ruta ``/blog``.
 
 Creando un proveedor
 ~~~~~~~~~~~~~~~~~~~~

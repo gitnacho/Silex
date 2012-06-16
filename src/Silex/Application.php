@@ -1,7 +1,4 @@
-
-.. code-block:: php
-
-    <?php
+<?php
 
 /*
  * Este archivo es parte de la plataforma Silex.
@@ -17,13 +14,13 @@ namespace Silex;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
-use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\EventListener\LocaleListener;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -49,10 +46,11 @@ use Silex\ControllerResolver;
  */
 class Application extends \Pimple implements HttpKernelInterface, EventSubscriberInterface, TerminableInterface
 {
-    const VERSION = '@package_version@';
+    const VERSION = '1.0-DEV';
 
     private $providers = array();
     private $booted = false;
+    private $beforeDispatched = false;
 
     /**
      * Constructor.
@@ -62,6 +60,10 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $app = $this;
 
         $this['logger'] = null;
+
+        $this['autoloader'] = function () {
+            throw new \RuntimeException('You tried to access the autoloader service. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. See http://getcomposer.org for more information.');
+        };
 
         $this['routes'] = $this->share(function () {
             return new RouteCollection();
@@ -83,6 +85,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
                 return $app['url_matcher'];
             });
             $dispatcher->addSubscriber(new RouterListener($urlMatcher, $app['logger']));
+            $dispatcher->addSubscriber(new LocaleListener($app['request.default_locale'], $urlMatcher));
 
             return $dispatcher;
         });
@@ -108,21 +111,38 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             return new RedirectableUrlMatcher($app['routes'], $app['request_context']);
         });
 
-        $this['route_middlewares_trigger'] = $this->protect(function (KernelEvent $event) use ($app) {
+        $this['route_before_middlewares_trigger'] = $this->protect(function (GetResponseEvent $event) use ($app) {
             $request = $event->getRequest();
             $routeName = $request->attributes->get('_route');
             if (!$route = $app['routes']->get($routeName)) {
                 return;
             }
 
-            foreach ((array) $route->getOption('_middlewares') as $callback) {
+            foreach ((array) $route->getOption('_before_middlewares') as $callback) {
                 $ret = call_user_func($callback, $request);
                 if ($ret instanceof Response) {
                     $event->setResponse($ret);
 
                     return;
                 } elseif (null !== $ret) {
-                    throw new \RuntimeException(sprintf('Middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
+                    throw new \RuntimeException(sprintf('A before middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
+                }
+            }
+        });
+
+        $this['route_after_middlewares_trigger'] = $this->protect(function (FilterResponseEvent $event) use ($app) {
+            $request = $event->getRequest();
+            $routeName = $request->attributes->get('_route');
+            if (!$route = $app['routes']->get($routeName)) {
+                return;
+            }
+
+            foreach ((array) $route->getOption('_after_middlewares') as $callback) {
+                $response = call_user_func($callback, $request, $event->getResponse());
+                if ($response instanceof Response) {
+                    $event->setResponse($response);
+                } elseif (null !== $response) {
+                    throw new \RuntimeException(sprintf('An after middleware for route "%s" returned an invalid response value. Must return null or an instance of Response.', $routeName));
                 }
             }
         });
@@ -149,15 +169,21 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function register(ServiceProviderInterface $provider, array $values = array())
     {
-        foreach ($values as $key => $value) {
-            $this[$key] = $value;
-        }
-
         $this->providers[] = $provider;
 
         $provider->register($this);
+
+        foreach ($values as $key => $value) {
+            $this[$key] = $value;
+        }
     }
 
+    /**
+     * Boots all service providers.
+     *
+     * This method is automatically called by handle(), but you can use it
+     * to boot all service providers when not handling a request.
+     */
     public function boot()
     {
         if (!$this->booted) {
@@ -177,7 +203,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Patrón de ruta coincidente
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function match($pattern, $to)
     {
@@ -190,7 +216,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Patrón de ruta coincidente
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function get($pattern, $to)
     {
@@ -203,7 +229,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Patrón de ruta coincidente
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function post($pattern, $to)
     {
@@ -216,7 +242,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Patrón de ruta coincidente
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function put($pattern, $to)
     {
@@ -229,7 +255,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string $pattern Patrón de ruta coincidente
      * @param mixed  $to      Callback that returns the response when matched
      *
-     * @return Silex\Controller
+     * @return Controller
      */
     public function delete($pattern, $to)
     {
@@ -319,7 +345,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function error($callback, $priority = 0)
     {
-        $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForErrorEvent $event) use ($callback) {
+        $this['dispatcher']->addListener(SilexEvents::ERROR, function (GetResponseForExceptionEvent $event) use ($callback) {
             $exception = $event->getException();
 
             if (is_array($callback)) {
@@ -344,13 +370,15 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             $result = call_user_func($callback, $exception, $code);
 
             if (null !== $result) {
-                $event->setStringResponse($result);
+                R$response = $result instanceof Response ? $result : new Response((string) $result);
+
+                $event->setResponse($response);
             }
         }, $priority);
     }
 
     /**
-     * Flushes the controller collection.
+     * Vacía la colección de controladores.
      *
      * @param string $prefix El prefijo de la ruta
      */
@@ -365,7 +393,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param string  $url    La URL a la cual redirigir
      * @param integer $status El código de estado (el predefinido es 302)
      *
-     * @see Symfony\Component\HttpFoundation\RedirectResponse
+     * @see RedirectResponse
      */
     public function redirect($url, $status = 302)
     {
@@ -379,7 +407,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param integer $status   El código de estado de la respuesta
      * @param array   $headers  Una matriz de cabeceras de la respuesta
      *
-     * @see Symfony\Component\HttpFoundation\StreamedResponse
+     * @see StreamedResponse
      */
     public function stream($callback = null, $status = 200, $headers = array())
     {
@@ -408,7 +436,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      * @param integer $status  The response status code
      * @param array   $headers An array of response headers
      *
-     * @see Symfony\Component\HttpFoundation\JsonResponse
+     * @see JsonResponse
      */
     public function json($data = array(), $status = 200, $headers = array())
     {
@@ -467,7 +495,6 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         $current = HttpKernelInterface::SUB_REQUEST === $type ? $this['request'] : $this['request_error'];
 
         $this['request'] = $request;
-        $this['request']->setDefaultLocale($this['request.default_locale']);
 
         $this->flush();
 
@@ -513,8 +540,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this->beforeDispatched = true;
             $this['dispatcher']->dispatch(SilexEvents::BEFORE, $event);
-            $this['route_middlewares_trigger']($event);
         }
+
+        $this['route_before_middlewares_trigger']($event);
     }
 
     /**
@@ -541,8 +569,9 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     public function onKernelView(GetResponseForControllerResultEvent $event)
     {
         $response = $event->getControllerResult();
-        $converter = new StringResponseConverter();
-        $event->setResponse($converter->convert($response));
+        $response = $response instanceof Response ? $response : new Response((string) $response);
+
+        $event->setResponse($response);
     }
 
     /**
@@ -554,6 +583,8 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {
+        $this['route_after_middlewares_trigger']($event);
+
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
             $this['dispatcher']->dispatch(SilexEvents::AFTER, $event);
         }
@@ -593,7 +624,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             }
         }
 
-        $errorEvent = new GetResponseForErrorEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
+        $errorEvent = new GetResponseForExceptionEvent($this, $event->getRequest(), $event->getRequestType(), $event->getException());
         $this['dispatcher']->dispatch(SilexEvents::ERROR, $errorEvent);
 
         if ($errorEvent->hasResponse()) {
@@ -604,7 +635,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
     /**
      * {@inheritdoc}
      */
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(
             KernelEvents::REQUEST    => array(
@@ -613,7 +644,7 @@ class Application extends \Pimple implements HttpKernelInterface, EventSubscribe
             ),
             KernelEvents::CONTROLLER => 'onKernelController',
             KernelEvents::RESPONSE   => 'onKernelResponse',
-            KernelEvents::EXCEPTION  => 'onKernelException',
+            KernelEvents::EXCEPTION  => array('onKernelException', -10),
             KernelEvents::TERMINATE  => 'onKernelTerminate',
             KernelEvents::VIEW       => array('onKernelView', -10),
         );

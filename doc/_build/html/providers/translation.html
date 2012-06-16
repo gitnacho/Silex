@@ -105,7 +105,7 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
-<p>El componente <em>Translation</em> de <em>Symfony</em> no viene en los archivos <tt class="docutils literal"><span class="pre">silex</span></tt>, por lo tanto necesitas añadirlo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<p>El componente de traducción de <em>Symfony</em> viene en el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal. Si estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia a tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
 <div class="last highlight-json"><pre>"require": {
     "symfony/translation": "2.1.*"
 }</pre>
@@ -212,7 +212,7 @@
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">app.translator.trans</span><span class="o">(</span><span class="s1">&#39;translation_key&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 </pre></div>
 </div>
-<p>Aún mejor: registra el <tt class="xref doc docutils literal"><span class="pre">SymfonyBridgesServiceProvider</span></tt> y obtendrás la <tt class="docutils literal"><span class="pre">TranslationExtension</span></tt> del puente, misma que te permite traducir cadenas a la manera de <em>Twig</em>:</p>
+<p>Además, cuándo utilizas el puente <em>Twig</em> proporcionado por <em>Symfony</em> (ve <a class="reference internal" href="twig.html"><em>TwigServiceProvider</em></a>), te será permitido traducir cadenas a la manera de <em>Twig</em>:</p>
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="s1">&#39;translation_key&#39;</span><span class="o">|</span><span class="nf">trans</span> <span class="cp">}}</span><span class="x"></span>
 <span class="cp">{{</span> <span class="s1">&#39;translation_key&#39;</span><span class="o">|</span><span class="nf">transchoice</span> <span class="cp">}}</span><span class="x"></span>
 <span class="cp">{%</span> <span class="k">trans</span> <span class="cp">%}</span><span class="x">translation_key</span><span class="cp">{%</span> <span class="k">endtrans</span> <span class="cp">%}</span><span class="x"></span>

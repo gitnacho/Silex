@@ -76,5 +76,14 @@ El proveedor también ofrece compatibilidad con *ESI*::
 
     $app['http_cache']->run();
 
+.. tip::
+
+    Para ayudarte a depurar cuestiones con el almacenamiento en caché, ajusta a ``true`` la opción ``debug`` de tu aplicación.
+    *Symfony* automáticamente añade una cabecera ``X-Symfony-Cache`` a cada respuesta con útil información sobre el acceso exitoso y fallido a la caché.
+
+    Si *no* estás utilizando el proveedor de Sesión de *Symfony*,  podrías querer poner la opción ``session.cache_limiter`` de *PHP* a un valor vacío para evitar el comportamiento predefinido de *PHP*.
+
+    Finalmente, comprueba que tu servidor *Web* no redefine la estrategia de almacenamiento en caché.
+
 Para más información, consulta la documentación de la `caché HTTP de Symfony2
 <http://gitnacho.github.com/symfony-docs-es/book/http_cache.html>`_.

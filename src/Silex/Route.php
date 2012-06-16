@@ -1,7 +1,4 @@
-
-.. code-block:: php
-
-    <?php
+<?php
 
 /*
  * Este archivo es parte de la plataforma Silex.
@@ -110,17 +107,32 @@ class Route extends BaseRoute
 
     /**
      * Establece una retrollamada para manipular retrollamadas de ruta before.
-     * (alias "Lógica intermedia de ruta")
      *
      * @param mixed $callback A PHP callback to be triggered when the Route is matched, just before the route callback
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return Controller $this The current Controller instance
      */
-    public function middleware($callback)
+    public function before($callback)
     {
-        $middlewareCallbacks = $this->getOption('_middlewares');
-        $middlewareCallbacks[] = $callback;
-        $this->setOption('_middlewares', $middlewareCallbacks);
+        $callbacks = $this->getOption('_before_middlewares');
+        $callbacks[] = $callback;
+        $this->setOption('_before_middlewares', $callbacks);
+
+        return $this;
+    }
+
+    /**
+     * Sets a callback to handle after the route callback.
+     *
+     * @param mixed $callback A PHP callback to be triggered after the route callback
+     *
+     * @return Controller $this The current Controller instance
+     */
+    public function after($callback)
+    {
+        $callbacks = $this->getOption('_after_middlewares');
+        $callbacks[] = $callback;
+        $this->setOption('_after_middlewares', $callbacks);
 
         return $this;
     }

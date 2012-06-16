@@ -82,10 +82,10 @@
 <div class="section" id="parametros">
 <h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul>
-<li><p class="first"><strong>session.storage.save_path</strong> (opcional): La trayectoria para el <tt class="docutils literal"><span class="pre">NativeFileSessionHandler</span></tt>, &#8212;por omisión&#8212; es el valor de <tt class="docutils literal"><span class="pre">sys_get_temp_dir()</span></tt>.</p>
+<li><p class="first"><strong>session.storage.save_path</strong> (opcional): La ruta para el <tt class="docutils literal"><span class="pre">FileSessionHandler</span></tt>, de manera predeterminada es el valor de <tt class="docutils literal"><span class="pre">sys_get_temp_dir()</span></tt>.</p>
 </li>
 <li><p class="first"><strong>session.storage.options</strong>: Un arreglo de opciones que se pasa al constructor del servicio <tt class="docutils literal"><span class="pre">session.storage</span></tt>.</p>
-<p>En caso del predeterminado <tt class="docutils literal"><span class="pre">NativeSessionStorage</span></tt>, las opciones posibles son:</p>
+<p>En caso del <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html">NativeSessionStorage</a>, predeterminado las posibles opciones son:</p>
 <ul class="simple">
 <li><strong>name</strong>: El nombre de la <tt class="docutils literal"><span class="pre">cookie</span></tt> (por omisión <tt class="docutils literal"><span class="pre">_SESS</span></tt>)</li>
 <li><strong>id</strong>: El <tt class="docutils literal"><span class="pre">id</span></tt> de la sesión (por omisión <tt class="docutils literal"><span class="pre">null</span></tt>)</li>
@@ -97,14 +97,16 @@
 </ul>
 <p>Sin embargo, todas estas son opcionales. Las sesiones duran tanto como el navegador permanezca abierto. Para evitar esto, establece la opción <tt class="docutils literal"><span class="pre">lifetime</span></tt>.</p>
 </li>
+<li><p class="first"><strong>session.test</strong>: Cuándo simular sesiones o no (útil cuándo escribes pruebas funcionales).</p>
+</li>
 </ul>
 </div>
 <div class="section" id="servicios">
 <h2>Servicios<a class="headerlink" href="#servicios" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul class="simple">
 <li><strong>session</strong>: Una instancia de la <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html">Session</a> de <em>Symfony2</em>.</li>
-<li><strong>session.storage</strong>: Un servicio utilizado para persistir los datos de sesión. El predefinido es <tt class="docutils literal"><span class="pre">NativeSessionStorage</span></tt></li>
-<li><strong>session.storage.handler</strong>: Un servicio que utiliza <tt class="docutils literal"><span class="pre">session.storage</span></tt> para acceder a los datos. El controlador de almacenamiento predefinido es <tt class="docutils literal"><span class="pre">NativeFileSessionHandler</span></tt>.</li>
+<li><strong>session.storage</strong>: Un servicio utilizado para persistir los datos de sesión.</li>
+<li><strong>session.storage.handler</strong>: Un servicio que utiliza <tt class="docutils literal"><span class="pre">session.storage</span></tt> para acceder a los datos. De manera predeterminada el control de almacenamiento es <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/FileSessionHandler.html">FileSessionHandler</a>.</li>
 </ul>
 </div>
 <div class="section" id="registrando">

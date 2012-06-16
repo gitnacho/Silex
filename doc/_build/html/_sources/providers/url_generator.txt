@@ -47,12 +47,9 @@ Cuando usas *Twig*, Puedes usar el servicio así:
 
     {{ app.url_generator.generate('homepage') }}
 
-Por otra parte, si registras el ``SymfonyBridgesServiceProvider``, entonces tienes acceso a las funciones ``path()`` y ``url()``:
+Además, si utilizas *Twig*, tendrás acceso a las funciones ``path()`` y ``url()``:
 
 .. code-block:: jinja
 
     {{ path('homepage') }}
     {{ url('homepage') }} {# genera la url absoluta http://ejemplo.org/ #}
-
-Puedes encontrar más información sobre este tema en la documentación de :doc:`puentes Symfony
-<symfony_bridges>`.

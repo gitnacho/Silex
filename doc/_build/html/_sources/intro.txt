@@ -34,6 +34,6 @@ Cuando la ruta coincide, se ejecuta la función y el valor de retorno se devuelv
 
 Por último, se ejecuta la aplicación. Visita ``/hello/world`` para ver el resultado. ¡Así de fácil!
 
-Instalar Silex es tan fácil como lo puedas obtener. Descarga el archivo `silex.zip`_, ¡descomprímelo y listo!
+Instalar Silex es tan fácil como lo puedas obtener. `Descarga`_ el archivo, descomprímelo, ¡y listo!
 
-.. _silex.zip: http://silex.sensiolabs.org/get/silex.zip
+.. _`Descarga`: http://silex.sensiolabs.org/download

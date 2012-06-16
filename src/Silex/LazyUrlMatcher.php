@@ -1,7 +1,4 @@
-
-.. code-block:: php
-
-    <?php
+<?php
 
 /*
  * Este archivo es parte de la plataforma Silex.
@@ -25,7 +22,6 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 class LazyUrlMatcher implements UrlMatcherInterface
 {
     private $factory;
-    private $urlMatcher;
 
     public function __construct(\Closure $factory)
     {

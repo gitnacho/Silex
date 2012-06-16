@@ -53,7 +53,7 @@ Registrando
 
 .. note::
 
-    *SwiftMailer* no viene en los archivos ``silex``, por lo tanto necesitas añadirlo como dependencia en tu archivo ``composer.json``:
+    ``SwiftMailer`` viene con el archivo *Silex* "gordo" pero no en el normal. Si  estás usando ``Composer``, añádelo como dependencia en tu archivo ``composer.json``:
 
     .. code-block:: json
 
@@ -64,7 +64,7 @@ Registrando
 Uso
 ---
 
-El proveedor ``Swiftmailer`` proporciona un servicio ``mailer`` o cliente de correo.
+El proveedor ``Swiftmailer`` proporciona un servicio ``mailer`` o cliente de correo::
 
     $app->post('/feedback', function () use ($app) {
         $request = $app['request'];
