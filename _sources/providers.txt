@@ -16,7 +16,7 @@ Con el fin de cargar y usar un proveedor de servicios, lo debes registrar en la 
 
     $app->register(new Acme\DatabaseServiceProvider());
 
-También puedes proporcionar algunos parámetros como segundo argumento. Estos se deben establecer **antes** de registrar al proveedor::
+También puedes proporcionar algunos parámetros como segundo argumento. Estos se pondrán **después** de registrar al proveedor, pero **antes** de iniciarlo::
 
     $app->register(new Acme\DatabaseServiceProvider(), array(
         'database.dsn'      => 'mysql:host=localhost;dbname=myapp',
@@ -45,13 +45,15 @@ Hay algunos proveedores que obtienes fuera de la caja. Todos ellos están dentro
 * :doc:`DoctrineServiceProvider <providers/doctrine>`
 * :doc:`MonologServiceProvider <providers/monolog>`
 * :doc:`SessionServiceProvider <providers/session>`
+* :doc:`SerializerServiceProvider <providers/serializer>`
 * :doc:`SwiftmailerServiceProvider <providers/swiftmailer>`
 * :doc:`TwigServiceProvider <providers/twig>`
 * :doc:`TranslationServiceProvider <providers/translation>`
 * :doc:`UrlGeneratorServiceProvider <providers/url_generator>`
 * :doc:`ValidatorServiceProvider <providers/validator>`
 * :doc:`HttpCacheServiceProvider <providers/http_cache>`
-* :doc:`FormServiceProvider <providers/form>`
+* :doc:`FormServiceProvider <providers/form>` :doc:`SecurityServiceProvider <providers/security>`
+* :doc:`ServiceControllerServiceProvider <providers/service_controller>`
 
 Proveedores de terceros
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -150,13 +152,13 @@ He aquí un ejemplo de tal proveedor::
 
     use Silex\Application;
     use Silex\ControllerProviderInterface;
-    use Silex\ControllerCollection;
 
     class HelloControllerProvider implements ControllerProviderInterface
     {
         public function connect(Application $app)
         {
-            $controllers = new ControllerCollection();
+            // crea un nuevo controlador basándose en la ruta predefinida
+            $controllers = $app['controllers_factory'];
 
             $controllers->get('/', function (Application $app) {
                 return $app->redirect('/hello');

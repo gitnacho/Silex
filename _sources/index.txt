@@ -6,6 +6,8 @@
 
     intro
     usage
+    middlewares
+    organizing_controllers
     services
     providers
     testing
@@ -13,5 +15,6 @@
     internals
     contributing
     providers/index
+    web_servers
     changelog
     phar

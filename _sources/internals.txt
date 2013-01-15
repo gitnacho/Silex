@@ -14,7 +14,7 @@ La aplicación es la interfaz principal de *Silex*. Implementa la `HttpKernelInt
 Esta extiende el contenedor de servicios ``Pimple``, el cual permite flexibilidad tanto en el exterior cómo en el interior. Puedes sustituir cualquier servicio, y también serás capaz de leerlo.
 
 La aplicación usa exhaustivamente el `EventDispatcher <http://api.symfony.com/master/Symfony/Component/EventDispatcher/EventDispatcher.html>`_ para engancharse a los eventos `HttpKernel
-<http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html>`_ de *Symfony2*. Esto te permite recuperar la ``Petición``, convertir las cadenas de respuesta en objetos ``Respuesta`` y manipular excepciones. También lo usamos para despachar algunos eventos personalizados como los filtros ``before/after`` y errores.
+<http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpKernel.html>`_ de *Symfony2*. Esto te permite recuperar la ``Petición``, convertir las cadenas de respuesta en objetos ``Respuesta`` y manipular excepciones. También lo usamos para despachar algunos eventos personalizados como los semiwares ``before/after`` y errores.
 
 Controlador
 ~~~~~~~~~~~
@@ -33,6 +33,10 @@ Para resolver este desafío, se nos ocurrió tener una área de estacionamiento 
 Desafortunadamente no se ha podido encontrar una buena manera para vaciarla implícitamente, por lo que el vaciado ahora siempre es explícito. La aplicación se debe vaciar, pero si quieres leer la ``ControllerCollection`` antes de que se lleve a cabo la petición, tendrás que llamar a ``flush`` tú mismo.
 
 La ``Appication`` proporciona un atajo al método ``flush`` para vaciar la ``ControllerCollection``.
+
+.. tip::
+
+    En vez de crear tú mismo una instancia de ``RouteCollection``, en su lugar usa la fábrica ``$app['controllers_factory']``.
 
 *Symfony2*
 ----------

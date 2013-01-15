@@ -23,23 +23,29 @@ Si quieres más flexibilidad, en su lugar usa ``Composer``. Crea un archivo :fil
 
     {
         "require": {
-            "silex/silex": "1.0.*"
+            "silex/silex": "1.0.*@dev"
         }
     }
 
-Y corre ``Composer`` para instalar *Silex* y todas sus dependencias:
+Y ejecuta ``Composer`` para instalar *Silex* y todas sus dependencias:
 
 .. code-block:: bash
 
     $ curl -s http://getcomposer.org/installer | php
-    $ composer.phar install
+    $ php composer.phar install
+
+.. tip::
+
+    De manera predeterminada, *Silex* confía en los componentes estables de *Symfony*. Si en su lugar, quieres utilizar su versión maestra, añade ``"minimum-stability": "dev"`` en tu archivio :file:`composer.json`.
 
 Actualizando
 ------------
 
-Actualizar *Silex* a la versión más reciente es tan fácil como ejecutar la orden ``update``::
+Actualizar *Silex* a la versión más reciente es tan fácil como ejecutar la orden ``update``:
 
-    $ composer.phar update
+.. code-block:: bash
+
+    $ php composer.phar update
 
 Arranque
 --------
@@ -56,7 +62,7 @@ Para arrancar *Silex*, todo lo que necesitas hacer es requerir el archivo :file:
 
     $app->run();
 
-Entonces, tienes que configurar tu servidor *web* (ve los consejos para *Apache* e *IIS* más adelante).
+Luego, debes configurar tu servidor *web* (consulta el :doc:`capítulo dedicado <web_servers>` para más información).
 
 .. tip::
 
@@ -99,9 +105,6 @@ Los cierres son funciones anónimas que pueden importar el estado desde fuera de
     Los cierres que no importan el ámbito se conocen como lambdas. Debido a que en *PHP* todas las funciones anónimas son instancias de la clase ``Closure``, no vamos a hacer una distinción aquí.
 
 El valor de retorno del cierre se convierte en el contenido de la página.
-
-También existe una forma alterna para definir controladores que utilizan un método de clase.
-La sintaxis para esto es **NombreClase**::**nombreMétodo**. También son posibles los métodos estáticos.
 
 Ejemplo de ruta ``GET``
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -170,7 +173,7 @@ Es bastante sencillo.
 
     Hay un :doc:`SwiftmailerServiceProvider <providers/swiftmailer>` incluido que puedes utilizar en lugar de ``mail()``.
 
-La ``petición`` actual es inyectada al ``cierre`` automáticamente por *Silex* gracias al indicador de tipo. Es una instancia de `Request <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html>`_, por tanto puedes recuperar las variables usando el método ``get`` de la petición.
+La ``petición`` actual es inyectada al ``cierre`` automáticamente por *Silex* gracias a la insinuación de tipo. Es una instancia de `Request <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html>`_, por tanto puedes recuperar las variables usando el método ``get`` de la petición.
 
 En lugar de devolver una cadena regresamos una instancia de `Response <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html>`_.
 Esto nos permite fijar un código de estado *HTTP*, en este caso configurado a ``201 Creado``.
@@ -331,101 +334,30 @@ Algunos proveedores (como ``UrlGeneratorProvider``) pueden usar rutas con nombre
 
     Sólo tiene sentido nombrar rutas si utilizas proveedores que usan la ``RouteCollection``.
 
-Filtros ``before``, ``after`` y ``finish``
-------------------------------------------
+Controladores en clases
+~~~~~~~~~~~~~~~~~~~~~~~
 
-*Silex* te permite ejecutar código antes e incluso después de enviada la respuesta. Esto ocurre a través de los filtros ``before``, ``after`` y ``finish``. Todo lo que necesitas hacer es pasar un cierre::
+Si no quieres utilizar funciones anónimas, también puedes definir tus controladores como métodos. Al utilizar la sintaxis ``ControllerClass::methodName``, le puedes decir a *Silex* que cree esa clase controlador de manera diferida::
 
-    $app->before(function () {
-        // configuración
-    });
+    $app->get('/', 'Igorw\Foo::bar');
 
-    $app->after(function () {
-        // destrucción
-    });
+    use Silex\Application;
+    use Symfony\Component\HttpFoundation\Request;
 
-    $app->finish(function () {
-        // después de enviada la respuesta
-    });
-
-El filtro ``before`` tiene acceso a la ``Petición`` actual, y puede provocar un cortocircuito en toda la reproducción, devolviendo una ``Respuesta``::
-
-    $app->before(function (Request $request) {
-        // redirige al usuario al formulario de acceso si el recurso accedido está protegido
-        if (...) {
-            return new RedirectResponse('/login');
+    namespace Igorw
+    {
+        class Foo
+        {
+            public function bar(Request $request, Application $app)
+            {
+                ...
+            }
         }
-    });
+    }
 
-El filtro ``after`` tiene acceso a la ``Petición`` y a la ``Respuesta``:
+Esto cargará la clase ``Igorw\Foo`` bajo demanda, crea una instancia y llama al método ``bar`` para conseguir la respuesta. Puedes utilizar la insinuación de tipo ``Request`` y ``Silex\Application`` para inyectar la ``$request`` y ``$app``.
 
-.. code-block:: php
-
-    $app->after(function (Request $request, Response $response) {
-        // ajusta la Respuesta
-    });
-
-El filtro ``finish`` tiene acceso a la ``Petición`` y la ``Respuesta``::
-
-    $app->finish(function (Request $request, Response $response) {
-        // envía mensajes de correo electrónico ...
-    });
-
-.. note::
-
-    Los filtros sólo los ejecuta la ``Petición`` "maestra".
-
-Lógica intermedia para la ruta
-------------------------------
-
-Los servicios de lógica intermedia (``middlewares``) para la ruta son ejecutables *PHP* que se activan cuando coincide su ruta asociada.
-
-* La lógica intermedia ``before`` se lanza justo antes de la retrollamada a la ruta, pero después de aplicar los filtros ``before``;
-
-* La lógica intermedia ``after`` se activa justo después de la retrollamada a la ruta, pero antes de aplicar los filtros ``after``.
-
-Los puedes usar en una gran cantidad de situaciones; Por ejemplo, aquí está una simple comprobación de "anónimo/usuario registrado":
-
-.. code-block:: php
-
-    $mustBeAnonymous = function (Request $request) use ($app) {
-        if ($app['session']->has('userId')) {
-            return $app->redirect('/user/logout');
-        }
-    };
-
-    $mustBeLogged = function (Request $request) use ($app) {
-        if (!$app['session']->has('userId')) {
-            return $app->redirect('/user/login');
-        }
-    };
-
-    $app->get('/user/subscribe', function () {
-        ...
-    })
-    ->before($mustBeAnonymous);
-
-    $app->get('/user/login', function () {
-        ...
-    })
-    ->before($mustBeAnonymous);
-
-    $app->get('/user/my-profile', function () {
-        ...
-    })
-    ->before($mustBeLogged);
-
-Los métodos ``before`` y ``after`` se pueden invocar varias veces para una ruta dada, en cuyo caso son lanzados en el mismo orden que cuando los añadiste a la
-ruta.
-
-Por comodidad, la lógica intermedia ``before`` se invoca con la instancia de la ``Petición`` actual como un argumento y la lógica intermedia ``after`` se invoca
-con la ``Petición`` actual y la instancia de la ``Respuesta`` como argumentos.
-
-Si cualquiera de las lógicas intermedias ``before`` regresa una ``Respuesta`` *HTTP* de *Symfony*, se saltará el proceso de reproducción completamente: Los siguientes servicios de lógica intermedia no se ejecutarán, ni la retrollamada a la ruta. También puedes redirigir a otra página devolviendo una respuesta de redirección, la cual puedes crear llamando al método ``redirect`` de la aplicación.
-
-.. note::
-
-    Si la lógica intermedia de un ``before`` no regresa una ``Respuesta`` *HTTP* de *Symfony* o ``null``, se lanza una ``RuntimeException``.
+Para una separación incluso más fuerte entre *Silex* y tus controladores, puedes :doc:`definir tus controladores como servicios <providers/service_controller>`.
 
 Configuración global
 --------------------
@@ -437,15 +369,15 @@ Si una opción del controlador se debe aplicar a todos los controladores (un con
         ->assert('id', '\d+')
         ->requireHttps()
         ->method('get')
-        ->convert('id', function () { // ... })
-        ->before(function () { // ... })
+        ->convert('id', function () { /* ... */ })
+        ->before(function () { /* ... */ })
     ;
 
 Estos ajustes se aplican a los controladores que ya están registrados y se convierten en los valores predefinidos para los nuevos controladores.
 
 .. note::
 
-    La configuración global no aplica a proveedores de controlador podrías montar tantos como tengas en tu propia configuración global (ve el párrafo sobre la modularidad más adelante).
+    La configuración global no aplica a proveedores de controlador, podrías montar tantos como tengas en tu propia configuración global (ve el párrafo sobre la modularidad más adelante).
 
 Controladores de error
 ----------------------
@@ -457,7 +389,7 @@ Para registrar un controlador de error, pasa un cierre al método ``error`` el c
     use Symfony\Component\HttpFoundation\Response;
 
     $app->error(function (\Exception $e, $code) {
-        return new Response('We are sorry, but something went terribly wrong.', $code);
+        return new Response('We are sorry, but something went terribly wrong.');
     });
 
 También puedes comprobar si hay errores específicos usando el argumento ``$code``, y manejándolo de manera diferente::
@@ -473,8 +405,14 @@ También puedes comprobar si hay errores específicos usando el argumento ``$cod
                 $message = 'We are sorry, but something went terribly wrong.';
         }
 
-        return new Response($message, $code);
+        return new Response($message);
     });
+
+.. note::
+
+    Debido a que *Silex* garantiza que el código de estado de la respuesta se ajusta al más adecuado en función de la excepción, configurar el estado en la respuesta no va a funcionar. Si quieres reescribir el código de estado (no sin una muy buena razón), establece la cabecera ``X-Status-Code``::
+
+        return new Response('Error', 404 /* ignored */, array('X-Status-Code' => 200));
 
 Puedes restringir un controlador de errores para que sólo maneje algunas clases de excepciones estableciendo un tipo de pista más específico para el argumento del ``Cierre``::
 
@@ -505,7 +443,7 @@ Sólo asegúrate de registrarlo antes que los controladores que responden al err
             // lógica para manejar el error y devolver una respuesta
         });
 
-A los manipuladores de error también se les llama cuando utilizas ``abort`` para anular tempranamente una petición::
+A los manipuladores de error también se les llama cuando utilizas ``abort`` para anular prematuramente una petición::
 
     $app->get('/blog/show/{id}', function (Silex\Application $app, $id) use ($blogPosts) {
         if (!isset($blogPosts[$id])) {
@@ -531,6 +469,7 @@ Reenviando
 
 Cuando quieres delegar la reproducción a otro controlador, sin una ida y vuelta al navegador (tal como una redirección), utiliza una subpetición::
 
+    use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpKernel\HttpKernelInterface;
 
     $app->get('/', function () use ($app) {
@@ -546,64 +485,9 @@ Cuando quieres delegar la reproducción a otro controlador, sin una ida y vuelta
 
         $request = Request::create($app['url_generator']->generate('hello'), 'GET');
 
-Modularidad
------------
-
-Cuando tu aplicación comienza a definir muchos controladores, es posible que desees agruparlos lógicamente::
-
-    use Silex\ControllerCollection;
-
-    // define los controladores para un blog
-    $blog = new ControllerCollection();
-    $blog->get('/', function () {
-        return 'Blog home page';
-    });
-    // ...
-
-    // define los controladores de un foro
-    $forum = new ControllerCollection();
-    $forum->get('/', function () {
-        return 'Forum home page';
-    });
-
-    // define controladores 'globales'
-    $app->get('/', function () {
-        return 'Main home page';
-    });
-
-    $app->mount('/blog', $blog);
-    $app->mount('/forum', $forum);
-
-``mount()`` prefija todas las rutas con la cadena dada y las integra en la aplicación principal. Por lo tanto, ``/`` se asignará a la página principal, ``/blog/`` a la página principal del blog, y ``/forum/`` a la página principal del foro.
-
-.. note::
-
-    Cuando invocas a ``get()``, ``match()``, o cualquier otro método *HTTP* de la aplicación, de hecho, los estás llamando en una instancia predeterminada de ``ControllerCollection`` (almacenado en ``$app['controllers']``).
-
-Otra ventaja es la capacidad para aplicar muy fácilmente la configuración a un conjunto de controladores. Basándonos en el ejemplo de la sección de la lógica intermedia, aquí tienes cómo protegeríamos todos los controladores para la colección ``backend``::
-
-    $backend = new ControllerCollection();
-
-    // garantiza que todos los controladores requieren usuarios que
-    // hayan iniciado sesión
-    $backend->before($mustBeLogged);
-
-.. tip::
-
-    Para mejorar la legibilidad, puedes dividir cada colección de controladores en un archivo independiente::
-
-        // blog.php
-        use Silex\ControllerCollection;
-
-        $blog = new ControllerCollection();
-        $blog->get('/', function () { return 'Blog home page'; });
-
-        return $blog;
-
-        // app.php
-        $app->mount('/blog', include 'blog.php');
-
-    En lugar de necesitar un archivo, también puedes crear un :ref:`Proveedor de controladores <proveedor-de-controladores>`.
+No obstante, hay algunas cosas más que necesitas tener en cuenta. En muchos casos querrás reenviar algunas partes de la petición maestra actual a la subpetición.
+Estas incluyen: Galletas, información del servidor, sesión.
+Lee más en :doc:`cómo hacer subpeticiones <cookbook/sub_requests>`.
 
 *JSON*
 ------
@@ -651,6 +535,45 @@ Si necesitas enviar segmentos, asegúrate de llamar a ``ob_flush`` y ``flush`` d
         fclose($fh);
     };
 
+Peculiaridades
+--------------
+
+*Silex* viene con características de *PHP* que definen accesos directos a métodos.
+
+.. caution::
+
+    Es necesario que utilices *PHP 5.4* o más reciente para beneficiarte de esta característica.
+
+Casi todos los proveedores de servicio integrados tienen alguna característica *PHP* correspondiente. Para usarlos, define tu propia clase ``Application`` e incluye las características que desees::
+
+    use Silex\Application;
+
+    class MyApplication extends Application
+    {
+        use Application\TwigTrait;
+        use Application\SecurityTrait;
+        use Application\FormTrait;
+        use Application\UrlGeneratorTrait;
+        use Application\SwiftmailerTrait;
+        use Application\MonologTrait;
+        use Application\TranslationTrait;
+    }
+
+También puedes definir tu propia clase ``Route`` y usar algunas características::
+
+    use Silex\Route;
+
+    class MyRoute extends Route
+    {
+        use Route\SecurityTrait;
+    }
+
+Para usar tu ``ruta`` recién definida, sustituye la configuración de ``$app['route_class']``::
+
+    $app['route_class'] = 'MyRoute';
+
+Lee cada capítulo de proveedor para obtener más información acerca de los métodos añadidos.
+
 Seguridad
 ---------
 
@@ -678,85 +601,4 @@ Cuando reproduces cualquier aportación de los usuarios (ya sea en las variables
           return $app->json(array('name' => $name));
       });
 
-Configurando el servidor *web*
-------------------------------
-
-Apache
-~~~~~~
-
-Si estás usando *Apache* puedes utilizar un :file:`.htaccess` para esto:
-
-.. code-block:: apache
-
-    <IfModule mod_rewrite.c>
-        Options -MultiViews
-
-        RewriteEngine On
-        #RewriteBase /ruta/a/tu/aplicación
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteRule ^ index.php [L]
-    </IfModule>
-
-.. note::
-
-    Si tu sitio no está a nivel raíz del servidor *web*, tienes que quitar el comentario de la declaración ``RewriteBase`` y ajustar la ruta para que apunte al directorio, relativo a la raíz del servidor *web*.
-
-Alternativamente, si utilizas *Apache* 2.2.16 o más reciente, puedes usar la `Directiva FallbackResource`_ para hacer tu :file:`.htaccess` aún más sencillo:
-
-.. code-block:: apache
-
-    FallbackResource index.php
-
-``nginx``
-~~~~~~~~~
-
-Si estás utilizando ``nginx``, configura tu ``vhost`` para remitir los recursos inexistentes a ``index.php``:
-
-.. code-block:: nginx
-
-    server { 
-        index index.php
-
-        location / {
-            try_files $uri $uri/ /index.php;
-        }
-
-        location ~ index\.php$ {
-            fastcgi_pass   /var/run/php5-fpm.sock;
-            fastcgi_index  index.php;
-            include fastcgi_params;
-        }
-    }
-
-``IIS``
-~~~~~~~
-
-Si estás utilizando el ``Internet Information Services`` de *Windows*, puedes usar como ejemplo el archivo :file:`web.config`:
-
-.. code-block:: xml
-
-    <?xml version="1.0"?>
-    <configuration>
-        <system.webServer>
-            <defaultDocument>
-                <files>
-                    <clear />
-                    <add value="index.php" />
-                </files>
-            </defaultDocument>
-            <rewrite>
-                <rules>
-                    <rule name="Silex Front Controller" stopProcessing="true">
-                        <match url="^(.*)$" ignoreCase="false" />
-                        <conditions logicalGrouping="MatchAll">
-                            <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
-                        </conditions>
-                        <action type="Rewrite" url="index.php" appendQueryString="true" />
-                    </rule>
-                </rules>
-            </rewrite>
-        </system.webServer>
-    </configuration>
-
-.. _`Directiva FallbackResource`: http://www.adayinthelifeof.nl/2012/01/21/apaches-fallbackresource-your-new-htaccess-command/
 .. _`descarga`: http://silex.sensiolabs.org/download

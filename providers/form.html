@@ -1,8 +1,6 @@
 
-<!DOCTYPE html>
-
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html> 
+<html lang="es">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
@@ -35,7 +33,7 @@
     
   <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
   
-    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <a href="../index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
     <div class="social">
       <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -51,7 +49,6 @@
     </div>
     
 
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -101,19 +98,38 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
-<p>El Componente <tt class="docutils literal"><span class="pre">Form</span></tt> de <em>Symfony</em> viene con el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal. Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
-<div class="last highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+<p>Si no quieres crear tu propio diseño del formulario, está bien: se usará uno predefinido. Pero tendrás que registrar el <tt class="xref doc docutils literal"><span class="pre">proveedor</span> <span class="pre">de</span> <span class="pre">traducción</span></tt> como el diseño predefinido necesario para el formulario.</p>
+<p class="last">Si quieres usar validación en tus formularios, no olvides registrar el <tt class="xref doc docutils literal"><span class="pre">proveedor</span> <span class="pre">de</span> <span class="pre">validación</span></tt>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>El componente <tt class="docutils literal"><span class="pre">Form</span></tt> de <em>Symfony</em> y todas sus dependencias (opcionales o no) vienen con el archivo «gordo» de <em>Silex</em> pero no con el normal.</p>
+<p>Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
     <span class="s2">&quot;symfony/form&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<p>Si vas a utilizar la extensión de validación con formularios, también debes registrar los componentes <tt class="docutils literal"><span class="pre">symfony/config</span></tt> y <tt class="docutils literal"><span class="pre">symfony/translation</span></tt>:</p>
+<p>Si vas a usar la extensión de validación con formularios, también tienes que añadir una dependencia a los componentes <tt class="docutils literal"><span class="pre">symfony/config</span></tt> y <tt class="docutils literal"><span class="pre">symfony/translation</span></tt>:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;symfony/validator&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span><span class="p">,</span>
     <span class="s2">&quot;symfony/config&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span><span class="p">,</span>
     <span class="s2">&quot;symfony/translation&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+<p>El componente <tt class="docutils literal"><span class="pre">Form</span></tt> de <em>Symfony</em> está basado en la extensión <tt class="docutils literal"><span class="pre">intl</span></tt> de <em>PHP</em>. Si no la tienes, puedes instalar el componente <tt class="docutils literal"><span class="pre">Locale</span></tt> de <em>Symfony</em> como un reemplazo:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;symfony/locale&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Si quieres usar formularios en tus plantillas <em>Twig</em>, asegúrate de instalar el puente <em>Twig</em> de <em>Symfony</em>:</p>
+<div class="last highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;symfony/twig-bridge&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="uso">
@@ -136,7 +152,7 @@
         <span class="o">-&gt;</span><span class="na">getForm</span><span class="p">();</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;POST&#39;</span> <span class="o">==</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getMethod</span><span class="p">())</span> <span class="p">{</span>
-        <span class="nv">$form</span><span class="o">-&gt;</span><span class="na">bindRequest</span><span class="p">(</span><span class="nv">$request</span><span class="p">);</span>
+        <span class="nv">$form</span><span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="nv">$request</span><span class="p">);</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nv">$form</span><span class="o">-&gt;</span><span class="na">isValid</span><span class="p">())</span> <span class="p">{</span>
             <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$form</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
@@ -153,7 +169,8 @@
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>Y aquí tienes la plantilla del formulario <tt class="docutils literal"><span class="pre">index.twig</span></tt>:</p>
+<p>Y aquí tienes la plantilla del formaulario <tt class="file docutils literal"><span class="pre">index.twig</span></tt> (requiere <tt class="docutils literal"><span class="pre">symfony/twig-</span>
+<span class="pre">bridge</span></tt>):</p>
 <div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;form action=&quot;#&quot; method=&quot;post&quot;&gt;</span>
 <span class="x">    </span><span class="cp">{{</span> <span class="nv">form_widget</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 
@@ -184,6 +201,24 @@
     <span class="o">-&gt;</span><span class="na">getForm</span><span class="p">();</span>
 </pre></div>
 </div>
+<p>Puedes registrar las extensiones de <tt class="docutils literal"><span class="pre">form</span></tt> extendiendo de <tt class="docutils literal"><span class="pre">form.extensions</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;form.extensions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">extend</span><span class="p">(</span><span class="s1">&#39;form.extensions&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$extensions</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$extensions</span><span class="p">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">YourTopFormExtension</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="nv">$extensions</span><span class="p">;</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="peculiaridades">
+<h2>Peculiaridades<a class="headerlink" href="#peculiaridades" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">Silex\Application\FormTrait</span></tt> añade los siguientes atajos:</p>
+<ul class="simple">
+<li><strong>form</strong>: Crea una instancia de <tt class="docutils literal"><span class="pre">FormBuilder</span></tt>.</li>
+</ul>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">form</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+</pre></div>
+</div>
 <p>Para más información, consulta la <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/forms.html">documentación de Formularios de Symfony2</a>.</p>
 </div>
 </div>
@@ -197,7 +232,6 @@
   <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
   
   <div style="width:740px;margin:10px auto;">
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -221,8 +255,8 @@
      <div id="disqus_thread"></div>
      
     <div class="footer">
-        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
-      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
    </div>
    <script type="text/javascript">

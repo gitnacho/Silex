@@ -58,10 +58,10 @@ Puedes validar directamente los valores usando el método de validación ``valid
         }
     });
 
-Validando arreglos
-~~~~~~~~~~~~~~~~~~
+Validando arreglos asociativos
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: php
+La validación de arreglos asociativos es como la validación de valores simples, con una colección de restricciones::
 
     use Symfony\Component\Validator\Constraints as Assert;
 

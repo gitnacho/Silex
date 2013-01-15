@@ -6,19 +6,19 @@ El proveedor ``SessionServiceProvider`` ofrece un servicio para almacenar datos 
 Parámetros
 ----------
 
-* **session.storage.save_path** (opcional): La ruta para el ``FileSessionHandler``, de manera predeterminada es el valor de ``sys_get_temp_dir()``.
+* **session.storage.save_path** (opcional): La trayectoria para el ``NativeFileSessionHandler``, ---por omisión--- es el valor de ``sys_get_temp_dir()``.
 
 * **session.storage.options**: Un arreglo de opciones que se pasa al constructor del servicio ``session.storage``.
 
   En caso del `NativeSessionStorage <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html>`_ predeterminado, las posibles opciones son:
 
-  * **name**: El nombre de la ``cookie`` (por omisión ``_SESS``)
+  * **name**: El nombre de la ``galleta`` (por omisión ``_SESS``)
   * **id**: El ``id`` de la sesión (por omisión ``null``)
-  * **cookie_lifetime**: Tiempo de vida de la ``cookie``
-  * **path**: Ruta a la ``cookie``
-  * **domain**: Dominio de la ``cookie``
-  * **secure**: ``cookie`` segura (*HTTPS*)
-  * **httponly**: Cuando la ``cookie`` únicamente es *http*
+  * **cookie_lifetime**: Tiempo de vida de la ``galleta``
+  * **path**: Ruta a la ``galleta``
+  * **domain**: Dominio de la ``galleta``
+  * **secure**: ``galleta`` segura (*HTTPS*)
+  * **httponly**: Cuando la ``galleta`` únicamente es *http*
 
   Sin embargo, todas estas son opcionales. Las sesiones duran tanto como el navegador permanezca abierto. Para evitar esto, establece la opción ``lifetime``.
 
@@ -31,7 +31,7 @@ Servicios
 
 * **session.storage**: Un servicio utilizado para persistir los datos de sesión.
 
-* **session.storage.handler**: Un servicio que utiliza ``session.storage`` para acceder a los datos. De manera predeterminada el control de almacenamiento es `FileSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/FileSessionHandler.html>`_.
+* **session.storage.handler**: Un servicio que utiliza ``session.storage`` para acceder a los datos. Predefinido como un controlador de almacenamiento `NativeFileSessionHandler <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/NativeFileSessionHandler.html>`_.
 
 Registrando
 -----------
@@ -52,7 +52,6 @@ El proveedor ``Session`` proporciona un servicio ``session``. He aquí un ejempl
         $password = $app['request']->server->get('PHP_AUTH_PW');
 
         if ('igor' === $username && 'password' === $password) {
-            $app['session']->start();
             $app['session']->set('user', array('username' => $username));
             return $app->redirect('/account');
         }
@@ -64,10 +63,20 @@ El proveedor ``Session`` proporciona un servicio ``session``. He aquí un ejempl
     });
 
     $app->get('/account', function () use ($app) {
-        $app['session']->start();
         if (null === $user = $app['session']->get('user')) {
             return $app->redirect('/login');
         }
 
         return "Welcome {$user['username']}!";
     });
+
+
+Configurando una sesión personalizada
+-------------------------------------
+
+Si tu sistema está utilizando una configuración de sesión personalizada (como un controlador de una extensión *PHP*) entonces necesitas deshabilitar el ``NativeFileSessionHandler`` poniendo ``session.storage.handler`` a ``null``. En este caso, tú mismo tendrás que configurar ``session.save_path`` en tu archivo ``ini``.
+
+.. code-block:: php
+
+    $app['session.storage.handler'] = null;
+

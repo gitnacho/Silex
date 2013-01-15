@@ -1,8 +1,6 @@
 
-<!DOCTYPE html>
-
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html> 
+<html lang="es">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
@@ -35,7 +33,7 @@
     
   <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
   
-    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <a href="../index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
     <div class="social">
       <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -51,7 +49,6 @@
     </div>
     
 
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -79,7 +76,7 @@
   <div class="section" id="monologserviceprovider">
 <h1><tt class="docutils literal"><span class="pre">MonologServiceProvider</span></tt><a class="headerlink" href="#monologserviceprovider" title="Enlazar permanentemente con este título">¶</a></h1>
 <p>El proveedor <tt class="docutils literal"><span class="pre">MonologServiceProvider</span></tt> proporciona un mecanismo de registro predeterminado a través de la biblioteca <a class="reference external" href="https://github.com/Seldaek/monolog">Monolog</a> de Jordi Boggiano&#8217;s.</p>
-<p>Esta registrará las peticiones y errores y te permite añadir a tu aplicación el registro de depuración, para que ya no tengas que usar <tt class="docutils literal"><span class="pre">var_dump</span></tt>. Puedes utilizar la versión madura llamada <tt class="docutils literal"><span class="pre">tail-f</span></tt>.</p>
+<p>Este registrará las peticiones y errores y te permite llevar la bitácora de tu aplicación. Este te permite depurar y monitorear el comportamiento, incluso en producción.</p>
 <div class="section" id="parametros">
 <h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul class="simple">
@@ -96,8 +93,6 @@
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;monolog&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">addDebug</span><span class="p">(</span><span class="s1">&#39;Probando el registro cronológico de eventos de Monolog.&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-</li>
-<li><p class="first"><strong>monolog.configure</strong>: Cierre protegido que toma al registro cronológico como argumento. Lo puedes modificar si no deseas el comportamiento predefinido.</p>
 </li>
 </ul>
 </div>
@@ -133,6 +128,27 @@ Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span>
 <span class="p">});</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="personalizando">
+<h2>Personalizando<a class="headerlink" href="#personalizando" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Puedes configurar <em>Monolog</em> (tal como añadir o cambiar controladores) antes de usarlo extendiendo el servicio <tt class="docutils literal"><span class="pre">monolog</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;monolog&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">extend</span><span class="p">(</span><span class="s1">&#39;monolog&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$monolog</span><span class="p">,</span> <span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$monolog</span><span class="o">-&gt;</span><span class="na">pushHandler</span><span class="p">(</span><span class="o">...</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nv">$monolog</span><span class="p">;</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="peculiaridades">
+<h2>Peculiaridades<a class="headerlink" href="#peculiaridades" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">Silex\Application\MonologTrait</span></tt> añade los siguientes atajos:</p>
+<ul class="simple">
+<li><strong>log</strong>: Registra un mensaje.</li>
+</ul>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">log</span><span class="p">(</span><span class="nb">sprintf</span><span class="p">(</span><span class="s2">&quot;User &#39;%s&#39; registered.&quot;</span><span class="p">,</span> <span class="nv">$username</span><span class="p">));</span>
+</pre></div>
+</div>
 <p>Para más información, consulta la <a class="reference external" href="https://github.com/Seldaek/monolog">documentación de Monolog</a>.</p>
 </div>
 </div>
@@ -146,7 +162,6 @@ Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span>
   <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
   
   <div style="width:740px;margin:10px auto;">
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -170,8 +185,8 @@ Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span>
      <div id="disqus_thread"></div>
      
     <div class="footer">
-        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
-      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
    </div>
    <script type="text/javascript">

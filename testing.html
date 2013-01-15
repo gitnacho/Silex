@@ -1,8 +1,6 @@
 
-<!DOCTYPE html>
-
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html> 
+<html lang="es">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
@@ -34,7 +32,7 @@
     
   <a href="index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
   
-    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <a href="index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
     <div class="social">
       <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -50,7 +48,6 @@
     </div>
     
 
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -139,7 +136,7 @@ Es la plataforma de pruebas estándar de facto para <em>PHP</em>. Fue construida
 <span class="p">{</span>
     <span class="nv">$app</span> <span class="o">=</span> <span class="k">require</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/path/to/app.php&#39;</span><span class="p">;</span>
     <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;debug&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
-    <span class="nb">unset</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;exception_handler&#39;</span><span class="p">]);</span>
+    <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;exception_handler&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">disable</span><span class="p">();</span>
 
     <span class="k">return</span> <span class="nv">$app</span><span class="p">;</span>
 <span class="p">}</span>
@@ -178,7 +175,7 @@ Es la plataforma de pruebas estándar de facto para <em>PHP</em>. Fue construida
 </div>
 <div class="section" id="cliente">
 <h2>Cliente<a class="headerlink" href="#cliente" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>El cliente representa un navegador. Este mantiene tu historial de navegación, <tt class="docutils literal"><span class="pre">cookies</span></tt> y mucho más. El método <tt class="docutils literal"><span class="pre">request</span></tt> te permite hacer una petición a una página en tu aplicación.</p>
+<p>El cliente representa un navegador. Este mantiene tu historial de navegación, <tt class="docutils literal"><span class="pre">galletas</span></tt> y mucho más. El método <tt class="docutils literal"><span class="pre">request</span></tt> te permite hacer una petición a una página en tu aplicación.</p>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
 <p class="last">Puedes encontrar alguna documentación para esto en la sección <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/book/testing.html#trabajando-con-el-cliente-de-pruebas">cliente del capítulo de pruebas de la documentación de Symfony2</a>.</p>
@@ -207,7 +204,7 @@ Es la plataforma de pruebas estándar de facto para <em>PHP</em>. Fue construida
          <span class="na">syntaxCheck=</span><span class="s">&quot;false&quot;</span>
 <span class="nt">&gt;</span>
     <span class="nt">&lt;testsuites&gt;</span>
-        <span class="nt">&lt;testsuite</span> <span class="na">name=</span><span class="s">&quot;YourApp Test Suite&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;testsuite</span> <span class="na">name=</span><span class="s">&quot;Batería de pruebas de TuAp&quot;</span><span class="nt">&gt;</span>
             <span class="nt">&lt;directory&gt;</span>./tests/<span class="nt">&lt;/directory&gt;</span>
         <span class="nt">&lt;/testsuite&gt;</span>
     <span class="nt">&lt;/testsuites&gt;</span>
@@ -247,7 +244,6 @@ Es la plataforma de pruebas estándar de facto para <em>PHP</em>. Fue construida
   <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
   
   <div style="width:740px;margin:10px auto;">
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -270,8 +266,8 @@ Es la plataforma de pruebas estándar de facto para <em>PHP</em>. Fue construida
      <div id="disqus_thread"></div>
      
     <div class="footer">
-        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
-      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
    </div>
    <script type="text/javascript">

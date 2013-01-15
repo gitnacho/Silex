@@ -7,8 +7,8 @@ El `NativeSessionStorage <http://api.symfony.com/master/Symfony/Component/HttpFo
 <http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/PdoSessionHandler.html>`_.
 Para usarla, reemplaza en tu aplicación el servicio ``session.storage.handler`` como se explica a continuación.
 
-Ejemplo
--------
+Con un servicio *PDO* dedicado
+------------------------------
 
 .. code-block:: php
 
@@ -20,7 +20,7 @@ Ejemplo
     $app['pdo.user'] = 'myuser';
     $app['pdo.password'] = 'mypassword';
 
-    $app['pdo.db_options'] = array(
+    $app['session.db_options'] = array(
         'db_table'      => 'session',
         'db_id_col'     => 'session_id',
         'db_data_col'   => 'session_value',
@@ -38,7 +38,33 @@ Ejemplo
     $app['session.storage.handler'] = $app->share(function () use ($app) {
         return new PdoSessionHandler(
             $app['pdo'],
-            $app['pdo.db_options'],
+            $app['session.db_options'],
+            $app['session.storage.options']
+        );
+    });
+
+Usando el *DoctrineServiceProvider*
+-----------------------------------
+
+Cuándo utilizas el :doc:`DoctrineServiceProvider </providers/doctrine>` no tienes que hacer otra conexión a la base de datos, sencillamente pasa el método ``getWrappedConnection``.
+
+.. code-block:: php
+
+    use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
+
+    $app->register(new Silex\Provider\SessionServiceProvider());
+
+    $app['session.db_options'] = array(
+        'db_table'      => 'session',
+        'db_id_col'     => 'session_id',
+        'db_data_col'   => 'session_value',
+        'db_time_col'   => 'session_time',
+    );
+
+    $app['session.storage.handler'] = $app->share(function () use ($app) {
+        return new PdoSessionHandler(
+            $app['db']->getWrappedConnection(),
+            $app['session.db_options'],
             $app['session.storage.options']
         );
     });
@@ -53,4 +79,4 @@ Estructura de la base de datos
 * ``session_time``: La columna de tiempo (``INTEGER``)
 
 Puedes encontrar ejemplos de declaraciones *SQL* para crear la tabla de sesión en el `Recetario de Symfony2
-<http://gitnacho.github.com/symfony-docs-es/cookbook/configuration/pdo_session_storage.html>`_.
+<http://gitnacho.github.com/symfony-docs-es/cookbook/configuration/pdo_session_storage.html#instrucciones-sql-de-ejemplo>`_.

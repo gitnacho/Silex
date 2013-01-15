@@ -1,0 +1,205 @@
+
+<!DOCTYPE html> 
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ServiceControllerServiceProvider &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="../_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="../index.html" />
+    <link rel="up" title="Silex" href="index.html" />
+    <link rel="next" title="Configurando el servidor web" href="../web_servers.html" />
+    <link rel="prev" title="SerializerServiceProvider" href="serializer.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="../index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="../search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../web_servers.html" title="Configurando el servidor web"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="serializer.html" title="SerializerServiceProvider"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U"><em>Silex</em></a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="servicecontrollerserviceprovider">
+<h1><tt class="docutils literal"><span class="pre">ServiceControllerServiceProvider</span></tt><a class="headerlink" href="#servicecontrollerserviceprovider" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Cuándo tu aplicación <em>Silex</em> crezca, posiblemente desees empezar a organizar tus controladores en una manera más formal. <em>Silex</em> puede utilizar clases de controlador fuera de la caja, pero con un poco de trabajo, tus controladores se pueden crear como servicios, dotándote de pleno poder para la inyección de dependencias y carga diferida.</p>
+<div class="section" id="por-que-querrias-hacer-esto">
+<h2>¿Por qué querrías hacer esto?<a class="headerlink" href="#por-que-querrias-hacer-esto" title="Enlazar permanentemente con este título">¶</a></h2>
+<ul>
+<li><p class="first">Inyección de dependencias sobre la ubicación del servicio</p>
+<p>Usando este método, puedes inyectar las dependencias reales requeridas por tu controlador y obtienes total inversion del control, mientras que todavía mantienes la carga diferida de tus controladores y sus dependencias. Debido a que claramente defines tus dependencias, se simulan fácilmente, permitiéndote probar tus controladores aisladamente.</p>
+</li>
+<li><p class="first">Independencia de la plataforma</p>
+<p>Usando este método, tus controladores comienzan a ser más independientes de la plataforma que estés utilizando. Diseñándolos cuidadosamente, tus controladores serán reutilizables en múltiples plataformas. Al mantener un cuidadoso control de tus dependencias, tus controladores fácilmente podrían ser compatibles con <em>Silex</em>, <em>Symfony</em> (la pila completa) y <em>Drupal</em>, sólo por nombrar unos cuantos.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="parametros">
+<h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Actualmente no existe ningún parámetro para el <tt class="docutils literal"><span class="pre">ServiceControllerServiceProvider</span></tt>.</p>
+</div>
+<div class="section" id="servicios">
+<h2>Servicios<a class="headerlink" href="#servicios" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>No proporciona servicios extra, el <tt class="docutils literal"><span class="pre">ServiceControllerServiceProvider</span></tt> simplemente extiende el servicio <tt class="docutils literal"><span class="pre">resolver</span></tt> existente.</p>
+</div>
+<div class="section" id="registrando">
+<h2>Registrando<a class="headerlink" href="#registrando" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\ServiceControllerServiceProvider</span><span class="p">());</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="uso">
+<h2>Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>En este ejemplo ideado ligeramente de la <em>API</em> de un <tt class="docutils literal"><span class="pre">blog</span></tt>, vas a cambiar la ruta <tt class="docutils literal"><span class="pre">/posts.json</span></tt> para que utilice un controlador, el cual está definido como servicio.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Silex\Application</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Demo\Repository\PostRepository</span><span class="p">;</span>
+
+<span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Application</span><span class="p">();</span>
+
+<span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;posts.repository&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">PostRepository</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/posts.json&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">json</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;posts.repository&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">findAll</span><span class="p">());</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Reescribir tu controlador como servicio es bastante sencillo, crea un objeto <em>PHP</em> plano con tu <tt class="docutils literal"><span class="pre">PostRepository</span></tt> como dependencia, junto con un método <tt class="docutils literal"><span class="pre">indexJsonAction</span></tt> para manejar la petición. A pesar de que no se muestra en el ejemplo de abajo, puedes utilizar la insinuación de tipo y parámetros nombrados para conseguir los parámetros necesarios, justo cómo con las rutas estándar de <em>Silex</em>.</p>
+<p>Si eres seguidor de <em>TDD/BDD</em> (y deberías serlo), notarás que este controlador correctamente definió responsabilidades y dependencias, y se prueba/especifica fácilmente. También notarás que la única dependencia externa es en <tt class="docutils literal"><span class="pre">Symfony\Component\HttpFoundation\JsonResponse</span></tt>, lo cual significa que este controlador fácilmente se podría utilizar en una aplicación <em>Symfony</em> (la pila completa), o potencialmente con otras aplicaciones o plataformas que saben cómo manejar un objeto <tt class="docutils literal"><span class="pre">Respuesta</span></tt> de <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/components/http_foundation/introduction.html">Symfony/HttpFoundation</a>.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">namespace</span> <span class="nx">Demo\Controller</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Demo\Repository\PostRepository</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\JsonResponse</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">PostController</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$repo</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">PostRepository</span> <span class="nv">$repo</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">repo</span> <span class="o">=</span> <span class="nv">$repo</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">indexJsonAction</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">JsonResponse</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">repo</span><span class="o">-&gt;</span><span class="na">findAll</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Y finalmente, define tu controlador como servicio en la aplicación, junto con tu ruta. La sintaxis en la definición de la ruta es el nombre del servicio, seguido por dos puntos (:), seguidos por el nombre del método.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;posts.controller&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span><span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">PostController</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;posts.repository&#39;</span><span class="p">]);</span>
+<span class="p">});</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/posts.json&#39;</span><span class="p">,</span> <span class="s2">&quot;posts.controller:indexJsonAction&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../web_servers.html" title="Configurando el servidor web"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="serializer.html" title="SerializerServiceProvider"
+             >anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" ><em>Silex</em></a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

@@ -1,0 +1,180 @@
+
+<!DOCTYPE html> 
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SerializerServiceProvider &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="../_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="../index.html" />
+    <link rel="up" title="Silex" href="index.html" />
+    <link rel="next" title="ServiceControllerServiceProvider" href="service_controller.html" />
+    <link rel="prev" title="SecurityServiceProvider" href="security.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="../index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="../search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="service_controller.html" title="ServiceControllerServiceProvider"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="security.html" title="SecurityServiceProvider"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U"><em>Silex</em></a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="serializerserviceprovider">
+<h1><tt class="docutils literal"><span class="pre">SerializerServiceProvider</span></tt><a class="headerlink" href="#serializerserviceprovider" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>El <tt class="docutils literal"><span class="pre">SerializerServiceProvider</span></tt> proporciona un servicio para serializar objetos.</p>
+<div class="section" id="parametros">
+<h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Ninguno.</p>
+</div>
+<div class="section" id="servicios">
+<h2>Servicios<a class="headerlink" href="#servicios" title="Enlazar permanentemente con este título">¶</a></h2>
+<ul class="simple">
+<li><strong>serializer</strong>: Una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Serializer/Serializer.html">SymfonyComponentSerializerSerializer</a>.</li>
+<li><strong>serializer.encoders</strong>: <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/JsonEncoder.html">SymfonyComponentSerializerEncoderJsonEncoder</a> y <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Serializer/Encoder/XmlEncoder">SymfonyComponentSerializerEncoderXmlEncoder</a>.</li>
+<li><strong>serializer.normalizers</strong>: <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/CustomNormalizer">SymfonyComponentSerializerNormalizerCustomNormalizer</a> y <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer">SymfonyComponentSerializerNormalizerGetSetMethodNormalizer</a>.</li>
+</ul>
+</div>
+<div class="section" id="registrando">
+<h2>Registrando<a class="headerlink" href="#registrando" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\SerializerServiceProvider</span><span class="p">());</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="uso">
+<h2>Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El proveedor <tt class="docutils literal"><span class="pre">SerializerServiceProvider</span></tt> proporciona un servicio <tt class="docutils literal"><span class="pre">serializer</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Silex\Application</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Silex\Provider\SerializerServiceProvider</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+
+<span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Application</span><span class="p">();</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">SerializerServiceProvider</span><span class="p">());</span>
+
+<span class="c1">// Sólo acepta los tipos de contenido apoyados por el</span>
+<span class="c1">// serializador vía el método assert.</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s2">&quot;/pages/{id}.{_format}&quot;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// asume que existe el servicio page_repository que devuelve objetos Página. El</span>
+    <span class="c1">// objeto devuelto tiene captadores y definidores que exponen el estado.</span>
+    <span class="nv">$page</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;page_repository&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+    <span class="nv">$format</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;request&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">getRequestFormat</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$page</span> <span class="nx">instanceof</span> <span class="nx">Page</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">abort</span><span class="p">(</span><span class="s2">&quot;No page found for id: </span><span class="si">$id</span><span class="s2">&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;serializer&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">serialize</span><span class="p">(</span><span class="nv">$page</span><span class="p">,</span> <span class="nv">$format</span><span class="p">),</span> <span class="mi">200</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s2">&quot;Content-Type&quot;</span> <span class="o">=&gt;</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;request&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">getMimeType</span><span class="p">(</span><span class="nv">$format</span><span class="p">)</span>
+    <span class="p">));</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">assert</span><span class="p">(</span><span class="s2">&quot;_format&quot;</span><span class="p">,</span> <span class="s2">&quot;xml|json&quot;</span><span class="p">)</span>
+  <span class="o">-&gt;</span><span class="na">assert</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;\d+&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="service_controller.html" title="ServiceControllerServiceProvider"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="security.html" title="SecurityServiceProvider"
+             >anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" ><em>Silex</em></a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

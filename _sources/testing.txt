@@ -71,7 +71,7 @@ Asegúrate de **no** usar ``require_once`` aquí, ya que este método se ejecuta
         {
             $app = require __DIR__.'/path/to/app.php';
             $app['debug'] = true;
-            unset($app['exception_handler']);
+            $app['exception_handler']->disable();
 
             return $app;
         }
@@ -109,7 +109,7 @@ También puedes acceder a la aplicación a través de ``$this->app``.
 Cliente
 -------
 
-El cliente representa un navegador. Este mantiene tu historial de navegación, ``cookies`` y mucho más. El método ``request`` te permite hacer una petición a una página en tu aplicación.
+El cliente representa un navegador. Este mantiene tu historial de navegación, ``galletas`` y mucho más. El método ``request`` te permite hacer una petición a una página en tu aplicación.
 
 .. note::
 
@@ -143,7 +143,7 @@ La forma sugerida para configurar *PHPUnit* es crear un archivo ``phpunit.xml.di
              syntaxCheck="false"
     >
         <testsuites>
-            <testsuite name="YourApp Test Suite">
+            <testsuite name="Batería de pruebas de TuAp">
                 <directory>./tests/</directory>
             </testsuite>
         </testsuites>

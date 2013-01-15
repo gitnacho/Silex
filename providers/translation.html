@@ -1,8 +1,6 @@
 
-<!DOCTYPE html>
-
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html> 
+<html lang="es">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
@@ -35,7 +33,7 @@
     
   <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
   
-    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <a href="../index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
     <div class="social">
       <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -51,7 +49,6 @@
     </div>
     
 
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -82,9 +79,10 @@
 <div class="section" id="parametros">
 <h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul class="simple">
-<li><strong>translator.domains</strong>: Una asignación de dominios/regiones/mensajes. Este parámetro contiene los datos traducidos de todos los dominios e idiomas.</li>
+<li><strong>translator.domains</strong> (optional): Una asignación de dominios/regiones/mensajes.
+Este parámetro contiene los datos traducidos de todos los idiomas y dominios.</li>
 <li><strong>locale</strong> (opcional): La región para el traductor. Lo más probable es que desees establecer este basándote en algún parámetro de la petición. Predeterminada a <tt class="docutils literal"><span class="pre">en</span></tt>.</li>
-<li><strong>locale_fallback</strong> (opcional): La región de reserva para el traductor. Esta se utiliza cuando la configuración regional actual no tiene ningún conjunto de mensajes.</li>
+<li><strong>locale_fallback</strong> (opcional): La región de reserva para el traductor. Esta se utiliza cuando la configuración regional actual no tiene ningún conjunto de mensajes. Predeterminada a <tt class="docutils literal"><span class="pre">en</span></tt>.</li>
 </ul>
 </div>
 <div class="section" id="servicios">
@@ -138,13 +136,7 @@
     <span class="p">),</span>
 <span class="p">);</span>
 
-<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nv">$locale</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;request&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;locale&#39;</span><span class="p">))</span> <span class="p">{</span>
-        <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;locale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$locale</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">});</span>
-
-<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/{locale}/{message}/{name}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$message</span><span class="p">,</span> <span class="nv">$name</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/{_locale}/{message}/{name}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$message</span><span class="p">,</span> <span class="nv">$name</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;translator&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">trans</span><span class="p">(</span><span class="nv">$message</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;%name%&#39;</span> <span class="o">=&gt;</span> <span class="nv">$name</span><span class="p">));</span>
 <span class="p">});</span>
 </pre></div>
@@ -156,6 +148,19 @@
 <li><tt class="docutils literal"><span class="pre">/fr/hello/igor</span></tt> regresará <tt class="docutils literal"><span class="pre">Bonjour</span> <span class="pre">igor</span></tt>.</li>
 <li><tt class="docutils literal"><span class="pre">/it/hello/igor</span></tt> regresará <tt class="docutils literal"><span class="pre">Hello</span> <span class="pre">igor</span></tt> (debido a la reserva).</li>
 </ul>
+</div>
+<div class="section" id="peculiaridades">
+<h2>Peculiaridades<a class="headerlink" href="#peculiaridades" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">Silex\Application\TranslationTrait</span></tt> añade los siguientes atajos:</p>
+<ul class="simple">
+<li><strong>trans</strong>: Traduce el mensaje suministrado.</li>
+<li><strong>transChoice</strong>: Traduce el mensaje de elección dado escogiendo una traducción de acuerdo a un número.</li>
+</ul>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">trans</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">);</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">transChoice</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="recetas">
 <h2>Recetas<a class="headerlink" href="#recetas" title="Enlazar permanentemente con este título">¶</a></h2>
@@ -178,7 +183,7 @@
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\Translation\Loader\YamlFileLoader</span><span class="p">;</span>
 
 <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;translator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">extend</span><span class="p">(</span><span class="s1">&#39;translator&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nv">$translator</span><span class="p">,</span> <span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nv">$translator</span><span class="o">-&gt;</span><span class="na">addLoader</span><span class="p">(</span><span class="s1">&#39;yaml&#39;</span><span class="p">,</span> <span class="k">return</span> <span class="k">new</span> <span class="nx">YamlFileLoader</span><span class="p">());</span>
+    <span class="nv">$translator</span><span class="o">-&gt;</span><span class="na">addLoader</span><span class="p">(</span><span class="s1">&#39;yaml&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">YamlFileLoader</span><span class="p">());</span>
 
     <span class="nv">$translator</span><span class="o">-&gt;</span><span class="na">addResource</span><span class="p">(</span><span class="s1">&#39;yaml&#39;</span><span class="p">,</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/en.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;en&#39;</span><span class="p">);</span>
     <span class="nv">$translator</span><span class="o">-&gt;</span><span class="na">addResource</span><span class="p">(</span><span class="s1">&#39;yaml&#39;</span><span class="p">,</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/locales/de.yml&#39;</span><span class="p">,</span> <span class="s1">&#39;de&#39;</span><span class="p">);</span>
@@ -229,7 +234,6 @@ traductor:</p>
   <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
   
   <div style="width:740px;margin:10px auto;">
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -253,8 +257,8 @@ traductor:</p>
      <div id="disqus_thread"></div>
      
     <div class="footer">
-        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
-      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
    </div>
    <script type="text/javascript">

@@ -3,7 +3,7 @@
 
 El proveedor ``MonologServiceProvider`` proporciona un mecanismo de registro predeterminado a través de la biblioteca `Monolog <https://github.com/Seldaek/monolog>`_ de Jordi Boggiano's.
 
-Esta registrará las peticiones y errores y te permite añadir a tu aplicación el registro de depuración, para que ya no tengas que usar ``var_dump``. Puedes utilizar la versión madura llamada ``tail-f``.
+Este registrará las peticiones y errores y te permite llevar la bitácora de tu aplicación. Este te permite depurar y monitorear el comportamiento, incluso en producción.
 
 Parámetros
 ----------
@@ -22,8 +22,6 @@ Servicios
   Ejemplo de uso::
 
     $app['monolog']->addDebug('Probando el registro cronológico de eventos de Monolog.');
-
-* **monolog.configure**: Cierre protegido que toma al registro cronológico como argumento. Lo puedes modificar si no deseas el comportamiento predefinido.
 
 Registrando
 -----------
@@ -59,5 +57,27 @@ El proveedor ``MonologServiceProvider`` ofrece un servicio ``monolog``. Lo puede
 
         return new Response('', 201);
     });
+
+Personalizando
+--------------
+
+Puedes configurar *Monolog* (tal como añadir o cambiar controladores) antes de usarlo extendiendo el servicio ``monolog``::
+
+    $app['monolog'] = $app->share($app->extend('monolog', function($monolog, $app) {
+        $monolog->pushHandler(...);
+
+        return $monolog;
+    }));
+
+Peculiaridades
+--------------
+
+``Silex\Application\MonologTrait`` añade los siguientes atajos:
+
+* **log**: Registra un mensaje.
+
+.. code-block:: php
+
+    $app->log(sprintf("User '%s' registered.", $username));
 
 Para más información, consulta la `documentación de Monolog <https://github.com/Seldaek/monolog>`_.

@@ -89,7 +89,7 @@ Fallo en el cargador de ``ioncube``
 
 El cargador de ``Ioncube`` es una extensión que puede decodificar archivos *PHP* codificados.
 Desafortunadamente, las versiones antiguas (anteriores a la versión 4.0.9) no están funcionando bien con archivos ``phar``.
-Debes actualizar tu ``Ioncube Loder`` a la versión  4.0.9  o más reciente o desactivarla comentando o eliminando esta línea en tu archivo ``php.ini``:
+Debes actualizar tu ``Ioncube loader`` a la versión  4.0.9  o más reciente o desactivarla comentando o eliminando esta línea en tu archivo ``php.ini``:
 
 .. code-block:: ini
 

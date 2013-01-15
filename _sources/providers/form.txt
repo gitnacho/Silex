@@ -26,7 +26,15 @@ Registrando
 
 .. note::
 
-    El Componente ``Form`` de *Symfony* viene con el archivo "gordo" de *Silex* pero no en el normal. Si  estás usando ``Composer``, añádelo como dependencia en tu archivo ``composer.json``:
+    Si no quieres crear tu propio diseño del formulario, está bien: se usará uno predefinido. Pero tendrás que registrar el :doc:`proveedor de traducción <providers/translation>` como el diseño predefinido necesario para el formulario.
+
+    Si quieres usar validación en tus formularios, no olvides registrar el :doc:`proveedor de validación <providers/validator>`.
+
+.. note::
+
+    El componente ``Form`` de *Symfony* y todas sus dependencias (opcionales o no) vienen con el archivo «gordo» de *Silex* pero no con el normal.
+
+    Si  estás usando ``Composer``, añádelo como dependencia en tu archivo ``composer.json``:
 
     .. code-block:: javascript
 
@@ -34,14 +42,31 @@ Registrando
             "symfony/form": "2.1.*"
         }
 
-Si vas a utilizar la extensión de validación con formularios, también debes registrar los componentes ``symfony/config`` y ``symfony/translation``:
+    Si vas a usar la extensión de validación con formularios, también tienes que añadir una dependencia a los componentes ``symfony/config`` y ``symfony/translation``:
 
-.. code-block:: javascript
+    .. code-block:: javascript
 
-    "require": {
-        "symfony/config": "2.1.*",
-        "symfony/translation": "2.1.*"
-    }
+        "require": {
+            "symfony/validator": "2.1.*",
+            "symfony/config": "2.1.*",
+            "symfony/translation": "2.1.*"
+        }
+
+    El componente ``Form`` de *Symfony* está basado en la extensión ``intl`` de *PHP*. Si no la tienes, puedes instalar el componente ``Locale`` de *Symfony* como un reemplazo:
+
+    .. code-block:: javascript
+
+        "require": {
+            "symfony/locale": "2.1.*"
+        }
+
+    Si quieres usar formularios en tus plantillas *Twig*, asegúrate de instalar el puente *Twig* de *Symfony*:
+
+    .. code-block:: javascript
+
+        "require": {
+            "symfony/twig-bridge": "2.1.*"
+        }
 
 Uso
 ---
@@ -65,7 +90,7 @@ El ``FormServiceProvider`` proporciona un servicio ``form.factory``. Aquí está
             ->getForm();
 
         if ('POST' == $request->getMethod()) {
-            $form->bindRequest($request);
+            $form->bind($request);
 
             if ($form->isValid()) {
                 $data = $form->getData();
@@ -81,7 +106,8 @@ El ``FormServiceProvider`` proporciona un servicio ``form.factory``. Aquí está
         return $app['twig']->render('index.twig', array('form' => $form->createView()));
     });
 
-Y aquí tienes la plantilla del formulario ``index.twig``:
+Y aquí tienes la plantilla del formaulario :file:`index.twig` (requiere ``symfony/twig-
+bridge``):
 
 .. code-block:: jinja
 
@@ -113,5 +139,24 @@ Si estás usando el proveedor de validación, también puedes agregar validació
             'constraints' => new Assert\Choice(array(1, 2)),
         ))
         ->getForm();
+
+Puedes registrar las extensiones de ``form`` extendiendo de ``form.extensions``::
+
+    $app['form.extensions'] = $app->share($app->extend('form.extensions', function ($extensions) use ($app) {
+        $extensions[] = new YourTopFormExtension();
+
+        return $extensions;
+    }));
+
+Peculiaridades
+--------------
+
+``Silex\Application\FormTrait`` añade los siguientes atajos:
+
+* **form**: Crea una instancia de ``FormBuilder``.
+
+.. code-block:: php
+
+    $app->form($data);
 
 Para más información, consulta la `documentación de Formularios de Symfony2 <http://gitnacho.github.com/symfony-docs-es/book/forms.html>`_.

@@ -1,8 +1,6 @@
 
-<!DOCTYPE html>
-
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html> 
+<html lang="es">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
@@ -35,7 +33,7 @@
     
   <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
   
-    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <a href="../index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
     <div class="social">
       <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -51,7 +49,6 @@
     </div>
     
 
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -83,9 +80,9 @@
 <h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul class="simple">
 <li><strong>twig.path</strong> (opcional): Ruta al directorio que contiene archivos de plantilla <em>Twig</em> (también puede ser un arreglo de rutas).</li>
-<li><strong>twig.templates</strong> (opcional): Se trata de una matriz asociativa de nombres de plantilla para el contenido de la plantilla. Usa esta opción si deseas definir tus plantillas en línea.</li>
-<li><strong>twig.options</strong> (opcional): Una matriz asociativa de opciones <em>Twig</em>. Echa un vistazo a la documentación de <em>Twig</em> para más información.</li>
-<li><strong>twig.form.templates</strong> (opcional): Una matriz de plantillas utilizada para reproducir formularios (disponible únicamente cuando está habilitado el <tt class="docutils literal"><span class="pre">FormServiceProvider</span></tt>).</li>
+<li><strong>twig.templates</strong> (opcional): Se trata de un arreglo asociativo de nombres de plantilla para el contenido de la plantilla. Usa esta opción si deseas definir tus plantillas en línea.</li>
+<li><strong>twig.options</strong> (opcional): Un arreglo asociativo de opciones <em>Twig</em>. Echa un vistazo a la documentación de <em>Twig</em> para más información.</li>
+<li><strong>twig.form.templates</strong> (opcional): Un arreglo de plantillas utilizado para reproducir formularios (disponible únicamente cuando está habilitado el <tt class="docutils literal"><span class="pre">FormServiceProvider</span></tt>).</li>
 </ul>
 </div>
 <div class="section" id="servicios">
@@ -138,17 +135,42 @@
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>Esto reproducirá un archivo llamado <tt class="docutils literal"><span class="pre">views/hola.twig</span></tt>.</p>
+<p>Esto reproducirá un archivo llamado <tt class="file docutils literal"><span class="pre">views/hola.twig</span></tt>.</p>
 <p>En cualquier plantilla de <em>Twig</em>, la variable <tt class="docutils literal"><span class="pre">app</span></tt> se refiere al objeto <tt class="docutils literal"><span class="pre">Aplicación</span></tt>.
 Para que puedas acceder a cualquier servicio desde tu vista. Por ejemplo, para acceder a <tt class="docutils literal"><span class="pre">$app['request']-&gt;getHost()</span></tt>, sólo tienes que poner esto en tu plantilla:</p>
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">app.request.host</span> <span class="cp">}}</span><span class="x"></span>
 </pre></div>
 </div>
 <p>También se registra una función <tt class="docutils literal"><span class="pre">render</span></tt> para ayudarte a reproducir otro controlador desde una plantilla:</p>
-<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">render</span><span class="o">(</span><span class="s1">&#39;/sidebar&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">render</span><span class="o">(</span><span class="nv">app.request.baseUrl</span> <span class="o">~</span> <span class="s1">&#39;/sidebar&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
 
 <span class="c">{# o si también estás usando UrlGeneratorServiceProvider con el SymfonyBridgesServiceProvider #}</span><span class="x"></span>
-<span class="cp">{{</span> <span class="nv">render</span><span class="o">(</span><span class="nv">path</span><span class="o">(</span><span class="s1">&#39;sidebar&#39;</span><span class="o">))</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">render</span><span class="o">(</span><span class="nv">url</span><span class="o">(</span><span class="s1">&#39;sidebar&#39;</span><span class="o">))</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Debes prefijar la <tt class="docutils literal"><span class="pre">app.request.baseUrl</span></tt> para reproducir llamadas para asegurarte de que el <tt class="docutils literal"><span class="pre">render</span></tt> trabaja al desplegar un subdirectorio del <tt class="docutils literal"><span class="pre">docroot</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="peculiaridades">
+<h2>Peculiaridades<a class="headerlink" href="#peculiaridades" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">Silex\Application\TwigTrait</span></tt> añade los siguientes atajos:</p>
+<ul class="simple">
+<li><strong>render</strong>: Reproduce una vista con los parámetros suministrados y devuelve un objeto <tt class="docutils literal"><span class="pre">Respuesta</span></tt>.</li>
+</ul>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Fabien&#39;</span><span class="p">]);</span>
+
+<span class="nv">$response</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">();</span>
+<span class="nv">$response</span><span class="o">-&gt;</span><span class="na">setTtl</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+
+<span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Fabien&#39;</span><span class="p">],</span> <span class="nv">$response</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-php"><div class="highlight"><pre><span class="c1">// secuencia una vista</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\StreamedResponse</span><span class="p">;</span>
+
+<span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Fabien&#39;</span><span class="p">],</span> <span class="k">new</span> <span class="nx">StreamedResponse</span><span class="p">());</span>
 </pre></div>
 </div>
 </div>
@@ -163,8 +185,7 @@ Para que puedas acceder a cualquier servicio desde tu vista. Por ejemplo, para a
 <span class="p">}));</span>
 </pre></div>
 </div>
-<p>Para más información, consulta la <a class="reference external" href="http://gitnacho.github.com/Twig/index.html">documentación de
-Twig</a>.</p>
+<p>Para más información, consulta la <a class="reference external" href="http://gitnacho.github.com/Twig/index.html">documentación de Twig</a>.</p>
 </div>
 </div>
 
@@ -177,7 +198,6 @@ Twig</a>.</p>
   <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
   
   <div style="width:740px;margin:10px auto;">
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -201,8 +221,8 @@ Twig</a>.</p>
      <div id="disqus_thread"></div>
      
     <div class="footer">
-        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
-      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
    </div>
    <script type="text/javascript">

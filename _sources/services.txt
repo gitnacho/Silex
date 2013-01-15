@@ -153,7 +153,7 @@ Servicios básicos
 
     $id = $app['request']->get('id');
 
-  Este sólo está disponible cuando se está sirviendo la petición, sólo puedes acceder a él desde dentro de un controlador, antes del filtro, después del filtro o al manejar algún error.
+  Este sólo está disponible cuando se está sirviendo la petición, sólo puedes acceder a él desde dentro de un controlador, un semiware ``before/after`` de la aplicación, o al manejar algún error.
 
 * **routes**: El `RouteCollection <http://api.symfony.com/master/Symfony/Component/Routing/RouteCollection.html>`_ utilizado internamente. Puedes agregar, modificar y leer rutas.
 
@@ -168,7 +168,7 @@ Servicios básicos
 
 * **request_context**: El contexto de la petición es una representación simplificada de la petición que utilizan el ``Router`` y el ``UrlGenerator``.
 
-* **exception_handler**: El controlador de excepciones es el controlador predeterminado usado cuando no registras uno a través del método ``error()`` o si el controlador no devuelve una ``Respuesta``. Lo puedes desactivar con ``unset($app['exception_handler'])``.
+* **exception_handler**: El controlador de excepciones es el controlador predeterminado usado cuando no registras uno a través del método ``error()`` o si el controlador no devuelve una ``Respuesta``. Desactivalo con ``$app['exception_handler']->disable()``.
 
 * **logger**: Una instancia de `LoggerInterface <http://api.symfony.com/master/Symfony/Component/HttpKernel/Log/LoggerInterface.html>`_. De forma predeterminada, la anotación cronológica de eventos está desactivada ya que el valor se establece en ``null``.
   Cuando el puente ``Monolog`` de *Symfony2* está instalado, se utiliza ``Monolog`` automáticamente como el registro cronológico predeterminado.
@@ -192,9 +192,7 @@ Parámetros básicos
 
   Este parámetro lo puede utilizar el ``UrlGeneratorProvider``.
 
-* **request.default_locale** (opcional): La región usada por omisión.
-
-  Predeterminada a ``en``.
+* **locale** (opcional): La región del usuario. Cuando se establece antes de manipular cualquier petición, esta define el entorno regional predeterminado (``en`` por omisión). Cuando se está manejando la petición, automáticamente se ajusta de acuerdo al atributo ``_locale`` de la ruta actual.
 
 * **debug** (opcional): Indica si o no se ejecuta la aplicación en modo de depuración.
 

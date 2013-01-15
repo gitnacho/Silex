@@ -1,8 +1,6 @@
 
-<!DOCTYPE html>
-
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html> 
+<html lang="es">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
@@ -35,7 +33,7 @@
     
   <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
   
-    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <a href="../index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
     <div class="social">
       <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -51,7 +49,6 @@
     </div>
     
 
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -81,8 +78,8 @@
 <p>De manera predeterminada, el <a class="reference internal" href="../providers/session.html"><em>SessionServiceProvider</em></a> escribe en archivos la información de sesión utilizando el <tt class="docutils literal"><span class="pre">NativeFileSessionStorage</span></tt> de <em>Symfony2</em>. La mayoría de los medianos a grandes sitios <em>web</em>, utiliza una base de datos para almacenar sesiones en lugar de archivos, porque las bases de datos son más fáciles de usar y escalar en un entorno multiservidor.</p>
 <p>El <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/NativeSessionStorage.html">NativeSessionStorage</a> de <em>Symfony2</em> tiene controladores para el almacenamiento múltiple y uno de ellos utiliza <em>PDO</em> para almacenar sesiones, <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Storage/Handler/PdoSessionHandler.html">PdoSessionHandler</a>.
 Para usarla, reemplaza en tu aplicación el servicio <tt class="docutils literal"><span class="pre">session.storage.handler</span></tt> como se explica a continuación.</p>
-<div class="section" id="ejemplo">
-<h2>Ejemplo<a class="headerlink" href="#ejemplo" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="section" id="con-un-servicio-pdo-dedicado">
+<h2>Con un servicio <em>PDO</em> dedicado<a class="headerlink" href="#con-un-servicio-pdo-dedicado" title="Enlazar permanentemente con este título">¶</a></h2>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler</span><span class="p">;</span>
 
 <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\SessionServiceProvider</span><span class="p">());</span>
@@ -91,7 +88,7 @@ Para usarla, reemplaza en tu aplicación el servicio <tt class="docutils literal
 <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;pdo.user&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;myuser&#39;</span><span class="p">;</span>
 <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;pdo.password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;mypassword&#39;</span><span class="p">;</span>
 
-<span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;pdo.db_options&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+<span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;session.db_options&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
     <span class="s1">&#39;db_table&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;session&#39;</span><span class="p">,</span>
     <span class="s1">&#39;db_id_col&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;session_id&#39;</span><span class="p">,</span>
     <span class="s1">&#39;db_data_col&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;session_value&#39;</span><span class="p">,</span>
@@ -109,7 +106,31 @@ Para usarla, reemplaza en tu aplicación el servicio <tt class="docutils literal
 <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;session.storage.handler&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">new</span> <span class="nx">PdoSessionHandler</span><span class="p">(</span>
         <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;pdo&#39;</span><span class="p">],</span>
-        <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;pdo.db_options&#39;</span><span class="p">],</span>
+        <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;session.db_options&#39;</span><span class="p">],</span>
+        <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;session.storage.options&#39;</span><span class="p">]</span>
+    <span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="usando-el-doctrineserviceprovider">
+<h2>Usando el <em>DoctrineServiceProvider</em><a class="headerlink" href="#usando-el-doctrineserviceprovider" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Cuándo utilizas el <a class="reference internal" href="../providers/doctrine.html"><em>DoctrineServiceProvider</em></a> no tienes que hacer otra conexión a la base de datos, sencillamente pasa el método <tt class="docutils literal"><span class="pre">getWrappedConnection</span></tt>.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\SessionServiceProvider</span><span class="p">());</span>
+
+<span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;session.db_options&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;db_table&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;session&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;db_id_col&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;session_id&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;db_data_col&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;session_value&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;db_time_col&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;session_time&#39;</span><span class="p">,</span>
+<span class="p">);</span>
+
+<span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;session.storage.handler&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">PdoSessionHandler</span><span class="p">(</span>
+        <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">getWrappedConnection</span><span class="p">(),</span>
+        <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;session.db_options&#39;</span><span class="p">],</span>
         <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;session.storage.options&#39;</span><span class="p">]</span>
     <span class="p">);</span>
 <span class="p">});</span>
@@ -124,7 +145,7 @@ Para usarla, reemplaza en tu aplicación el servicio <tt class="docutils literal
 <li><tt class="docutils literal"><span class="pre">session_value</span></tt>: Valor de la columna (<tt class="docutils literal"><span class="pre">TEXT</span></tt> o <tt class="docutils literal"><span class="pre">CLOB</span></tt>)</li>
 <li><tt class="docutils literal"><span class="pre">session_time</span></tt>: La columna de tiempo (<tt class="docutils literal"><span class="pre">INTEGER</span></tt>)</li>
 </ul>
-<p>Puedes encontrar ejemplos de declaraciones <em>SQL</em> para crear la tabla de sesión en el <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/cookbook/configuration/pdo_session_storage.html">Recetario de Symfony2</a>.</p>
+<p>Puedes encontrar ejemplos de declaraciones <em>SQL</em> para crear la tabla de sesión en el <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/cookbook/configuration/pdo_session_storage.html#instrucciones-sql-de-ejemplo">Recetario de Symfony2</a>.</p>
 </div>
 </div>
 
@@ -137,7 +158,6 @@ Para usarla, reemplaza en tu aplicación el servicio <tt class="docutils literal
   <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
   
   <div style="width:740px;margin:10px auto;">
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -161,8 +181,8 @@ Para usarla, reemplaza en tu aplicación el servicio <tt class="docutils literal
      <div id="disqus_thread"></div>
      
     <div class="footer">
-        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
-      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
    </div>
    <script type="text/javascript">

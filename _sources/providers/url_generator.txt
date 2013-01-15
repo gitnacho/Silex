@@ -53,3 +53,19 @@ Además, si utilizas *Twig*, tendrás acceso a las funciones ``path()`` y ``url(
 
     {{ path('homepage') }}
     {{ url('homepage') }} {# genera la url absoluta http://ejemplo.org/ #}
+    {{ path('hello', {name: [parcial]'Fabien']);
+    {{ url('hello', {name: 'Fabien'}) }} {# genera la url absoluta http://ejemplo.org/hello/Fabien #}
+
+Peculiaridades
+--------------
+
+``Silex\Application\UrlGeneratorTrait`` añade los siguientes atajos:
+
+* **path**: Genera una ruta.
+
+* **url**: Genera una dirección *URL* absoluta.
+
+.. code-block:: php
+
+    $app->path('homepage');
+    $app->url('homepage');

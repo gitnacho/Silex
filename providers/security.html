@@ -1,8 +1,6 @@
 
-<!DOCTYPE html>
-
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html> 
+<html lang="es">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
@@ -27,7 +25,7 @@
     <link rel="shortcut icon" href="../_static/icotnp.ico"/>
     <link rel="top" title="Manual de Silex en Español" href="../index.html" />
     <link rel="up" title="Silex" href="index.html" />
-    <link rel="next" title="Registro de cambios" href="../changelog.html" />
+    <link rel="next" title="SerializerServiceProvider" href="serializer.html" />
     <link rel="prev" title="HttpCacheServiceProvider" href="http_cache.html" /> 
   </head>
   <body>
@@ -35,7 +33,7 @@
     
   <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
   
-    <a href="http://gitnacho.github.com/tnp/"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <a href="../index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
     <div class="social">
       <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
       <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
@@ -51,7 +49,6 @@
     </div>
     
 
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -59,7 +56,7 @@
           <a href="../genindex.html" title="Índice General"
              accesskey="I">índice</a></li>
         <li class="right" >
-          <a href="../changelog.html" title="Registro de cambios"
+          <a href="serializer.html" title="SerializerServiceProvider"
              accesskey="N">siguiente</a> |</li>
         <li class="right" >
           <a href="http_cache.html" title="HttpCacheServiceProvider"
@@ -86,13 +83,14 @@
 <div class="section" id="servicios">
 <h2>Servicios<a class="headerlink" href="#servicios" title="Enlazar permanentemente con este título">¶</a></h2>
 <ul class="simple">
-<li><strong>security.context</strong>: El punto de entrada principal al proveedor de seguridad. Utilízalo para obtener la ficha del usuario actual.</li>
+<li><strong>security</strong>: El punto de entrada principal al proveedor de seguridad. Úsalo para obtener la ficha del usuario actual.</li>
 <li><strong>security.authentication_manager</strong>: Una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Security/Core/Authentication/AuthenticationProviderManager.html">AuthenticationProviderManager</a>, responsable de la autenticación.</li>
 <li><strong>security.access_manager</strong>: Una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Security/Core/Authorization/AccessDecisionManager.html">AccessDecisionManager</a>, responsable de la autorización.</li>
 <li><strong>security.session_strategy</strong>: Define la estrategia utilizada para autenticación de la sesión (de manera predefinida es una estrategia de migración).</li>
 <li><strong>security.user_checker</strong>: Comprueba los indicadores del usuario después de su autenticación.</li>
 <li><strong>security.last_error</strong>: Devuelve los últimos errores de autenticación dados a un objeto <tt class="docutils literal"><span class="pre">Petición</span></tt>.</li>
-<li><strong>security.encoder_factory</strong>: Define las estrategias de codificación para la contraseña de los usuarios (de manera predeterminada utiliza una algoritmo de suma de comprobación para todos los  usuarios).</li>
+<li><strong>security.encoder_factory</strong>: Define las estrategias de codificación para la contraseña de los usuarios (de manera predeterminada utiliza un algoritmo de suma de comprobación para todos los  usuarios).</li>
+<li><strong>security.encoder.digest</strong>: El codificador a usar por omisión para todos los usuarios.</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
@@ -101,15 +99,24 @@
 </div>
 <div class="section" id="registrando">
 <h2>Registrando<a class="headerlink" href="#registrando" title="Enlazar permanentemente con este título">¶</a></h2>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\SecurityServiceProvider</span><span class="p">());</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\SecurityServiceProvider</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;security.firewalls&#39;</span> <span class="o">=&gt;</span> <span class="c1">// ve abajo</span>
+<span class="p">)));</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Nota</p>
-<p>El Componente <tt class="docutils literal"><span class="pre">Security</span></tt> de <em>Symfony</em> viene con el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal. Si estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia a tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<p>El Componente <tt class="docutils literal"><span class="pre">Security</span></tt> de <em>Symfony</em> viene con el archivo «gordo» de <em>Silex</em> pero no en el normal. Si estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia a tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
 <div class="last highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
     <span class="s2">&quot;symfony/security&quot;</span><span class="o">:</span> <span class="s2">&quot;2.1.*&quot;</span>
 <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Prudencia</p>
+<p>Las características de seguridad sólo están disponibles después de haber iniciado la aplicación. Por lo tanto, si lo quieres utilizar fuera del manejo de una petición, no olvides llamar primero a <tt class="docutils literal"><span class="pre">boot()</span></tt>:</p>
+<div class="last highlight-php"><div class="highlight"><pre><span class="nv">$application</span><span class="o">-&gt;</span><span class="na">boot</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
@@ -124,8 +131,8 @@
 <p>Abajo hay una lista de recetas que cubren algunos casos de uso comunes.</p>
 <div class="section" id="accediendo-al-usuario-actual">
 <h3>Accediendo al usuario actual<a class="headerlink" href="#accediendo-al-usuario-actual" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>La información del usuario actual está almacenada en una ficha accesible vía el servicio <tt class="docutils literal"><span class="pre">security.context</span></tt>:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$token</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.context&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">getToken</span><span class="p">();</span>
+<p>La información del usuario actual está almacenada en una ficha accesible vía el servicio <tt class="docutils literal"><span class="pre">security</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$token</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">getToken</span><span class="p">();</span>
 </pre></div>
 </div>
 <p>Si no hay ninguna información sobre el usuario, la ficha es <tt class="docutils literal"><span class="pre">null</span></tt>. Si el usuario es conocido, lo puedes recuperar con una llamada a <tt class="docutils literal"><span class="pre">getUser()</span></tt>:</p>
@@ -141,17 +148,17 @@
 <p>La siguiente configuración usa autenticación <em>HTTP</em> básica para proteger las direcciones <em>URL</em> bajo <tt class="docutils literal"><span class="pre">/admin/</span></tt>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.firewalls&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
     <span class="s1">&#39;admin&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="s1">&#39;pattern&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;^/admin/&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;pattern&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;^/admin&#39;</span><span class="p">,</span>
         <span class="s1">&#39;http&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
         <span class="s1">&#39;users&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-            <span class="c1">// la contraseña cruda es foo</span>
+            <span class="c1">// la contraseña es foo</span>
             <span class="s1">&#39;admin&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;ROLE_ADMIN&#39;</span><span class="p">,</span> <span class="s1">&#39;5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==&#39;</span><span class="p">),</span>
         <span class="p">),</span>
     <span class="p">),</span>
 <span class="p">);</span>
 </pre></div>
 </div>
-<p><tt class="docutils literal"><span class="pre">pattern</span></tt> es una expresión regular; la opción <tt class="docutils literal"><span class="pre">http</span></tt> le dice a la capa de seguridad que utilice autenticación <em>HTTP</em> básica y la opción <tt class="docutils literal"><span class="pre">users</span></tt> define usuarios válidos.</p>
+<p>El <tt class="docutils literal"><span class="pre">patrón</span></tt> es una expresión regular (que también puede ser una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpFoundation/RequestMatcher.html">RequestMatcher</a>); la opción <tt class="docutils literal"><span class="pre">http</span></tt> le dice a la capa de seguridad que utilice autenticación <em>HTTP</em> básica y la opción <tt class="docutils literal"><span class="pre">users</span></tt> define los usuarios válidos.</p>
 <p>Cada usuario está definido con la siguiente información:</p>
 <ul class="simple">
 <li>El rol o un arreglo de roles para el usuario (los roles son cadenas que empiezan con <tt class="docutils literal"><span class="pre">ROLE_</span></tt> y acaban con cualquier cosa que quieras);</li>
@@ -161,13 +168,15 @@
 <p class="first admonition-title">Prudencia</p>
 <p class="last">Todos los usuarios cuando menos deben tener un rol asociado a ellos.</p>
 </div>
-<p>La configuración predeterminada de la extensión obliga a codificar las contraseñas. Para generar una contraseña codificada válida desde una contraseña cruda, usa el servicio <tt class="docutils literal"><span class="pre">security.encoder</span></tt>:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="c1">// genera la contraseña codificada para foo</span>
-<span class="nv">$password</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.encoder&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">encodePassword</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+<p>La configuración predeterminada de la extensión obliga a codificar las contraseñas. Para generar una contraseña codificada válida desde una contraseña cruda, usa el servicio <tt class="docutils literal"><span class="pre">security.encoder_factory</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="c1">// encuentra el codificador para una instancia de UserInterface</span>
+<span class="nv">$encoder</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.encoder_factory&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">getEncoder</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+
+<span class="c1">// calcula la contraseña codificada para foo</span>
+<span class="nv">$password</span> <span class="o">=</span> <span class="nv">$encoder</span><span class="o">-&gt;</span><span class="na">encodePassword</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">getSalt</span><span class="p">());</span>
 </pre></div>
 </div>
-<p>El segundo argumento es la sal a utilizar para el usuario (de manera predeterminada es <tt class="docutils literal"><span class="pre">null</span></tt>).</p>
-<p>Cuándo el usuario está autenticado, el usuario almacenado en la ficha es una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Security/Core/User/User.html">User</a></p>
+<p>Cuando el usuario está autenticado, el usuario almacenado en la ficha es una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Security/Core/User/User.html">User</a></p>
 </div>
 <div class="section" id="protegiendo-una-ruta-con-un-formulario">
 <h3>Protegiendo una ruta con un formulario<a class="headerlink" href="#protegiendo-una-ruta-con-un-formulario" title="Enlazar permanentemente con este título">¶</a></h3>
@@ -194,10 +203,10 @@ En vez de utilizar la versión <tt class="docutils literal"><span class="pre">ht
 <li>La ruta <tt class="docutils literal"><span class="pre">login_path</span></tt> siempre se tiene que definir <strong>fuera</strong> del área protegida (o si está en el área protegida, tienes que habilitar el mecanismo de autenticación <tt class="docutils literal"><span class="pre">anónimo</span></tt> &#8211; ve más abajo);</li>
 <li>La ruta <tt class="docutils literal"><span class="pre">check_path</span></tt> siempre se debe definir <strong>dentro</strong> del área protegida.</li>
 </ul>
-<p>Para que trabaje el formulario de inicio de sesión, crea un controlador donde inicies la sesión:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;session&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">start</span><span class="p">();</span>
+<p>Para que trabaje el formulario de inicio de sesión, crea un controlador como el siguiente:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
 
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;twig&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;login.html&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
         <span class="s1">&#39;error&#39;</span>         <span class="o">=&gt;</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.last_error&#39;</span><span class="p">](</span><span class="nv">$request</span><span class="p">),</span>
         <span class="s1">&#39;last_username&#39;</span> <span class="o">=&gt;</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;session&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;_security.last_username&#39;</span><span class="p">),</span>
@@ -241,13 +250,14 @@ En vez de utilizar la versión <tt class="docutils literal"><span class="pre">ht
 </div>
 <p>El orden de los cortafuegos configurados es significativo puesto que gana el primero que coincida. En la configuración anterior el primero garantiza que la <em>URL</em> <tt class="docutils literal"><span class="pre">/login</span></tt> no está protegida (ningún ajuste de autenticación), y luego protege todas las otras <em>URL</em>.</p>
 </div>
-<div class="section" id="anadiendo-un-cierre-de-sesion">
-<h3>Añadiendo un cierre de sesión<a class="headerlink" href="#anadiendo-un-cierre-de-sesion" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Cuándo utilizas un formulario para autenticación, puedes permitir a los usuarios cerrar su sesión si añades la opción <tt class="docutils literal"><span class="pre">logout</span></tt>:</p>
+<div class="section" id="anadiendo-el-cierre-de-sesion">
+<h3>Añadiendo el cierre de sesión<a class="headerlink" href="#anadiendo-el-cierre-de-sesion" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Cuándo utilizas un formulario para autenticación, puedes permitir a los usuarios cerrar su sesión si añades la opción <tt class="docutils literal"><span class="pre">logout</span></tt>, dónde <tt class="docutils literal"><span class="pre">logout_path</span></tt> debe coincidir con el patrón del cortafuegos principal:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.firewalls&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
     <span class="s1">&#39;secured&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;pattern&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;^/admin/&#39;</span><span class="p">,</span>
         <span class="s1">&#39;form&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;login_path&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="s1">&#39;check_path&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/admin/login_check&#39;</span><span class="p">),</span>
-        <span class="s1">&#39;logout&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;logout_path&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/logout&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;logout&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;logout_path&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;/admin/logout&#39;</span><span class="p">),</span>
 
         <span class="c1">// ...</span>
     <span class="p">),</span>
@@ -276,7 +286,7 @@ En vez de utilizar la versión <tt class="docutils literal"><span class="pre">ht
 <div class="section" id="comprobando-roles-del-usuario">
 <h3>Comprobando roles del usuario<a class="headerlink" href="#comprobando-roles-del-usuario" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Para comprobar si un usuario tiene algún rol, usa el método <tt class="docutils literal"><span class="pre">isGranted()</span></tt> en el contexto de seguridad:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.context&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">isGranted</span><span class="p">(</span><span class="s1">&#39;ROLE_ADMIN&#39;</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">if</span> <span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">isGranted</span><span class="p">(</span><span class="s1">&#39;ROLE_ADMIN&#39;</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// ...</span>
 <span class="p">}</span>
 </pre></div>
@@ -287,7 +297,7 @@ En vez de utilizar la versión <tt class="docutils literal"><span class="pre">ht
 <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
 </pre></div>
 </div>
-<p>Puedes comprobar si un usuario está &#8220;plenamente autenticado&#8221; (no es un usuario anónimo, por ejemplo) con el rol especial <tt class="docutils literal"><span class="pre">IS_AUTHENTICATED_FULLY</span></tt>:</p>
+<p>Puedes comprobar si un usuario está «plenamente autenticado» (no es un usuario anónimo, por ejemplo) con el rol especial <tt class="docutils literal"><span class="pre">IS_AUTHENTICATED_FULLY</span></tt>:</p>
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">if</span> <span class="nv">is_granted</span><span class="o">(</span><span class="s1">&#39;IS_AUTHENTICATED_FULLY&#39;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">    &lt;a href=&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;logout&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x">&quot;&gt;Logout&lt;/a&gt;</span>
 <span class="cp">{%</span> <span class="k">else</span> <span class="cp">%}</span><span class="x"></span>
@@ -295,6 +305,7 @@ En vez de utilizar la versión <tt class="docutils literal"><span class="pre">ht
 <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
 </pre></div>
 </div>
+<p>Naturalmente, necesitarás definir una ruta <tt class="docutils literal"><span class="pre">login</span></tt> para que esto trabaje.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Truco</p>
 <p class="last">No uses el método <tt class="docutils literal"><span class="pre">getRoles()</span></tt> para comprobar los roles del usuario.</p>
@@ -322,7 +333,7 @@ En vez de utilizar la versión <tt class="docutils literal"><span class="pre">ht
 <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
 </pre></div>
 </div>
-<p>Puedes comprobar que estás suplantando a un usuario comprobando el rol especial <tt class="docutils literal"><span class="pre">ROLE_PREVIOUS_ADMIN</span></tt>. Esto es útil por ejemplo, para permitir que el usuario regrese a su primer cuenta:</p>
+<p>Puedes verificar que estás suplantando a un usuario comprobando el rol especial <tt class="docutils literal"><span class="pre">ROLE_PREVIOUS_ADMIN</span></tt>. Esto es útil por ejemplo, para permitir que el usuario regrese a su primer cuenta:</p>
 <div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">if</span> <span class="nv">is_granted</span><span class="o">(</span><span class="s1">&#39;ROLE_PREVIOUS_ADMIN&#39;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">    Eres un administrador pero has suplantado a otro usuario,</span>
 <span class="x">    &lt;a href=&quot;?_switch_user=_exit&quot;&gt;salir&lt;/a&gt; para cambiar.</span>
@@ -338,7 +349,7 @@ En vez de utilizar la versión <tt class="docutils literal"><span class="pre">ht
 <span class="p">);</span>
 </pre></div>
 </div>
-<p>Con esta configuración, todos los usuarios con el rol <tt class="docutils literal"><span class="pre">ROLE_ADMIN</span></tt> además, automáticamente tendrán los roles <tt class="docutils literal"><span class="pre">ROLE_USER</span></tt> y <tt class="docutils literal"><span class="pre">ROLE_ALLOWED_TO_SWITCH</span></tt>.</p>
+<p>Con esta configuración, todos los usuarios con el rol <tt class="docutils literal"><span class="pre">ROLE_ADMIN</span></tt>, además tendrán automáticamente los roles <tt class="docutils literal"><span class="pre">ROLE_USER</span></tt> y <tt class="docutils literal"><span class="pre">ROLE_ALLOWED_TO_SWITCH</span></tt>.</p>
 </div>
 <div class="section" id="definiendo-reglas-de-acceso">
 <h3>Definiendo reglas de acceso<a class="headerlink" href="#definiendo-reglas-de-acceso" title="Enlazar permanentemente con este título">¶</a></h3>
@@ -351,23 +362,27 @@ En vez de utilizar la versión <tt class="docutils literal"><span class="pre">ht
 </div>
 <p>Con la configuración anterior, los usuarios deben tener el rol <tt class="docutils literal"><span class="pre">ROLE_ADMIN</span></tt> para acceder a la sección <tt class="docutils literal"><span class="pre">/admin</span></tt> del sitio <em>web</em>, y <tt class="docutils literal"><span class="pre">ROLE_USER</span></tt> para todo lo demás.
 Además, la sección <tt class="docutils literal"><span class="pre">admin</span></tt> sólo se puede acceder vía <em>HTTPS</em> (si este no es el caso, el usuario será redirigido automáticamente).</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">El primer argumento también puede ser una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpFoundation/RequestMatcher.html">RequestMatcher</a>.</p>
+</div>
 </div>
 <div class="section" id="definiendo-un-proveedor-de-usuario-personalizado">
 <h3>Definiendo un proveedor de usuario personalizado<a class="headerlink" href="#definiendo-un-proveedor-de-usuario-personalizado" title="Enlazar permanentemente con este título">¶</a></h3>
-<p>Utilizar una matriz de usuarios es sencillo y útil cuándo proteges una sección <tt class="docutils literal"><span class="pre">admin</span></tt> de un sitio <em>web</em> personal, pero puedes sustituir este mecanismo predeterminado con el tuyo propio.</p>
-<p>La opción <tt class="docutils literal"><span class="pre">users</span></tt> se puede definir como servicio que regresa una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Security/Core/User/UserProviderInterface.html">UserProvider</a>:</p>
+<p>Utilizar un arreglo de usuarios es sencillo y útil cuándo proteges una sección <tt class="docutils literal"><span class="pre">admin</span></tt> de un sitio <em>web</em> personal, pero puedes sustituir este mecanismo predeterminado con el tuyo propio.</p>
+<p>La configuración de <tt class="docutils literal"><span class="pre">users</span></tt> se puede definir como un servicio que devuelve una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Security/Core/User/UserProviderInterface.html">UserProviderInterface</a>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="s1">&#39;users&#39;</span> <span class="o">=&gt;</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">new</span> <span class="nx">UserProvider</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]);</span>
 <span class="p">}),</span>
 </pre></div>
 </div>
-<p>Aquí está un sencillo ejemplo de un proveedor de usuarios, donde se usa el <em>DBAL</em> de <em>Doctrine</em> para almacenar a los usuarios:</p>
+<p>Aquí está un sencillo ejemplo de un proveedor de usuarios, donde se usa el <em>DBAL</em> de <em>Doctrine</em> para almacenar los usuarios:</p>
 <div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\Security\Core\User\UserProviderInterface</span><span class="p">;</span>
 <span class="k">use</span> <span class="nx">Symfony\Component\Security\Core\User\UserInterface</span><span class="p">;</span>
 <span class="k">use</span> <span class="nx">Symfony\Component\Security\Core\User\User</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\Security\Core\Exception\UnsupportedUserException</span><span class="p">;</span>
 <span class="k">use</span> <span class="nx">Symfony\Component\Security\Core\Exception\UsernameNotFoundException</span><span class="p">;</span>
 <span class="k">use</span> <span class="nx">Doctrine\DBAL\Connection</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">Doctrine\DBAL\Schema\Table</span><span class="p">;</span>
 
 <span class="k">class</span> <span class="nc">UserProvider</span> <span class="k">implements</span> <span class="nx">UserProviderInterface</span>
 <span class="p">{</span>
@@ -407,10 +422,12 @@ Además, la sección <tt class="docutils literal"><span class="pre">admin</span>
 </div>
 <p>En este ejemplo, las instancias de la clase <tt class="docutils literal"><span class="pre">User</span></tt> son creadas por los usuarios, pero  puedes definir tu propia clase; El único requisito es que la clase debe implementar la <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/Security/Core/User/UserInterface.html">UserInterface</a></p>
 <p>Y aquí está el código que puedes utilizar para crear el esquema de la base de datos y algunos usuarios de ejemplo:</p>
-<div class="highlight-php"><div class="highlight"><pre><span class="nv">$schema</span> <span class="o">=</span> <span class="nv">$conn</span><span class="o">-&gt;</span><span class="na">getSchemaManager</span><span class="p">();</span>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Doctrine\DBAL\Schema\Table</span><span class="p">;</span>
+
+<span class="nv">$schema</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">getSchemaManager</span><span class="p">();</span>
 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$schema</span><span class="o">-&gt;</span><span class="na">tablesExist</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">))</span> <span class="p">{</span>
     <span class="nv">$users</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Table</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">);</span>
-    <span class="nv">$users</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;integer&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;unsigned&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">));</span>
+    <span class="nv">$users</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;integer&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;unsigned&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span> <span class="s1">&#39;autoincrement&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">));</span>
     <span class="nv">$users</span><span class="o">-&gt;</span><span class="na">setPrimaryKey</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">));</span>
     <span class="nv">$users</span><span class="o">-&gt;</span><span class="na">addColumn</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;length&#39;</span> <span class="o">=&gt;</span> <span class="mi">32</span><span class="p">));</span>
     <span class="nv">$users</span><span class="o">-&gt;</span><span class="na">addUniqueIndex</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">));</span>
@@ -419,8 +436,8 @@ Además, la sección <tt class="docutils literal"><span class="pre">admin</span>
 
     <span class="nv">$schema</span><span class="o">-&gt;</span><span class="na">createTable</span><span class="p">(</span><span class="nv">$users</span><span class="p">);</span>
 
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">conn</span><span class="o">-&gt;</span><span class="na">executeQuery</span><span class="p">(</span><span class="s1">&#39;INSERT INTO users (username, password, roles) VALUES (&quot;fabien&quot;, &quot;5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==&quot;, &quot;ROLE_USER&quot;)&#39;</span><span class="p">);</span>
-    <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">conn</span><span class="o">-&gt;</span><span class="na">executeQuery</span><span class="p">(</span><span class="s1">&#39;INSERT INTO users (username, password, roles) VALUES (&quot;admin&quot;, &quot;5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==&quot;, &quot;ROLE_ADMIN&quot;)&#39;</span><span class="p">);</span>
+    <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">executeQuery</span><span class="p">(</span><span class="s1">&#39;INSERT INTO users (username, password, roles) VALUES (&quot;fabien&quot;, &quot;5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==&quot;, &quot;ROLE_USER&quot;)&#39;</span><span class="p">);</span>
+    <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">executeQuery</span><span class="p">(</span><span class="s1">&#39;INSERT INTO users (username, password, roles) VALUES (&quot;admin&quot;, &quot;5FZ2Z8QIkA7UTZ4BYkoC+GsReLf569mSKDsfods6LYQ8t+a8EW9oaircfMpmaLbPBh4FOBiiFyLfuZmTSUwzZg==&quot;, &quot;ROLE_ADMIN&quot;)&#39;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -428,6 +445,87 @@ Además, la sección <tt class="docutils literal"><span class="pre">admin</span>
 <p class="first admonition-title">Truco</p>
 <p class="last">Si estás utilizando el <em>ORM</em> de <em>Doctrine</em>, el puente de <em>Symfony</em> para <em>Doctrine</em> proporciona una clase proveedora de usuarios que es capaz de cargar usuarios desde tus entidades.</p>
 </div>
+</div>
+<div class="section" id="definiendo-un-codificador-personalizado">
+<h3>Definiendo un codificador personalizado<a class="headerlink" href="#definiendo-un-codificador-personalizado" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>De manera predeterminada, <em>Silex</em> utiliza el algoritmo <tt class="docutils literal"><span class="pre">sha512</span></tt> para codificar contraseñas.
+Además, la contraseña es codificada múltiples veces y convertida a basar64.
+Puedes cambiar estos predeterminados redefiniendo el servicio <tt class="docutils literal"><span class="pre">security.encoder.digest</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.encoder.digest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Usa el algoritmo sha1</span>
+    <span class="c1">// no codifica la contraseña usando</span>
+    <span class="c1">// basa64 sólo usa 1 iteración</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">MessageDigestPasswordEncoder</span><span class="p">(</span><span class="s1">&#39;sha1&#39;</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="definiendo-un-proveedor-de-autenticacion-personalizado">
+<h3>Definiendo un proveedor de autenticación personalizado<a class="headerlink" href="#definiendo-un-proveedor-de-autenticacion-personalizado" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>El componente <tt class="docutils literal"><span class="pre">Security</span></tt> de <em>Symfony</em> proporciona una serie de proveedores de autenticación listos para usarse (<tt class="docutils literal"><span class="pre">form</span></tt>, <em>HTTP</em>, <tt class="docutils literal"><span class="pre">X509</span></tt>, recuérdarme, ...), pero fácilmente puedes añadir nuevos. Para registrar un nuevo proveedor de autenticación, crea un servicio llamado <tt class="docutils literal"><span class="pre">security.authentication_listener.factory.XXX</span></tt> dónde <tt class="docutils literal"><span class="pre">XXX</span></tt> es el nombre que quieres
+usar en tu configuración:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.authentication_listener.factory.wsse&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">protect</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$options</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// define el objeto proveedor de autenticación</span>
+    <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.authentication_provider.&#39;</span><span class="o">.</span><span class="nv">$name</span><span class="o">.</span><span class="s1">&#39;.wsse&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">WsseProvider</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.user_provider.default&#39;</span><span class="p">],</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/security_cache&#39;</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="c1">// define el objeto escucha de autenticación</span>
+    <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.authentication_listener.&#39;</span><span class="o">.</span><span class="nv">$name</span><span class="o">.</span><span class="s1">&#39;.wsse&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">share</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">WsseListener</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security&#39;</span><span class="p">],</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;security.authentication_manager&#39;</span><span class="p">]);</span>
+    <span class="p">});</span>
+
+    <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+        <span class="c1">// el id del proveedor de autenticación</span>
+        <span class="s1">&#39;security.authentication_provider.&#39;</span><span class="o">.</span><span class="nv">$name</span><span class="o">.</span><span class="s1">&#39;.wsse&#39;</span><span class="p">,</span>
+        <span class="c1">// el ID del escucha de autenticación</span>
+        <span class="s1">&#39;security.authentication_listener.&#39;</span><span class="o">.</span><span class="nv">$name</span><span class="o">.</span><span class="s1">&#39;.wsse&#39;</span><span class="p">,</span>
+        <span class="c1">// el id del punto de entrada</span>
+        <span class="k">null</span><span class="p">,</span>
+        <span class="c1">// la posición del escucha en la pila</span>
+        <span class="s1">&#39;pre_auth&#39;</span>
+    <span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Ahora lo puedes usar en tu configuración igual que cualquier otro proveedor de autenticación integrado:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\SecurityServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;security.firewalls&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;default&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;wsse&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+
+            <span class="c1">// ...</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">));</span>
+</pre></div>
+</div>
+<p>En lugar de <tt class="docutils literal"><span class="pre">true</span></tt>, también puedes definir un arreglo de opciones que permitan personalizar el comportamiento de tu fábrica de autenticación; este se pasa como segundo argumento de tu fábrica de autenticación (ve más arriba).</p>
+<p>Este ejemplo utiliza las clases del proveedor de autenticación como se describe en el <a class="reference external" href="http://gitnacho.github.com/symfony-docs-es/cookbook/security/custom_authentication_provider.html">recetario</a> de <em>Symfony</em>.</p>
+</div>
+</div>
+<div class="section" id="peculiaridades">
+<h2>Peculiaridades<a class="headerlink" href="#peculiaridades" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">Silex\Application\SecurityTrait</span></tt> añade los siguientes atajos:</p>
+<ul class="simple">
+<li><strong>user</strong>: Devuelve el usuario actual.</li>
+<li><strong>encodePassword</strong>: Codifica la contraseña suministrada.</li>
+</ul>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$user</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">user</span><span class="p">();</span>
+
+<span class="nv">$encoded</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">encodePassword</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">Silex\Route\SecurityTrait</span></tt> añade los siguientes métodos a los controladores:</p>
+<ul class="simple">
+<li><strong>secure</strong>: Protege un controlador para los roles dados.</li>
+</ul>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// hace algo, pero sólo para los administradores</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">secure</span><span class="p">(</span><span class="s1">&#39;ROLE_ADMIN&#39;</span><span class="p">);</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -441,7 +539,6 @@ Además, la sección <tt class="docutils literal"><span class="pre">admin</span>
   <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
   
   <div style="width:740px;margin:10px auto;">
-    
     <div class="related">
       <h3>Navegación</h3>
       <ul>
@@ -449,7 +546,7 @@ Además, la sección <tt class="docutils literal"><span class="pre">admin</span>
           <a href="../genindex.html" title="Índice General"
              >índice</a></li>
         <li class="right" >
-          <a href="../changelog.html" title="Registro de cambios"
+          <a href="serializer.html" title="SerializerServiceProvider"
              >siguiente</a> |</li>
         <li class="right" >
           <a href="http_cache.html" title="HttpCacheServiceProvider"
@@ -465,8 +562,8 @@ Además, la sección <tt class="docutils literal"><span class="pre">admin</span>
      <div id="disqus_thread"></div>
      
     <div class="footer">
-        &copy; Copyright 2010-11 Fabien Potencier :: Traducido por Nacho Pacheco.
-      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
    </div>
    <script type="text/javascript">

@@ -8,7 +8,7 @@ Parámetros
 
 * **http_cache.cache_dir**: El directorio de caché para almacenar los datos de la caché *HTTP*.
 
-* **http_cache.options** (opcional): Una matriz de opciones para el constructor de `HttpCache <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_.
+* **http_cache.options** (opcional): Un arreglo de opciones para el constructor de `HttpCache <http://api.symfony.com/master/Symfony/Component/HttpKernel/HttpCache/HttpCache.html>`_.
 
 Servicios
 ---------
@@ -53,7 +53,7 @@ Este proveedor te permite utilizar el delegado inverso nativo de *Symfony2* con 
 El proveedor también ofrece compatibilidad con *ESI*::
 
     $app->get('/', function() {
-        return new Response(<<<EOF
+        $response = new Response(<<<EOF
     <html>
         <body>
             Hello
@@ -63,15 +63,19 @@ El proveedor también ofrece compatibilidad con *ESI*::
 
     EOF
         , 200, array(
-            'Cache-Control' => 's-maxage=20',
             'Surrogate-Control' => 'content="ESI/1.0"',
         ));
+
+        $response->setTtl(20);
+
+        return $response;
     });
 
     $app->get('/included', function() {
-        return new Response('Foo', 200, array(
-            'Cache-Control' => 's-maxage=5',
-        ));
+        $response = new Response('Foo');
+        $response->setTtl(5);
+
+        return $response;
     });
 
     $app['http_cache']->run();

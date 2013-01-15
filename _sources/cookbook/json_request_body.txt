@@ -41,7 +41,7 @@ El servidor responde con un código de estado 201, el cual nos dice que la entra
 Analizando el cuerpo de la petición
 -----------------------------------
 
-El cuerpo de la petición sólo se debe analizar como *JSON* si la cabecera ``Content-Type`` comienza con ``application/json``. Como queremos hacer esto para cada petición, la solución más fácil es usar un filtro ``before``.
+El cuerpo de la petición sólo se debe analizar como *JSON* si la cabecera ``Content-Type`` comienza con ``application/json``. Como queremos hacer esto en cada petición, la solución más fácil es usar un semiware ``before``.
 
 Simplemente usamos ``json_decode`` para analizar el contenido de la petición y luego sustituimos los datos de la petición en el objeto ``$request``::
 
@@ -63,7 +63,7 @@ Nuestro controlador creará una nueva entrada en el *blog* basada en los datos p
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
 
-    $app->post('/blog/posts', function (Request $request) {
+    $app->post('/blog/posts', function (Request $request) use ($app) {
         $post = array(
             'title' => $request->request->get('title'),
             'body'  => $request->request->get('body'),

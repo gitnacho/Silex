@@ -8,11 +8,11 @@ Parámetros
 
 * **twig.path** (opcional): Ruta al directorio que contiene archivos de plantilla *Twig* (también puede ser un arreglo de rutas).
 
-* **twig.templates** (opcional): Se trata de una matriz asociativa de nombres de plantilla para el contenido de la plantilla. Usa esta opción si deseas definir tus plantillas en línea.
+* **twig.templates** (opcional): Se trata de un arreglo asociativo de nombres de plantilla para el contenido de la plantilla. Usa esta opción si deseas definir tus plantillas en línea.
 
-* **twig.options** (opcional): Una matriz asociativa de opciones *Twig*. Echa un vistazo a la documentación de *Twig* para más información.
+* **twig.options** (opcional): Un arreglo asociativo de opciones *Twig*. Echa un vistazo a la documentación de *Twig* para más información.
 
-* **twig.form.templates** (opcional): Una matriz de plantillas utilizada para reproducir formularios (disponible únicamente cuando está habilitado el ``FormServiceProvider``).
+* **twig.form.templates** (opcional): Un arreglo de plantillas utilizado para reproducir formularios (disponible únicamente cuando está habilitado el ``FormServiceProvider``).
 
 Servicios
 ---------
@@ -72,7 +72,7 @@ El proveedor *Twig* ofrece un servicio ``twig``::
         ));
     });
 
-Esto reproducirá un archivo llamado ``views/hola.twig``.
+Esto reproducirá un archivo llamado :file:`views/hola.twig`.
 
 En cualquier plantilla de *Twig*, la variable ``app`` se refiere al objeto ``Aplicación``.
 Para que puedas acceder a cualquier servicio desde tu vista. Por ejemplo, para acceder a ``$app['request']->getHost()``, sólo tienes que poner esto en tu plantilla:
@@ -85,10 +85,37 @@ También se registra una función ``render`` para ayudarte a reproducir otro con
 
 .. code-block:: jinja
 
-    {{ render('/sidebar') }}
+    {{ render(app.request.baseUrl ~ '/sidebar') }}
 
     {# o si también estás usando UrlGeneratorServiceProvider con el SymfonyBridgesServiceProvider #}
-    {{ render(path('sidebar')) }}
+    {{ render(url('sidebar')) }}
+
+.. note::
+
+    Debes prefijar la ``app.request.baseUrl`` para reproducir llamadas para asegurarte de que el ``render`` trabaja al desplegar un subdirectorio del ``docroot``.
+
+Peculiaridades
+--------------
+
+``Silex\Application\TwigTrait`` añade los siguientes atajos:
+
+* **render**: Reproduce una vista con los parámetros suministrados y devuelve un objeto ``Respuesta``.
+
+.. code-block:: php
+
+    return $app->render('index.html', ['name' => 'Fabien']);
+
+    $response = new Response();
+    $response->setTtl(10);
+
+    return $app->render('index.html', ['name' => 'Fabien'], $response);
+
+.. code-block:: php
+
+    // secuencia una vista
+    use Symfony\Component\HttpFoundation\StreamedResponse;
+
+    return $app->render('index.html', ['name' => 'Fabien'], new StreamedResponse());
 
 Personalizando
 --------------
@@ -102,5 +129,4 @@ Puedes configurar el entorno *Twig* antes de usarlo extendiendo el servicio ``tw
         return $twig;
     }));
 
-Para más información, consulta la `documentación de
-Twig <http://gitnacho.github.com/Twig/index.html>`_.
+Para más información, consulta la `documentación de Twig <http://gitnacho.github.com/Twig/index.html>`_.

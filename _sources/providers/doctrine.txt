@@ -1,7 +1,7 @@
 ``DoctrineServiceProvider``
 ===========================
 
-El ``DoctrineServiceProvider`` proporciona integración con el `DBAL <http://www.doctrine-project.org/projects/dbal>`_ de *Doctrine* para acceder fácilmente a la base de datos.
+El ``DoctrineServiceProvider`` proporciona integración con el `DBAL de Doctrine <http://www.doctrine-project.org/projects/dbal>`_ para acceder fácilmente a la base de datos.
 
 .. note::
 
@@ -25,9 +25,11 @@ Parámetros
 
   * **password**: La contraseña de la base de datos con la cual conectarse.
 
+  * **charset**: Únicamente es relevante para ``pdo_mysql``, ``pdo_oci`` y ``oci8``, especifica el juego de caracteres utilizado al conectarse a la base de datos.
+
   * **path**: Sólo es relevante para ``pdo_sqlite``, especifica la ruta a la base de datos ``SQLite``.
 
-  Estas y otras opciones se describen en detalle en la documentación de `configurando el DBAL de Doctrine <http://www.doctrine-project.org/docs/dbal/2.0/en/reference/configuration.html>`_.
+  Estas y otras opciones se describen en detalle en la documentación de `configurando el DBAL de Doctrine <http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html>`_.
 
 Servicios
 ---------
@@ -77,7 +79,7 @@ Utilizando múltiples bases de datos
 -----------------------------------
 
 El proveedor *Doctrine* te permite acceder a múltiples bases de datos. Para configurar tus fuentes de datos, sustituye ``db.options`` con ``dbs.options``.
-``dbs.options`` es una matriz de configuraciones donde las claves son los nombres de las conexiones y los valores son las opciones::
+``dbs.options`` es un arreglo de configuraciones donde las claves son los nombres de las conexiones y los valores son las opciones::
 
     $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'dbs.options' => array (
@@ -87,6 +89,7 @@ El proveedor *Doctrine* te permite acceder a múltiples bases de datos. Para con
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
+                'charset'   => 'utf8',
             ),
             'mysql_write' => array(
                 'driver'    => 'pdo_mysql',
@@ -94,6 +97,7 @@ El proveedor *Doctrine* te permite acceder a múltiples bases de datos. Para con
                 'dbname'    => 'my_database',
                 'user'      => 'my_username',
                 'password'  => 'my_password',
+                'charset'   => 'utf8',
             ),
         ),
     ));
@@ -111,10 +115,10 @@ Usando múltiples conexiones::
         $post = $app['dbs']['mysql_read']->fetchAssoc($sql, array((int) $id));
 
         $sql = "UPDATE posts SET value = ? WHERE id = ?";
-        $app['dbs']['mysql_write']->execute($sql, array('newValue', (int) $id));
+        $app['dbs']['mysql_write']->executeUpdate($sql, array('newValue', (int) $id));
 
         return  "<h1>{$post['title']}</h1>".
                 "<p>{$post['body']}</p>";
     });
 
-Para más información, consulta la `Documentación del DBAL de Doctrine <http://www.doctrine-project.org/docs/dbal/2.0/en/>`_.
+Para más información, consulta la documentación del `DBAL de Doctrine <http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/>`_.

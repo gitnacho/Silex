@@ -1,6 +1,52 @@
 Registro de cambios
 ===================
 
+* **2012-11-05**: Los filtros fueron rebautizados como semiwares de la aplicación en la documentación.
+
+* **2012-11-05**: Las prioridades de escuchas ``before()``, ``after()``, ``error()`` y ``finish()`` ahora establecen la prioridad del evento *Symfony* subyacente en vez de un ``before`` personalizado.
+
+* **2012-11-05**: Se removió el controlador de la excepción predefinida ahora se debería hacer a través de su método ``disable()``:
+
+    Antes:
+
+        unset($app['exception_handler']);
+
+    Después:
+
+        $app['exception_handler']->disable();
+
+* **2012-07-15**: se quitó el servicio ``monolog.configure``. En su lugar usa el método ``extend``:
+
+    Antes::
+
+        $app['monolog.configure'] = $app->protect(function ($monolog) use ($app) {
+            // hace algo
+        });
+
+    Después::
+
+        $app['monolog'] = $app->share($app->extend('monolog', function($monolog, $app) {
+            // hace algo
+
+            return $monolog;
+        }));
+
+
+* **2012-06-17**: ``ControllerCollection`` ahora toma como argumento del constructor una instancia de ruta a seguir.
+
+    Antes::
+
+        $controllers = new ControllerCollection();
+
+    Después::
+
+        $controllers = new ControllerCollection(new Route());
+
+        // o aún mejor
+        $controllers = $app['controllers_factory'];
+
+* **2012-06-17**: Se añadieron características de aplicación para *PHP* 5.4
+
 * **2012-06-16**: Se renombró ``request.default_locale`` a ``locale``
 
 * **2012-06-16**: Se eliminó el servicio ``translator.loader``. Ve la documentación para cómo utilizar archivos de traducción basados en *XLIFF* o *YAML*.

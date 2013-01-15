@@ -12,6 +12,8 @@ La sección del recetario contiene instructivos para resolver problemas específ
     session_storage
     form_no_csrf
     validator_yaml
+    sub_requests
+    error_handler
 
 Recetas
 -------
@@ -25,3 +27,7 @@ Recetas
 * :doc:`Cómo desactivar la protección CSRF en un formulario utilizando FormExtension <form_no_csrf>`.
 
 * :doc:`Cómo usar YAML para configurar la validación <validator_yaml>`.
+
+* :doc:`Cómo hacer subpeticiones <sub_requests>`.
+
+* :doc:`Cómo convertir errores a excepciones <error_handler>`.
