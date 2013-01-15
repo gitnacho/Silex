@@ -24,7 +24,7 @@ class HttpCache extends BaseHttpCache
     /**
      * Manipula la Petición y libera la Respuesta.
      *
-     * @param Request $request El objeto Respuesta
+     * @param Request $request The Request object
      */
     public function run(Request $request = null)
     {

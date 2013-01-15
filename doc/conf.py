@@ -10,7 +10,7 @@ master_doc = 'index'
 highlight_language = 'php'
 
 project = u'Silex'
-copyright = u'2010-11 Fabien Potencier :: Traducido por Nacho Pacheco'
+copyright = u'2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco'
 
 version = '0'
 release = '0.0.0'

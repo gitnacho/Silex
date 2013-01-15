@@ -1,0 +1,150 @@
+
+<!DOCTYPE html> 
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cómo convertir errores a excepciones &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="../_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="../index.html" />
+    <link rel="up" title="Recetario" href="index.html" />
+    <link rel="next" title="Funcionamiento interno" href="../internals.html" />
+    <link rel="prev" title="Cómo hacer subpeticiones" href="sub_requests.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="../index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="../search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../internals.html" title="Funcionamiento interno"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="sub_requests.html" title="Cómo hacer subpeticiones"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="como-convertir-errores-a-excepciones">
+<h1>Cómo convertir errores a excepciones<a class="headerlink" href="#como-convertir-errores-a-excepciones" title="Enlazar permanentemente con este título">¶</a></h1>
+<p><em>Silex</em> capturará excepciones lanzadas dentro de un ciclo petición/respuesta. Sin embargo, <em>no</em> captura errores y avisos de <em>PHP</em>. Los puedes capturar convirtiéndolos en excepciones, esta receta te dirá cómo.</p>
+<div class="section" id="por-que-silex-no-hace-esto">
+<h2>¿Por qué <em>Silex</em> no hace esto?<a class="headerlink" href="#por-que-silex-no-hace-esto" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>En teoría, <em>Silex</em> lo podría hacer automáticamente, pero hay una razón por la cual no lo hace. <em>Silex</em> actúa como biblioteca, esto significa que no desordena ningún estado global. Debido  que los controladores de error son globales en <em>PHP</em>, como usuario es tu responsabilidad registrarlos.</p>
+</div>
+<div class="section" id="registrando-el-errorhandler">
+<h2>Registrando el <tt class="docutils literal"><span class="pre">ErrorHandler</span></tt><a class="headerlink" href="#registrando-el-errorhandler" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Afortunadamente, <em>Silex</em> viene con un <tt class="docutils literal"><span class="pre">ErrorHandler</span></tt> (es parte del paquete <tt class="docutils literal"><span class="pre">HttpKernel</span></tt>) el cual soluciona este problema. Este convierte todos los errores en excepciones, y <em>Silex</em> puede capturar excepciones.</p>
+<p>Tú las registras llamando el método estático <tt class="docutils literal"><span class="pre">register</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpKernel\Debug\ErrorHandler</span><span class="p">;</span>
+
+<span class="nx">ErrorHandler</span><span class="o">::</span><span class="na">register</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Es recomendable que lo hagas en tu controlador frontal, es decir en <tt class="file docutils literal"><span class="pre">web/index.php</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">El <tt class="docutils literal"><span class="pre">ErrorHandler</span></tt> nada tiene que hacer con el <tt class="docutils literal"><span class="pre">ExceptionHandler</span></tt>. Es responsabilidad del <tt class="docutils literal"><span class="pre">ExceptionHandler</span></tt> mostrar elegantemente las excepciones que capture.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../internals.html" title="Funcionamiento interno"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="sub_requests.html" title="Cómo hacer subpeticiones"
+             >anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

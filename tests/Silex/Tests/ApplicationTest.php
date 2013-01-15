@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Application test cases.
@@ -45,6 +46,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $returnValue = $app->delete('/foo', function () {});
         $this->assertInstanceOf('Silex\Controller', $returnValue);
+    }
+
+    public function testConstructorInjection()
+    {
+        // inject a custom parameter
+        $params = array('param' => 'value');
+        $app = new Application($params);
+        $this->assertSame($params['param'], $app['param']);
+
+        // inject an existing parameter
+        $params = array('locale' => 'value');
+        $app = new Application($params);
+        $this->assertSame($params['locale'], $app['locale']);
     }
 
     public function testGetRequest()
@@ -104,6 +118,20 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $response = $app->handle(Request::create('/foo/foo/bar'));
         $this->assertEquals('foobar', $response->getContent());
+    }
+
+    public function testOn()
+    {
+        $app = new Application();
+        $app['pass'] = false;
+
+        $app->on('test', function(Event $e) use ($app) {
+            $app['pass'] = true;
+        });
+
+        $app['dispatcher']->dispatch('test');
+
+        $this->assertTrue($app['pass']);
     }
 
     public function testAbort()

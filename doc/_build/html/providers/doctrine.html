@@ -1,0 +1,242 @@
+
+<!DOCTYPE html> 
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>DoctrineServiceProvider &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="../_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="../index.html" />
+    <link rel="up" title="Silex" href="index.html" />
+    <link rel="next" title="MonologServiceProvider" href="monolog.html" />
+    <link rel="prev" title="Silex" href="index.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="../index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="../search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="monolog.html" title="MonologServiceProvider"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Silex"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U"><em>Silex</em></a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="doctrineserviceprovider">
+<h1><tt class="docutils literal"><span class="pre">DoctrineServiceProvider</span></tt><a class="headerlink" href="#doctrineserviceprovider" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>El <tt class="docutils literal"><span class="pre">DoctrineServiceProvider</span></tt> proporciona integración con el <a class="reference external" href="http://www.doctrine-project.org/projects/dbal">DBAL de Doctrine</a> para acceder fácilmente a la base de datos.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Sólo hay una <tt class="docutils literal"><span class="pre">DBAL</span></tt> de <em>Doctrine</em>. <strong>No</strong> se suministra un servicio <tt class="docutils literal"><span class="pre">ORM</span></tt>.</p>
+</div>
+<div class="section" id="parametros">
+<h2>Parámetros<a class="headerlink" href="#parametros" title="Enlazar permanentemente con este título">¶</a></h2>
+<ul>
+<li><p class="first"><strong>db.options</strong>: Arreglo de opciones  para <tt class="docutils literal"><span class="pre">DBAL</span></tt> de <em>Doctrine</em>.</p>
+<p>Estas opciones están disponibles:</p>
+<ul class="simple">
+<li><strong>driver</strong>: El controlador de la base de datos a utilizar, por omisión es <tt class="docutils literal"><span class="pre">pdo_mysql</span></tt>.
+Puede ser alguno de entre: <tt class="docutils literal"><span class="pre">pdo_mysql</span></tt>, <tt class="docutils literal"><span class="pre">pdo_sqlite</span></tt>, <tt class="docutils literal"><span class="pre">pdo_pgsql</span></tt>, <tt class="docutils literal"><span class="pre">pdo_oci</span></tt>, <tt class="docutils literal"><span class="pre">oci8</span></tt>, <tt class="docutils literal"><span class="pre">ibm_db2</span></tt>, <tt class="docutils literal"><span class="pre">pdo_ibm</span></tt>, <tt class="docutils literal"><span class="pre">pdo_sqlsrv</span></tt>.</li>
+<li><strong>dbname</strong>: El nombre de la base de datos a la cual conectarse.</li>
+<li><strong>host</strong>: El servidor de la base de datos a la cual conectarse. Por omisión es <tt class="docutils literal"><span class="pre">localhost</span></tt>.</li>
+<li><strong>user</strong>: El usuario de la base de datos con el cual conectarse. Por omisión es <tt class="docutils literal"><span class="pre">root</span></tt>.</li>
+<li><strong>password</strong>: La contraseña de la base de datos con la cual conectarse.</li>
+<li><strong>charset</strong>: Únicamente es relevante para <tt class="docutils literal"><span class="pre">pdo_mysql</span></tt>, <tt class="docutils literal"><span class="pre">pdo_oci</span></tt> y <tt class="docutils literal"><span class="pre">oci8</span></tt>, especifica el juego de caracteres utilizado al conectarse a la base de datos.</li>
+<li><strong>path</strong>: Sólo es relevante para <tt class="docutils literal"><span class="pre">pdo_sqlite</span></tt>, especifica la ruta a la base de datos <tt class="docutils literal"><span class="pre">SQLite</span></tt>.</li>
+</ul>
+<p>Estas y otras opciones se describen en detalle en la documentación de <a class="reference external" href="http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html">configurando el DBAL de Doctrine</a>.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="servicios">
+<h2>Servicios<a class="headerlink" href="#servicios" title="Enlazar permanentemente con este título">¶</a></h2>
+<ul class="simple">
+<li><strong>db</strong>: La conexión de base de datos, instancia de <tt class="docutils literal"><span class="pre">Doctrine\DBAL\Connection</span></tt>.</li>
+<li><strong>db.config</strong>: Objeto de configuración para <em>Doctrine</em>. El valor predeterminado es una <tt class="docutils literal"><span class="pre">Doctrine\DBAL\Configuration</span></tt> vacía.</li>
+<li><strong>db.event_manager</strong>: Gestor de eventos para <em>Doctrine</em>.</li>
+</ul>
+</div>
+<div class="section" id="registrando">
+<h2>Registrando<a class="headerlink" href="#registrando" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\DoctrineServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;db.options&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;driver&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;pdo_sqlite&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;path&#39;</span>     <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/app.db&#39;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">));</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>El <em>DBAL</em> de <em>Doctrine</em> viene con el archivo &#8220;gordo&#8221; de <em>Silex</em> pero no en el normal. Si  estás usando <tt class="docutils literal"><span class="pre">Composer</span></tt>, añádelo como dependencia en tu archivo <tt class="docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<div class="last highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;doctrine/dbal&quot;</span><span class="o">:</span> <span class="s2">&quot;2.2.*&quot;</span><span class="p">,</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="uso">
+<h2>Uso<a class="headerlink" href="#uso" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El proveedor <em>Doctrine</em> proporciona un servicio <tt class="docutils literal"><span class="pre">db</span></tt>. Aquí está un ejemplo de uso:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM posts WHERE id = ?&quot;</span><span class="p">;</span>
+    <span class="nv">$post</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">fetchAssoc</span><span class="p">(</span><span class="nv">$sql</span><span class="p">,</span> <span class="k">array</span><span class="p">((</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$id</span><span class="p">));</span>
+
+    <span class="k">return</span>  <span class="s2">&quot;&lt;h1&gt;</span><span class="si">{</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/h1&gt;&quot;</span><span class="o">.</span>
+            <span class="s2">&quot;&lt;p&gt;</span><span class="si">{</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/p&gt;&quot;</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="utilizando-multiples-bases-de-datos">
+<h2>Utilizando múltiples bases de datos<a class="headerlink" href="#utilizando-multiples-bases-de-datos" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El proveedor <em>Doctrine</em> te permite acceder a múltiples bases de datos. Para configurar tus fuentes de datos, sustituye <tt class="docutils literal"><span class="pre">db.options</span></tt> con <tt class="docutils literal"><span class="pre">dbs.options</span></tt>.
+<tt class="docutils literal"><span class="pre">dbs.options</span></tt> es un arreglo de configuraciones donde las claves son los nombres de las conexiones y los valores son las opciones:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">register</span><span class="p">(</span><span class="k">new</span> <span class="nx">Silex\Provider\DoctrineServiceProvider</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;dbs.options&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span> <span class="p">(</span>
+        <span class="s1">&#39;mysql_read&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;driver&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;pdo_mysql&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;host&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;mysql_read.someplace.tld&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;dbname&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;user&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;my_username&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;password&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;my_password&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;charset&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="s1">&#39;mysql_write&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;driver&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;pdo_mysql&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;host&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;mysql_write.someplace.tld&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;dbname&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;my_database&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;user&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;my_username&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;password&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;my_password&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;charset&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">));</span>
+</pre></div>
+</div>
+<p>La primer conexión registrada es la predeterminada y puedes acceder a ella como lo harías si hubiera una sola conexión. Teniendo en cuenta la configuración anterior, estas dos líneas son equivalentes:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">fetchAssoc</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM table&#39;</span><span class="p">);</span>
+
+<span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;dbs&#39;</span><span class="p">][</span><span class="s1">&#39;mysql_read&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">fetchAssoc</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM table&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Usando múltiples conexiones:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM posts WHERE id = ?&quot;</span><span class="p">;</span>
+    <span class="nv">$post</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;dbs&#39;</span><span class="p">][</span><span class="s1">&#39;mysql_read&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">fetchAssoc</span><span class="p">(</span><span class="nv">$sql</span><span class="p">,</span> <span class="k">array</span><span class="p">((</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$id</span><span class="p">));</span>
+
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&quot;UPDATE posts SET value = ? WHERE id = ?&quot;</span><span class="p">;</span>
+    <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;dbs&#39;</span><span class="p">][</span><span class="s1">&#39;mysql_write&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">executeUpdate</span><span class="p">(</span><span class="nv">$sql</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;newValue&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$id</span><span class="p">));</span>
+
+    <span class="k">return</span>  <span class="s2">&quot;&lt;h1&gt;</span><span class="si">{</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/h1&gt;&quot;</span><span class="o">.</span>
+            <span class="s2">&quot;&lt;p&gt;</span><span class="si">{</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/p&gt;&quot;</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Para más información, consulta la documentación del <a class="reference external" href="http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/">DBAL de Doctrine</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="monolog.html" title="MonologServiceProvider"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Silex"
+             >anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" ><em>Silex</em></a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

@@ -1,0 +1,695 @@
+
+<!DOCTYPE html> 
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Usándola &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="index.html" />
+    <link rel="next" title="Semiwares" href="middlewares.html" />
+    <link rel="prev" title="Introducción" href="intro.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="middlewares.html" title="Semiwares"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introducción"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="index.html">Silex en Español</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="usandola">
+<h1>Usándola<a class="headerlink" href="#usandola" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Este capítulo describe cómo utilizar <em>Silex</em>.</p>
+<div class="section" id="instalando">
+<h2>Instalando<a class="headerlink" href="#instalando" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Si quieres empezar rápidamente, <a class="reference external" href="http://silex.sensiolabs.org/download">descarga</a> <em>Silex</em> como un archivo y descomprímelo, deberías tener la siguiente estructura de directorios:</p>
+<div class="highlight-text"><div class="highlight"><pre>├── composer.json
+├── composer.lock
+├── vendor
+│   └── ...
+└── web
+    └── index.php
+</pre></div>
+</div>
+<p>Si quieres más flexibilidad, en su lugar usa <tt class="docutils literal"><span class="pre">Composer</span></tt>. Crea un archivo <tt class="file docutils literal"><span class="pre">composer.json</span></tt>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;require&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;silex/silex&quot;</span><span class="o">:</span> <span class="s2">&quot;1.0.*@dev&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Y ejecuta <tt class="docutils literal"><span class="pre">Composer</span></tt> para instalar <em>Silex</em> y todas sus dependencias:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>curl -s http://getcomposer.org/installer | php
+<span class="nv">$ </span>php composer.phar install
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Truco</p>
+<p class="last">De manera predeterminada, <em>Silex</em> confía en los componentes estables de <em>Symfony</em>. Si en su lugar, quieres utilizar su versión maestra, añade <tt class="docutils literal"><span class="pre">&quot;minimum-stability&quot;:</span> <span class="pre">&quot;dev&quot;</span></tt> en tu archivio <tt class="file docutils literal"><span class="pre">composer.json</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="actualizando">
+<h2>Actualizando<a class="headerlink" href="#actualizando" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Actualizar <em>Silex</em> a la versión más reciente es tan fácil como ejecutar la orden <tt class="docutils literal"><span class="pre">update</span></tt>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>php composer.phar update
+</pre></div>
+</div>
+</div>
+<div class="section" id="arranque">
+<h2>Arranque<a class="headerlink" href="#arranque" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Para arrancar <em>Silex</em>, todo lo que necesitas hacer es requerir el archivo <tt class="file docutils literal"><span class="pre">vendor/autoload.php</span></tt> y crear una instancia de <tt class="docutils literal"><span class="pre">Silex\Application</span></tt>. Después de definir tu controlador, llama al método <tt class="docutils literal"><span class="pre">run</span></tt> en tu aplicación:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="c1">// web/index.php</span>
+
+<span class="k">require_once</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/../vendor/autoload.php&#39;</span><span class="p">;</span>
+
+<span class="nv">$app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Silex\Application</span><span class="p">();</span>
+
+<span class="c1">// definiciones</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Luego, debes configurar tu servidor <em>web</em> (consulta el <a class="reference internal" href="web_servers.html"><em>capítulo dedicado</em></a> para más información).</p>
+<div class="admonition tip">
+<p class="first admonition-title">Truco</p>
+<p>Cuando desarrollas un sitio <em>web</em>, posiblemente quieras activar el modo de depuración para que se te facilite la corrección de errores:</p>
+<div class="last highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;debug&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Truco</p>
+<p>Si tu aplicación se encuentra detrás de un delegado inverso y deseas que <em>Silex</em> compruebe las cabeceras <tt class="docutils literal"><span class="pre">X-Forwarded-For*</span></tt>, tendrás que ejecutar tu aplicación de esta manera:</p>
+<div class="last highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+
+<span class="nx">Request</span><span class="o">::</span><span class="na">trustProxyData</span><span class="p">();</span>
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="enrutado">
+<h2>Enrutado<a class="headerlink" href="#enrutado" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>En <em>Silex</em> defines simultáneamente una ruta y el controlador que se invocará cuando dicha ruta concuerde</p>
+<p>Un patrón de ruta se compone de:</p>
+<ul class="simple">
+<li><em>Pattern</em>: El patrón de ruta define una ruta que apunta a un recurso. El patrón puede incluir partes variables y tú podrás establecer los requisitos con expresiones regulares.</li>
+<li><em>Method</em>: Uno de los siguientes métodos <em>HTTP</em>: <tt class="docutils literal"><span class="pre">GET</span></tt>, <tt class="docutils literal"><span class="pre">POST</span></tt>, <tt class="docutils literal"><span class="pre">PUT</span></tt> o <tt class="docutils literal"><span class="pre">DELETE</span></tt>. Este describe la interacción con el recurso. Normalmente sólo se utilizan <tt class="docutils literal"><span class="pre">GET</span></tt> y <tt class="docutils literal"><span class="pre">POST</span></tt>, pero, también es posible utilizar los otros.</li>
+</ul>
+<p>El controlador se define usando un cierre de esta manera:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// hace algo</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Los cierres son funciones anónimas que pueden importar el estado desde fuera de su definición. Esto es diferente de las variables globales, porque el estado exterior no tiene que ser global. Por ejemplo, podrías definir un cierre en una función e importar variables locales desde esa función.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Los cierres que no importan el ámbito se conocen como lambdas. Debido a que en <em>PHP</em> todas las funciones anónimas son instancias de la clase <tt class="docutils literal"><span class="pre">Closure</span></tt>, no vamos a hacer una distinción aquí.</p>
+</div>
+<p>El valor de retorno del cierre se convierte en el contenido de la página.</p>
+<div class="section" id="ejemplo-de-ruta-get">
+<h3>Ejemplo de ruta <tt class="docutils literal"><span class="pre">GET</span></tt><a class="headerlink" href="#ejemplo-de-ruta-get" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>He aquí un ejemplo de una definición de ruta <tt class="docutils literal"><span class="pre">GET</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$blogPosts</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+    <span class="mi">1</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">&#39;date&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;2011-03-29&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;author&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;igorw&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;title&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;Using Silex&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;body&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">);</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$blogPosts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$output</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$blogPosts</span> <span class="k">as</span> <span class="nv">$post</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$output</span> <span class="o">.=</span> <span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">];</span>
+        <span class="nv">$output</span> <span class="o">.=</span> <span class="s1">&#39;&lt;br /&gt;&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$output</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Al visitar <tt class="docutils literal"><span class="pre">/blog</span></tt> devolverá una lista con los títulos de los artículos en el <tt class="docutils literal"><span class="pre">blog</span></tt>. La declaración <tt class="docutils literal"><span class="pre">use</span></tt> significa algo diferente en este contexto. Esta instruye al cierre para que importe la variable <tt class="docutils literal"><span class="pre">$blogPosts</span></tt> desde el ámbito externo. Esto te permite utilizarla dentro del cierre.</p>
+</div>
+<div class="section" id="enrutado-dinamico">
+<h3>Enrutado dinámico<a class="headerlink" href="#enrutado-dinamico" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Ahora, puedes crear otro controlador para ver artículos individuales del <tt class="docutils literal"><span class="pre">blog</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Silex\Application</span> <span class="nv">$app</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$blogPosts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$blogPosts</span><span class="p">[</span><span class="nv">$id</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;Post </span><span class="si">$id</span><span class="s2"> does not exist.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nv">$post</span> <span class="o">=</span> <span class="nv">$blogPosts</span><span class="p">[</span><span class="nv">$id</span><span class="p">];</span>
+
+    <span class="k">return</span>  <span class="s2">&quot;&lt;h1&gt;</span><span class="si">{</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/h1&gt;&quot;</span><span class="o">.</span>
+            <span class="s2">&quot;&lt;p&gt;</span><span class="si">{</span><span class="nv">$post</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/p&gt;&quot;</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Esta definición de ruta tiene una parte variable <tt class="docutils literal"><span class="pre">{id}</span></tt> que se pasa al cierre.</p>
+<p>Cuando el artículo no existe, usamos <tt class="docutils literal"><span class="pre">abort()</span></tt> para detener la petición inicial. En realidad, se produce una excepción, la cual veremos cómo manejar más adelante.</p>
+</div>
+<div class="section" id="ejemplo-de-ruta-post">
+<h3>Ejemplo de ruta <tt class="docutils literal"><span class="pre">POST</span></tt><a class="headerlink" href="#ejemplo-de-ruta-post" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Las rutas <tt class="docutils literal"><span class="pre">POST</span></tt> denotan la creación de un recurso. Un ejemplo de esto es un formulario de comentarios. Vamos a utilizar la función <tt class="docutils literal"><span class="pre">mail</span></tt> para enviar un correo electrónico:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;/feedback&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$message</span> <span class="o">=</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">);</span>
+    <span class="nb">mail</span><span class="p">(</span><span class="s1">&#39;feedback@yoursite.com&#39;</span><span class="p">,</span> <span class="s1">&#39;[YourSite] Feedback&#39;</span><span class="p">,</span> <span class="nv">$message</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="s1">&#39;Thank you for your feedback!&#39;</span><span class="p">,</span> <span class="mi">201</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Es bastante sencillo.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Hay un <a class="reference internal" href="providers/swiftmailer.html"><em>SwiftmailerServiceProvider</em></a> incluido que puedes utilizar en lugar de <tt class="docutils literal"><span class="pre">mail()</span></tt>.</p>
+</div>
+<p>La <tt class="docutils literal"><span class="pre">petición</span></tt> actual es inyectada al <tt class="docutils literal"><span class="pre">cierre</span></tt> automáticamente por <em>Silex</em> gracias a la insinuación de tipo. Es una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpFoundation/Request.html">Request</a>, por tanto puedes recuperar las variables usando el método <tt class="docutils literal"><span class="pre">get</span></tt> de la petición.</p>
+<p>En lugar de devolver una cadena regresamos una instancia de <a class="reference external" href="http://api.symfony.com/master/Symfony/Component/HttpFoundation/Response.html">Response</a>.
+Esto nos permite fijar un código de estado <em>HTTP</em>, en este caso configurado a <tt class="docutils literal"><span class="pre">201</span> <span class="pre">Creado</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Internamente, <em>Silex</em> siempre utiliza una <tt class="docutils literal"><span class="pre">Respuesta</span></tt>, la convierte a cadenas para respuestas con código de estado <tt class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="otros-metodos">
+<h3>Otros métodos<a class="headerlink" href="#otros-metodos" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Puedes crear controladores para la mayoría de los métodos <em>HTTP</em>. Sólo tienes que llamar a uno de estos métodos en tu aplicación: <tt class="docutils literal"><span class="pre">get</span></tt>, <tt class="docutils literal"><span class="pre">post</span></tt>, <tt class="docutils literal"><span class="pre">put</span></tt> o <tt class="docutils literal"><span class="pre">delete</span></tt>. También puedes invocar a <tt class="docutils literal"><span class="pre">match</span></tt>, el cual coincidirá con todos los métodos:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">match</span><span class="p">(</span><span class="s1">&#39;/blog&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Entonces puedes restringir los métodos permitidos a través del método <tt class="docutils literal"><span class="pre">method</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">match</span><span class="p">(</span><span class="s1">&#39;/blog&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">})</span>
+<span class="o">-&gt;</span><span class="na">method</span><span class="p">(</span><span class="s1">&#39;PATCH&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Puedes sincronizar varios métodos con un controlador utilizando la sintaxis de expresiones regulares:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">match</span><span class="p">(</span><span class="s1">&#39;/blog&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">})</span>
+<span class="o">-&gt;</span><span class="na">method</span><span class="p">(</span><span class="s1">&#39;PUT|POST&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">El orden en que definas las rutas es importante. La primera ruta que coincida se utilizará, por lo tanto coloca tus rutas más genéricas en la parte inferior.</p>
+</div>
+</div>
+<div class="section" id="variables-de-ruta">
+<h3>Variables de ruta<a class="headerlink" href="#variables-de-ruta" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Como mostramos antes, puedes definir partes variables en una ruta, como esta:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>También es posible tener más de una parte variable, basta con que encierres los argumentos coincidentes con los nombres de las partes variables:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{postId}/{commentId}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$postId</span><span class="p">,</span> <span class="nv">$commentId</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Si bien no se sugiere, también lo puedes hacer (ten en cuenta la conmutación de los argumentos):</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{postId}/{commentId}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$commentId</span><span class="p">,</span> <span class="nv">$postId</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>También puedes consultar la <tt class="docutils literal"><span class="pre">Petición</span></tt> actual y el objeto <tt class="docutils literal"><span class="pre">Aplicación</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Application</span> <span class="nv">$app</span><span class="p">,</span> <span class="nx">Request</span> <span class="nv">$request</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>Ten en cuenta que para los objetos <tt class="docutils literal"><span class="pre">Aplicación</span></tt> y  <tt class="docutils literal"><span class="pre">Petición</span></tt>, <em>Silex</em> hace la inyección basándose en el indicador de tipo y no en el nombre de la variable:</p>
+<div class="last highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Application</span> <span class="nv">$foo</span><span class="p">,</span> <span class="nx">Request</span> <span class="nv">$bar</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="convertidores-de-variables-de-ruta">
+<h3>Convertidores de variables de ruta<a class="headerlink" href="#convertidores-de-variables-de-ruta" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Antes de inyectar las variables de ruta en el controlador, puedes aplicar algunos convertidores:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">convert</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="nx">int</span><span class="p">)</span> <span class="nv">$id</span><span class="p">;</span> <span class="p">});</span>
+</pre></div>
+</div>
+<p>Esto es útil cuando quieres convertir las variables de ruta a objetos, ya que permite reutilizar el código de conversión entre diferentes controladores:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$userProvider</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{user}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">User</span> <span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">convert</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nv">$userProvider</span><span class="p">);</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/user/{user}/edit&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">User</span> <span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">convert</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nv">$userProvider</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>La retrollamada al convertidor también recibe la <tt class="docutils literal"><span class="pre">Petición</span></tt> como segundo argumento:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$callback</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$post</span><span class="p">,</span> <span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Post</span><span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">attributes</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;slug&#39;</span><span class="p">));</span>
+<span class="p">};</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/{id}/{slug}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Post</span> <span class="nv">$post</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">convert</span><span class="p">(</span><span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="nv">$callback</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="requisitos">
+<h3>Requisitos<a class="headerlink" href="#requisitos" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>En algunos casos es posible que sólo desees detectar ciertas expresiones. Puedes definir los requisitos usando expresiones regulares llamando a <tt class="docutils literal"><span class="pre">assert</span></tt> en el objeto <tt class="docutils literal"><span class="pre">Controller</span></tt>, que es devuelto por los métodos de enrutado.</p>
+<p>Lo siguiente se asegurará de que el argumento <tt class="docutils literal"><span class="pre">id</span></tt> es numérico, ya que <tt class="docutils literal"><span class="pre">\d+</span></tt> coincide con cualquier cantidad de dígitos:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">})</span>
+<span class="o">-&gt;</span><span class="na">assert</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;\d+&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>También puedes encadenar estas llamadas:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{postId}/{commentId}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$postId</span><span class="p">,</span> <span class="nv">$commentId</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">})</span>
+<span class="o">-&gt;</span><span class="na">assert</span><span class="p">(</span><span class="s1">&#39;postId&#39;</span><span class="p">,</span> <span class="s1">&#39;\d+&#39;</span><span class="p">)</span>
+<span class="o">-&gt;</span><span class="na">assert</span><span class="p">(</span><span class="s1">&#39;commentId&#39;</span><span class="p">,</span> <span class="s1">&#39;\d+&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="valores-predeterminados">
+<h3>valores predeterminados<a class="headerlink" href="#valores-predeterminados" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Puedes definir un valor predeterminado para cualquier variable de ruta llamando a <tt class="docutils literal"><span class="pre">value</span></tt> en el objeto <tt class="docutils literal"><span class="pre">Controlador</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/{pageName}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$pageName</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">})</span>
+<span class="o">-&gt;</span><span class="na">value</span><span class="p">(</span><span class="s1">&#39;pageName&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Esto te permitirá coincidir <tt class="docutils literal"><span class="pre">/</span></tt>, en cuyo caso la variable <tt class="docutils literal"><span class="pre">nombrePagina</span></tt> tendrá el valor de <tt class="docutils literal"><span class="pre">index</span></tt>.</p>
+</div>
+<div class="section" id="rutas-con-nombre">
+<h3>Rutas con nombre<a class="headerlink" href="#rutas-con-nombre" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Algunos proveedores (como <tt class="docutils literal"><span class="pre">UrlGeneratorProvider</span></tt>) pueden usar rutas con nombre. De manera predeterminada <em>Silex</em> generará un nombre de ruta para ti, el cual, no puedes utilizar realmente. Puedes dar un nombre a una ruta llamando a <tt class="docutils literal"><span class="pre">bind</span></tt> en el objeto <tt class="docutils literal"><span class="pre">Controlador</span></tt> devuelto por los métodos de enrutado:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">})</span>
+<span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s1">&#39;homepage&#39;</span><span class="p">);</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">})</span>
+<span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s1">&#39;blog_post&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Sólo tiene sentido nombrar rutas si utilizas proveedores que usan la <tt class="docutils literal"><span class="pre">RouteCollection</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="controladores-en-clases">
+<h3>Controladores en clases<a class="headerlink" href="#controladores-en-clases" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Si no quieres utilizar funciones anónimas, también puedes definir tus controladores como métodos. Al utilizar la sintaxis <tt class="docutils literal"><span class="pre">ControllerClass::methodName</span></tt>, le puedes decir a <em>Silex</em> que cree esa clase controlador de manera diferida:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;Igorw\Foo::bar&#39;</span><span class="p">);</span>
+
+<span class="k">use</span> <span class="nx">Silex\Application</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="nx">Igorw</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">Foo</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="k">function</span> <span class="nf">bar</span><span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">,</span> <span class="nx">Application</span> <span class="nv">$app</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="o">...</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Esto cargará la clase <tt class="docutils literal"><span class="pre">Igorw\Foo</span></tt> bajo demanda, crea una instancia y llama al método <tt class="docutils literal"><span class="pre">bar</span></tt> para conseguir la respuesta. Puedes utilizar la insinuación de tipo <tt class="docutils literal"><span class="pre">Request</span></tt> y <tt class="docutils literal"><span class="pre">Silex\Application</span></tt> para inyectar la <tt class="docutils literal"><span class="pre">$request</span></tt> y <tt class="docutils literal"><span class="pre">$app</span></tt>.</p>
+<p>Para una separación incluso más fuerte entre <em>Silex</em> y tus controladores, puedes <a class="reference internal" href="providers/service_controller.html"><em>definir tus controladores como servicios</em></a>.</p>
+</div>
+</div>
+<div class="section" id="configuracion-global">
+<h2>Configuración global<a class="headerlink" href="#configuracion-global" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Si una opción del controlador se debe aplicar a todos los controladores (un convertidor, un servicio de lógica intermedia, un requisito o un valor predeterminado), los puedes configurar en <tt class="docutils literal"><span class="pre">$application['controllers']</span></tt>, que tiene todos los controladores de la aplicación:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;controllers&#39;</span><span class="p">]</span>
+    <span class="o">-&gt;</span><span class="na">value</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">assert</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;\d+&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">requireHttps</span><span class="p">()</span>
+    <span class="o">-&gt;</span><span class="na">method</span><span class="p">(</span><span class="s1">&#39;get&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">convert</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+    <span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+<span class="p">;</span>
+</pre></div>
+</div>
+<p>Estos ajustes se aplican a los controladores que ya están registrados y se convierten en los valores predefinidos para los nuevos controladores.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">La configuración global no aplica a proveedores de controlador, podrías montar tantos como tengas en tu propia configuración global (ve el párrafo sobre la modularidad más adelante).</p>
+</div>
+</div>
+<div class="section" id="controladores-de-error">
+<h2>Controladores de error<a class="headerlink" href="#controladores-de-error" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Si alguna parte de tu código produce una excepción de la que desees mostrar algún tipo de página de error al usuario. Esto es lo que hacen los controladores de error. También los puedes utilizar para hacer cosas adicionales, tal como registrar eventos cronológicamente.</p>
+<p>Para registrar un controlador de error, pasa un cierre al método <tt class="docutils literal"><span class="pre">error</span></tt> el cual toma un argumento <tt class="docutils literal"><span class="pre">Exception</span></tt> y devuelve una respuesta:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">error</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">\Exception</span> <span class="nv">$e</span><span class="p">,</span> <span class="nv">$code</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="s1">&#39;We are sorry, but something went terribly wrong.&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>También puedes comprobar si hay errores específicos usando el argumento <tt class="docutils literal"><span class="pre">$code</span></tt>, y manejándolo de manera diferente:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">error</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">\Exception</span> <span class="nv">$e</span><span class="p">,</span> <span class="nv">$code</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="nv">$code</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="mi">404</span><span class="o">:</span>
+            <span class="nv">$message</span> <span class="o">=</span> <span class="s1">&#39;The requested page could not be found.&#39;</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">default</span><span class="o">:</span>
+            <span class="nv">$message</span> <span class="o">=</span> <span class="s1">&#39;We are sorry, but something went terribly wrong.&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nv">$message</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p>Debido a que <em>Silex</em> garantiza que el código de estado de la respuesta se ajusta al más adecuado en función de la excepción, configurar el estado en la respuesta no va a funcionar. Si quieres reescribir el código de estado (no sin una muy buena razón), establece la cabecera <tt class="docutils literal"><span class="pre">X-Status-Code</span></tt>:</p>
+<div class="last highlight-php"><div class="highlight"><pre><span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="mi">404</span> <span class="cm">/* ignored */</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;X-Status-Code&#39;</span> <span class="o">=&gt;</span> <span class="mi">200</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<p>Puedes restringir un controlador de errores para que sólo maneje algunas clases de excepciones estableciendo un tipo de pista más específico para el argumento del <tt class="docutils literal"><span class="pre">Cierre</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">error</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">\LogicException</span> <span class="nv">$e</span><span class="p">,</span> <span class="nv">$code</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// este controlador sólo ve excepciones \LogicException</span>
+    <span class="c1">// y \LogicException extendidas</span>
+ <span class="p">});</span>
+</pre></div>
+</div>
+<p>Si deseas configurar el registro cronológico de eventos, para ello, puedes utilizar un controlador de errores independiente.
+Sólo asegúrate de registrarlo antes que los controladores que responden al error, porque una vez que se devuelve una respuesta, se omiten los demás controladores.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last"><em>Silex</em> viene con un proveedor para <a class="reference external" href="https://github.com/Seldaek/monolog">Monolog</a> el cual maneja el registro de errores.
+Échale un vistazo al capítulo <a class="reference internal" href="providers.html"><em>Proveedores</em></a> para más detalles.</p>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Truco</p>
+<p><em>Silex</em> viene con un controlador de errores predeterminado que muestra un mensaje de error detallado con el seguimiento de la pila cuando <strong>debug</strong> es <tt class="docutils literal"><span class="pre">true</span></tt>, y de otra manera un mensaje de error simple. Los manipuladores de error registrados a través del método <tt class="docutils literal"><span class="pre">error()</span></tt> siempre tienen prioridad, pero puedes mantener agradables los mensajes de error de depuración cuando se enciende con algo como esto:</p>
+<div class="last highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">error</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">\Exception</span> <span class="nv">$e</span><span class="p">,</span> <span class="nv">$code</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;debug&#39;</span><span class="p">])</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// lógica para manejar el error y devolver una respuesta</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<p>A los manipuladores de error también se les llama cuando utilizas <tt class="docutils literal"><span class="pre">abort</span></tt> para anular prematuramente una petición:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/blog/show/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Silex\Application</span> <span class="nv">$app</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$blogPosts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$blogPosts</span><span class="p">[</span><span class="nv">$id</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s2">&quot;Post </span><span class="si">$id</span><span class="s2"> does not exist.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="o">...</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="redirigiendo">
+<h2>Redirigiendo<a class="headerlink" href="#redirigiendo" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Puedes redirigir a otra página devolviendo una respuesta de redirección, la cual puedes crear mediante una llamada al método <tt class="docutils literal"><span class="pre">redirect</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">redirect</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Esto redirigirá de <tt class="docutils literal"><span class="pre">/</span></tt> a <tt class="docutils literal"><span class="pre">/hello</span></tt>.</p>
+</div>
+<div class="section" id="reenviando">
+<h2>Reenviando<a class="headerlink" href="#reenviando" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Cuando quieres delegar la reproducción a otro controlador, sin una ida y vuelta al navegador (tal como una redirección), utiliza una subpetición:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpKernel\HttpKernelInterface</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// redirige a /hello</span>
+    <span class="nv">$subRequest</span> <span class="o">=</span> <span class="nx">Request</span><span class="o">::</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">,</span> <span class="s1">&#39;GET&#39;</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">handle</span><span class="p">(</span><span class="nv">$subRequest</span><span class="p">,</span> <span class="nx">HttpKernelInterface</span><span class="o">::</span><span class="na">SUB_REQUEST</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Truco</p>
+<p>Si estás usando <tt class="docutils literal"><span class="pre">UrlGeneratorProvider</span></tt>, también puedes generar la <em>URI</em>:</p>
+<div class="last highlight-php"><div class="highlight"><pre><span class="nv">$request</span> <span class="o">=</span> <span class="nx">Request</span><span class="o">::</span><span class="na">create</span><span class="p">(</span><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;url_generator&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">generate</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">),</span> <span class="s1">&#39;GET&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>No obstante, hay algunas cosas más que necesitas tener en cuenta. En muchos casos querrás reenviar algunas partes de la petición maestra actual a la subpetición.
+Estas incluyen: Galletas, información del servidor, sesión.
+Lee más en <a class="reference internal" href="cookbook/sub_requests.html"><em>cómo hacer subpeticiones</em></a>.</p>
+</div>
+<div class="section" id="json">
+<h2><em>JSON</em><a class="headerlink" href="#json" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Si quieres devolver datos <em>JSON</em>, puedes usar el método ayudante <tt class="docutils literal"><span class="pre">json</span></tt>.
+Simplemente le tienes que proporcionar tus datos, código de estado y cabeceras, y este creará una respuesta <em>JSON</em> para ti:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/users/{id}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$user</span> <span class="o">=</span> <span class="nx">getUser</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$error</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;The user was not found.&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">json</span><span class="p">(</span><span class="nv">$error</span><span class="p">,</span> <span class="mi">404</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">json</span><span class="p">(</span><span class="nv">$user</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="transmitiendo-secuencias">
+<h2>Transmitiendo secuencias<a class="headerlink" href="#transmitiendo-secuencias" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Es posible crear una respuesta para la transmisión de secuencias, la cual es importante en los casos cuando no puedes mantener en memoria los datos enviados:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/images/{file}&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$file</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">file_exists</span><span class="p">(</span><span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/images/&#39;</span><span class="o">.</span><span class="nv">$file</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="s1">&#39;The image was not found.&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nv">$stream</span> <span class="o">=</span> <span class="k">function</span> <span class="p">()</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$file</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">readfile</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">stream</span><span class="p">(</span><span class="nv">$stream</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;image/png&#39;</span><span class="p">));</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Si necesitas enviar segmentos, asegúrate de llamar a <tt class="docutils literal"><span class="pre">ob_flush</span></tt> y <tt class="docutils literal"><span class="pre">flush</span></tt> después de cada parte:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$stream</span> <span class="o">=</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nv">$fh</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="s1">&#39;http://www.ejemplo.com/&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nb">feof</span><span class="p">(</span><span class="nv">$fh</span><span class="p">))</span> <span class="p">{</span>
+      <span class="k">echo</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$fh</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>
+      <span class="nb">ob_flush</span><span class="p">();</span>
+      <span class="nb">flush</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="nb">fclose</span><span class="p">(</span><span class="nv">$fh</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="peculiaridades">
+<h2>Peculiaridades<a class="headerlink" href="#peculiaridades" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><em>Silex</em> viene con características de <em>PHP</em> que definen accesos directos a métodos.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Prudencia</p>
+<p class="last">Es necesario que utilices <em>PHP 5.4</em> o más reciente para beneficiarte de esta característica.</p>
+</div>
+<p>Casi todos los proveedores de servicio integrados tienen alguna característica <em>PHP</em> correspondiente. Para usarlos, define tu propia clase <tt class="docutils literal"><span class="pre">Application</span></tt> e incluye las características que desees:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Silex\Application</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">MyApplication</span> <span class="k">extends</span> <span class="nx">Application</span>
+<span class="p">{</span>
+    <span class="k">use</span> <span class="nx">Application\TwigTrait</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Application\SecurityTrait</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Application\FormTrait</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Application\UrlGeneratorTrait</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Application\SwiftmailerTrait</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Application\MonologTrait</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Application\TranslationTrait</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>También puedes definir tu propia clase <tt class="docutils literal"><span class="pre">Route</span></tt> y usar algunas características:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Silex\Route</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">MyRoute</span> <span class="k">extends</span> <span class="nx">Route</span>
+<span class="p">{</span>
+    <span class="k">use</span> <span class="nx">Route\SecurityTrait</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Para usar tu <tt class="docutils literal"><span class="pre">ruta</span></tt> recién definida, sustituye la configuración de <tt class="docutils literal"><span class="pre">$app['route_class']</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;route_class&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;MyRoute&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Lee cada capítulo de proveedor para obtener más información acerca de los métodos añadidos.</p>
+</div>
+<div class="section" id="seguridad">
+<h2>Seguridad<a class="headerlink" href="#seguridad" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Asegúrate de proteger tu aplicación contra ataques.</p>
+<div class="section" id="escapando">
+<h3>Escapando<a class="headerlink" href="#escapando" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Cuando reproduces cualquier aportación de los usuarios (ya sea en las variables <tt class="docutils literal"><span class="pre">GET/POST</span></tt> o en variables obtenidas desde la petición), tendrás que asegurarte de escaparlas correctamente, para evitar ataques que exploten vulnerabilidades del sistema.</p>
+<ul>
+<li><p class="first"><strong>Escapando HTML</strong>: <em>PHP</em> proporciona la función <tt class="docutils literal"><span class="pre">htmlspecialchars</span></tt> para esto.
+<em>Silex</em> ofrece un atajo, el método <tt class="docutils literal"><span class="pre">escape</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/name&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Silex\Application</span> <span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;request&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="s2">&quot;You provided the name </span><span class="si">{</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">escape</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Si utilizas el motor de plantillas <em>Twig</em> debes usar su escape o, incluso, mecanismos de autoescape.</p>
+</li>
+<li><p class="first"><strong>Escapando JSON</strong>: Si quieres proporcionar datos en formato <em>JSON</em> debes utilizar la función <tt class="docutils literal"><span class="pre">json</span></tt> de <em>Silex</em>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/name.json&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Silex\Application</span> <span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$name</span> <span class="o">=</span> <span class="nv">$app</span><span class="p">[</span><span class="s1">&#39;request&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">json</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="nv">$name</span><span class="p">));</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="middlewares.html" title="Semiwares"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introducción"
+             >anterior</a> |</li>
+        <li><a href="index.html">Silex en Español</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

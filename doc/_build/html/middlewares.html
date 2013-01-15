@@ -1,0 +1,264 @@
+
+<!DOCTYPE html> 
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Semiwares &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="shortcut icon" href="_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="index.html" />
+    <link rel="next" title="Organizando controladores" href="organizing_controllers.html" />
+    <link rel="prev" title="Usándola" href="usage.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="organizing_controllers.html" title="Organizando controladores"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usándola"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="index.html">Silex en Español</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="semiwares">
+<h1>Semiwares<a class="headerlink" href="#semiwares" title="Enlazar permanentemente con este título">¶</a></h1>
+<p><em>Silex</em> te permite ejecutar código, que cambie el comportamiento predefinido de <em>Silex</em>, en
+diferentes etapas durante la manipulación de una petición a través de <em>semiwares</em>:</p>
+<ul class="simple">
+<li>Los <em>semiwares de la aplicación</em> se desencadenan independientemente de la petición manejada actualmente;</li>
+<li>Los <em>semiwares de ruta</em> se desencadenan al concordar su ruta asociada.</li>
+</ul>
+<div class="section" id="semiwares-de-la-aplicacion">
+<h2>Semiwares de la aplicación<a class="headerlink" href="#semiwares-de-la-aplicacion" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Los semiwares de la aplicación sólo se ejecutan en la petición «maestra».</p>
+<div class="section" id="semiware-before">
+<h3>Semiware <tt class="docutils literal"><span class="pre">before</span></tt><a class="headerlink" href="#semiware-before" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Un semiware <tt class="docutils literal"><span class="pre">before</span></tt> de la aplicación te permite ajustar la <tt class="docutils literal"><span class="pre">Petición</span></tt> antes de ejecutar el
+controlador:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>De manera predeterminada, el semiware se ejecuta después del enrutado y la seguridad.</p>
+<p>Si quieres que tu semiware se ejecute incluso si se lanza una excepción temprana (en un error 404 o un error 403, por ejemplo), entonces, necesitas registrarlo como un evento temprano:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">},</span> <span class="nx">Application</span><span class="o">::</span><span class="na">EARLY_EVENT</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Naturalmente, en este caso, el enrutado y la seguridad no se habrán ejecutado, y no tendrás acceso a la región, la ruta actual, o al usuario de seguridad.</p>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">El semiware <tt class="docutils literal"><span class="pre">before</span></tt> es un evento registrado en el evento <tt class="docutils literal"><span class="pre">request</span></tt> de <em>Symfony</em>.</p>
+</div>
+</div>
+<div class="section" id="semiware-after">
+<h3>Semiware <tt class="docutils literal"><span class="pre">after</span></tt><a class="headerlink" href="#semiware-after" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Un semiware <tt class="docutils literal"><span class="pre">after</span></tt> de la aplicación te permite ajustar la <tt class="docutils literal"><span class="pre">Respuesta</span></tt> antes de enviarla al cliente:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">after</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">,</span> <span class="nx">Response</span> <span class="nv">$response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">El semiware <tt class="docutils literal"><span class="pre">after</span></tt> es un evento registrado en el evento <tt class="docutils literal"><span class="pre">request</span></tt> de <em>Symfony</em>.</p>
+</div>
+</div>
+<div class="section" id="semiware-finish">
+<h3>semiware <tt class="docutils literal"><span class="pre">finish</span></tt><a class="headerlink" href="#semiware-finish" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Un semiware <tt class="docutils literal"><span class="pre">finish</span></tt> de la aplicación te permite ejecutar tareas después de enviar la <tt class="docutils literal"><span class="pre">Respuesta</span></tt> al cliente (tal como enviar correo electrónico o llevar la bitácora):</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">finish</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">,</span> <span class="nx">Response</span> <span class="nv">$response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="c1">// Atención: Las modificaciones a la Petición o a la Respuesta serán omitidas</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">El semiware <tt class="docutils literal"><span class="pre">finish</span></tt> es un evento registrado en el evento <tt class="docutils literal"><span class="pre">terminate</span></tt> de <em>Symfony</em>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="semiware-route">
+<h2>Semiware <tt class="docutils literal"><span class="pre">route</span></tt><a class="headerlink" href="#semiware-route" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El semiware <tt class="docutils literal"><span class="pre">route</span></tt> se añade a las rutas o colecciones de rutas y sólo se desencadena al concordar la ruta correspondiente. También los puedes apilar:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/somewhere&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">})</span>
+<span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="nv">$before1</span><span class="p">)</span>
+<span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="nv">$before2</span><span class="p">)</span>
+<span class="o">-&gt;</span><span class="na">after</span><span class="p">(</span><span class="nv">$after1</span><span class="p">)</span>
+<span class="o">-&gt;</span><span class="na">after</span><span class="p">(</span><span class="nv">$after2</span><span class="p">)</span>
+<span class="p">;</span>
+</pre></div>
+</div>
+<div class="section" id="id1">
+<h3>Semiware <tt class="docutils literal"><span class="pre">before</span></tt><a class="headerlink" href="#id1" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Un semiware de ruta <tt class="docutils literal"><span class="pre">before</span></tt> se lanza justo antes de la retrollamada a la ruta, pero después del semiware <tt class="docutils literal"><span class="pre">before</span></tt> de la aplicación:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$before</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">};</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/somewhere&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">})</span>
+<span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="nv">$before</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>Semiware <tt class="docutils literal"><span class="pre">after</span></tt><a class="headerlink" href="#id2" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Un semiware <tt class="docutils literal"><span class="pre">after</span></tt> de la ruta se lanza justo después de la retrollamada a la ruta, pero antes del semiware <tt class="docutils literal"><span class="pre">after</span></tt> de la aplicacións:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$after</span> <span class="o">=</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">,</span> <span class="nx">Response</span> <span class="nv">$response</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$app</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">};</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/somewhere&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">})</span>
+<span class="o">-&gt;</span><span class="na">after</span><span class="p">(</span><span class="nv">$after</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="prioridad-de-los-semiwares">
+<h2>Prioridad de los semiwares<a class="headerlink" href="#prioridad-de-los-semiwares" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Puedes añadir tantos semiwares como quieras, en cuyo caso serán lanzados en el mismo orden en que los añadiste.</p>
+<p>Puedes controlar explícitamente la prioridad de tu semiware pasando un argumento adicional a los métodos suscriptores:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">},</span> <span class="mi">32</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Para tu comodidad, dos constantes te permiten registrar un evento tan temprano o tan tarde como sea posible:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">},</span> <span class="nx">Application</span><span class="o">::</span><span class="na">EARLY_EVENT</span><span class="p">);</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">},</span> <span class="nx">Application</span><span class="o">::</span><span class="na">LATE_EVENT</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cortocircuitando-el-controlador">
+<h2>Cortocircuitando el controlador<a class="headerlink" href="#cortocircuitando-el-controlador" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Si un semiware <tt class="docutils literal"><span class="pre">before</span></tt> regresa un objeto <tt class="docutils literal"><span class="pre">Respuesta</span></tt>, se cortocircuita el controlador que está manejando la <tt class="docutils literal"><span class="pre">Petición</span></tt> (el siguiente semiware no será ejecutado, ni la retrollamada a la ruta), y la <tt class="docutils literal"><span class="pre">Respuesta</span></tt> se pasa al siguiente semiware <tt class="docutils literal"><span class="pre">after</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">before</span><span class="p">(</span><span class="k">function</span> <span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// redirige al usuario al formulario de acceso si el recurso accedido está protegido</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">...</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">RedirectResponse</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Nota</p>
+<p class="last">Si un semiware <tt class="docutils literal"><span class="pre">before</span></tt> no devuelve una <tt class="docutils literal"><span class="pre">Respuesta</span></tt> o regresa <tt class="docutils literal"><span class="pre">null</span></tt>, se lanza una <tt class="docutils literal"><span class="pre">RuntimeException</span></tt>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="organizing_controllers.html" title="Organizando controladores"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usándola"
+             >anterior</a> |</li>
+        <li><a href="index.html">Silex en Español</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

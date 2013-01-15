@@ -23,7 +23,15 @@ Silex trabaja con PHP 5.3.3 o más reciente.
 
 ## Instalando
 
-Instalar Silex es tan fácil como lo puedas obtener. Descarga el archivo [silex.zip][2], ¡descomprímelo y listo!
+La forma recomendada de instalar Silex es [a través de Composer](http://getcomposer.org). Sólo crea un archivo `composer.json` y ejecuta la orden `php composer.phar install` para instalarlo:
+
+    {
+        "require": {
+            "silex/silex": "1.0.*@dev"
+        }
+    }
+
+Alternativamente, puedes descargar el archivo [`silex.zip`][2] y descomprimirlo.
 
 ## Más Información
 
@@ -31,12 +39,16 @@ Lee la [documentación][3] para más información.
 
 ## Pruebas
 
-Para ejecutar el banco de pruebas necesitas
+Para ejecutar la batería de pruebas necesitas
 [composer](http://getcomposer.org) y
 [PHPUnit](https://github.com/sebastianbergmann/phpunit).
 
     $ php composer.phar install --dev
     $ phpunit
+
+## Comunidad
+
+Échale un vistazo a #silex-php en irc.freenode.net.
 
 ## Licencia
 

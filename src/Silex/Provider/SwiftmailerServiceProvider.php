@@ -25,22 +25,23 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
     {
         $app['swiftmailer.options'] = array();
 
-        $app['mailer'] = $app->share(function () use ($app) {
-            $r = new \ReflectionClass('Swift_Mailer');
-            require_once dirname($r->getFilename()).'/../../swift_init.php';
+        $app['mailer.initialized'] = false;
+
+        $app['mailer'] = $app->share(function ($app) {
+            $app['mailer.initialized'] = true;
 
             return new \Swift_Mailer($app['swiftmailer.spooltransport']);
         });
 
-        $app['swiftmailer.spooltransport'] = $app->share(function () use ($app) {
+        $app['swiftmailer.spooltransport'] = $app->share(function ($app) {
             return new \Swift_SpoolTransport($app['swiftmailer.spool']);
         });
 
-        $app['swiftmailer.spool'] = $app->share(function () use ($app) {
+        $app['swiftmailer.spool'] = $app->share(function ($app) {
             return new \Swift_MemorySpool();
         });
 
-        $app['swiftmailer.transport'] = $app->share(function () use ($app) {
+        $app['swiftmailer.transport'] = $app->share(function ($app) {
             $transport = new \Swift_Transport_EsmtpTransport(
                 $app['swiftmailer.transport.buffer'],
                 array($app['swiftmailer.transport.authhandler']),
@@ -85,14 +86,17 @@ class SwiftmailerServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
+        // BC: to be removed before 1.0
         if (isset($app['swiftmailer.class_path'])) {
-            require_once $app['swiftmailer.class_path'].'/Swift.php';
-
-            \Swift::registerAutoload($app['swiftmailer.class_path'].'/../swift_init.php');
+            throw new \RuntimeException('You have provided the swiftmailer.class_path parameter. Se ha eliminado de Silex el cargador automático. Se recomienda utilizar Composer para gestionar tus dependencias y manejar tu carga automática. If you are already using Composer, you can remove the parameter. Ve http://getcomposer.org para más información.');
         }
 
         $app->finish(function () use ($app) {
-            $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
+            // To speed things up (by avoiding Swift Mailer initialization), flush
+            // messages only if our mailer has been created (potentially used)
+            if ($app['mailer.initialized']) {
+                $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
+            }
         });
     }
 }

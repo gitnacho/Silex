@@ -20,13 +20,18 @@ use Symfony\Component\Routing\Route as BaseRoute;
  */
 class Route extends BaseRoute
 {
+    public function __construct($pattern = '', array $defaults = array(), array $requirements = array(), array $options = array())
+    {
+        parent::__construct($pattern, $defaults, $requirements, $options);
+    }
+
     /**
      * Establece los requisitos para una ruta variable.
      *
      * @param string $variable El nombre variable
      * @param string $regexp   La expresión regular por aplicar
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return Route $this The current route instance
      */
     public function assert($variable, $regexp)
     {
@@ -41,7 +46,7 @@ class Route extends BaseRoute
      * @param string $variable El nombre variable
      * @param mixed  $default  El valor predeterminado
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return Route $this The current Route instance
      */
     public function value($variable, $default)
     {
@@ -56,7 +61,7 @@ class Route extends BaseRoute
      * @param string $variable El nombre variable
      * @param mixed  $callback Una retrollamada PHP que convierte el valor original
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return Route $this The current Route instance
      */
     public function convert($variable, $callback)
     {
@@ -72,7 +77,7 @@ class Route extends BaseRoute
      *
      * @param string $method El nombre del método HTTP. Puedes suplir múltiples métodos, delimitados por un carácter de tubería '|', p.e. 'GET|POST'
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return Route $this The current Route instance
      */
     public function method($method)
     {
@@ -82,9 +87,9 @@ class Route extends BaseRoute
     }
 
     /**
-     * Establece los requisitos de HTTP (no HTTPS) en este controlador.
+     * Sets the requirement of HTTP (no HTTPS) on this Route.
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return Route $this The current Route instance
      */
     public function requireHttp()
     {
@@ -94,9 +99,9 @@ class Route extends BaseRoute
     }
 
     /**
-     * Establece los requisitos HTTPS en este controlador.
+     * Sets the requirement of HTTPS on this Route.
      *
-     * @return Controller $this La instancia del controlador actual
+     * @return Route $this The current Route instance
      */
     public function requireHttps()
     {
@@ -110,7 +115,7 @@ class Route extends BaseRoute
      *
      * @param mixed  $callback Una retrollamada PHP a lanzar cuando la ruta coincide,
      *                         justo antes de la retrollamada de la ruta
-     * @return Controller $this La instancia actual del controlador
+     * @return Route $this The current Route instance
      */
     public function before($callback)
     {
@@ -126,7 +131,7 @@ class Route extends BaseRoute
      *
      * @param mixed $callback Una retrollamada PHP a lanzar después de la retrollamada a la ruta
      *
-     * @return Controller $this La instancia actual del controlador
+     * @return Route $this The current Route instance
      */
     public function after($callback)
     {

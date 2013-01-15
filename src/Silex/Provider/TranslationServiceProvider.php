@@ -28,12 +28,10 @@ class TranslationServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['translator'] = $app->share(function () use ($app) {
+        $app['translator'] = $app->share(function ($app) {
             $translator = new Translator($app['locale'], $app['translator.message_selector']);
 
-            if (isset($app['locale_fallback'])) {
-                $translator->setFallbackLocale($app['locale_fallback']);
-            }
+            $translator->setFallbackLocale($app['locale_fallback']);
 
             $translator->addLoader('array', new ArrayLoader());
             $translator->addLoader('xliff', new XliffFileLoader());
@@ -50,13 +48,17 @@ class TranslationServiceProvider implements ServiceProviderInterface
         $app['translator.message_selector'] = $app->share(function () {
             return new MessageSelector();
         });
+
+        $app['translator.domains'] = array();
+
+        $app['locale_fallback'] = 'en';
     }
 
     public function boot(Application $app)
     {
         // BC: to be removed before 1.0
         if (isset($app['translation.class_path'])) {
-            throw new \RuntimeException('You have provided the translation.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
+            throw new \RuntimeException('You have provided the translation.class_path parameter. Se ha eliminado de Silex el cargador automático. Se recomienda utilizar Composer para gestionar tus dependencias y manejar tu carga automática. If you are already using Composer, you can remove the parameter. Ve http://getcomposer.org para más información.');
         }
     }
 }

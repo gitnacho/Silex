@@ -18,6 +18,8 @@ use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\SecurityExtension;
+use Symfony\Bridge\Twig\Form\TwigRendererEngine;
+use Symfony\Bridge\Twig\Form\TwigRenderer;
 
 /**
  * Twig integration for Silex.
@@ -33,7 +35,7 @@ class TwigServiceProvider implements ServiceProviderInterface
         $app['twig.path'] = array();
         $app['twig.templates'] = array();
 
-        $app['twig'] = $app->share(function () use ($app) {
+        $app['twig'] = $app->share(function ($app) {
             $app['twig.options'] = array_replace(
                 array(
                     'charset'          => $app['charset'],
@@ -59,12 +61,20 @@ class TwigServiceProvider implements ServiceProviderInterface
                     $twig->addExtension(new TranslationExtension($app['translator']));
                 }
 
-                if (isset($app['security.context'])) {
-                    $twig->addExtension(new SecurityExtension($app['security.context']));
+                if (isset($app['security'])) {
+                    $twig->addExtension(new SecurityExtension($app['security']));
                 }
 
                 if (isset($app['form.factory'])) {
-                    $twig->addExtension(new FormExtension($app['form.csrf_provider'], $app['twig.form.templates']));
+                    $app['twig.form.engine'] = $app->share(function ($app) {
+                        return new TwigRendererEngine($app['twig.form.templates']);
+                    });
+
+                    $app['twig.form.renderer'] = $app->share(function ($app) {
+                        return new TwigRenderer($app['twig.form.engine'], $app['form.csrf_provider']);
+                    });
+
+                    $twig->addExtension(new FormExtension($app['twig.form.renderer']));
 
                     // add loader for Symfony built-in form templates
                     $reflected = new \ReflectionClass('Symfony\Bridge\Twig\Extension\FormExtension');
@@ -81,15 +91,15 @@ class TwigServiceProvider implements ServiceProviderInterface
             return $twig;
         });
 
-        $app['twig.loader.filesystem'] = $app->share(function () use ($app) {
+        $app['twig.loader.filesystem'] = $app->share(function ($app) {
             return new \Twig_Loader_Filesystem($app['twig.path']);
         });
 
-        $app['twig.loader.array'] = $app->share(function () use ($app) {
+        $app['twig.loader.array'] = $app->share(function ($app) {
             return new \Twig_Loader_Array($app['twig.templates']);
         });
 
-        $app['twig.loader'] = $app->share(function () use ($app) {
+        $app['twig.loader'] = $app->share(function ($app) {
             return new \Twig_Loader_Chain(array(
                 $app['twig.loader.filesystem'],
                 $app['twig.loader.array'],
@@ -101,7 +111,7 @@ class TwigServiceProvider implements ServiceProviderInterface
     {
         // BC: to be removed before 1.0
         if (isset($app['twig.class_path'])) {
-            throw new \RuntimeException('You have provided the twig.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
+            throw new \RuntimeException('You have provided the twig.class_path parameter. Se ha eliminado de Silex el cargador automático. Se recomienda utilizar Composer para gestionar tus dependencias y manejar tu carga automática. If you are already using Composer, you can remove the parameter. Ve http://getcomposer.org para más información.');
         }
     }
 }

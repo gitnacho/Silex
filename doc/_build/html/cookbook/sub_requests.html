@@ -1,0 +1,258 @@
+
+<!DOCTYPE html> 
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cómo hacer subpeticiones &mdash; Manual de Silex en Español</title>
+    
+    <link rel="stylesheet" href="../_static/tnp.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="shortcut icon" href="../_static/icotnp.ico"/>
+    <link rel="top" title="Manual de Silex en Español" href="../index.html" />
+    <link rel="up" title="Recetario" href="index.html" />
+    <link rel="next" title="Cómo convertir errores a excepciones" href="error_handler.html" />
+    <link rel="prev" title="Cómo usar YAML para configurar la validación" href="validator_yaml.html" /> 
+  </head>
+  <body>
+  <div class="imalogo">
+    
+  <a href="../index.html"><img src="http://gitnacho.github.com/tnp/img/silex/logo_silex.png" alt="La microplataforma PHP basada en los componentes de Symfony2" />
+  
+    <a href="../index.html"><img src="http://gitnacho.github.com/tnp/_static/normaltnp.png" alt="Traducciones de Nacho Pacheco" /></a>
+    <div class="social">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="esymfony" data-lang="es">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div id="searchbox">
+      <form class="searc " action="../search.html" method="get">
+      <input type="search" name="q" placeholder="Término a buscar" />
+      <input type="submit" value="Ir" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+    </div>
+    
+
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="error_handler.html" title="Cómo convertir errores a excepciones"
+             accesskey="N">siguiente</a> |</li>
+        <li class="right" >
+          <a href="validator_yaml.html" title="Cómo usar YAML para configurar la validación"
+             accesskey="P">anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="como-hacer-subpeticiones">
+<h1>Cómo hacer subpeticiones<a class="headerlink" href="#como-hacer-subpeticiones" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Debido a que <em>Silex</em> está basado en la <tt class="docutils literal"><span class="pre">HttpKernelInterface</span></tt>, te permite simular peticiones contra tu aplicación. Esto significa que puedes incorporar una página dentro de otra, también te permite reenviar una petición la cuál esencialmente es una redirección interna que no cambia la <em>URL</em>.</p>
+<div class="section" id="fundamentos">
+<h2>Fundamentos<a class="headerlink" href="#fundamentos" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Puedes hacer una subpetición llamando al método <tt class="docutils literal"><span class="pre">handle</span></tt> en la <tt class="docutils literal"><span class="pre">aplicación</span></tt>. Este método toma tres argumentos:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">$request</span></tt>: Una instancia de la clase <tt class="docutils literal"><span class="pre">Petición</span></tt> qué representa la petición <em>HTTP</em>.</li>
+<li><tt class="docutils literal"><span class="pre">$type</span></tt>: Debe ser cualquier <tt class="docutils literal"><span class="pre">HttpKernelInterface::MASTER_REQUEST</span></tt> o <tt class="docutils literal"><span class="pre">HttpKernelInterface::SUB_REQUEST</span></tt>. Ciertos escuchas sólo se ejecutan en la petición maestra, así que es importante que este se ponga a <tt class="docutils literal"><span class="pre">SUB_REQUEST</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">$catch</span></tt>: Captura excepciones y las convierte en una respuesta con código de estado <tt class="docutils literal"><span class="pre">500</span></tt>. Este argumento de manera predeterminada es <tt class="docutils literal"><span class="pre">true</span></tt>. Para subpeticiones lo más probable es que lo quieras poner a <tt class="docutils literal"><span class="pre">false</span></tt>.</li>
+</ul>
+<p>Al llamar a <tt class="docutils literal"><span class="pre">handle</span></tt>, puedes hacer una subpetición manualmente. Aquí tienes un ejemplo:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpKernel\HttpKernelInterface</span><span class="p">;</span>
+
+<span class="nv">$subRequest</span> <span class="o">=</span> <span class="nx">Request</span><span class="o">::</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">handle</span><span class="p">(</span><span class="nv">$subRequest</span><span class="p">,</span> <span class="nx">HttpKernelInterface</span><span class="o">::</span><span class="na">SUB_REQUEST</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>No obstante, hay algunas cosas más que necesitas tener en cuenta. En muchos casos querrás reenviar algunas partes de la petición maestra actual a la subpetición. Estas incluyen: Galletas, información del servidor, sesión.</p>
+<p>Aquí tienes un ejemplo más avanzado que reenvía dicha información (<tt class="docutils literal"><span class="pre">$request</span></tt> contiene la petición maestra):</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpKernel\HttpKernelInterface</span><span class="p">;</span>
+
+<span class="nv">$subRequest</span> <span class="o">=</span> <span class="nx">Request</span><span class="o">::</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span>
+                              <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+                              <span class="k">array</span><span class="p">(),</span>
+                              <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">cookies</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">(),</span>
+                              <span class="k">array</span><span class="p">(),</span>
+                              <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">server</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">()</span>
+<span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getSession</span><span class="p">())</span> <span class="p">{</span>
+    <span class="nv">$subRequest</span><span class="o">-&gt;</span><span class="na">setSession</span><span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getSession</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">handle</span><span class="p">(</span><span class="nv">$subRequest</span><span class="p">,</span> <span class="nx">HttpKernelInterface</span><span class="o">::</span><span class="na">SUB_REQUEST</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Para reenviar esta respuesta al cliente, sencillamente la puedes regresar desde un controlador:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Silex\Application</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpKernel\HttpKernelInterface</span><span class="p">;</span>
+
+<span class="nv">$app</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;/foo&#39;</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nx">Application</span> <span class="nv">$app</span><span class="p">,</span> <span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$subRequest</span> <span class="o">=</span> <span class="nx">Request</span><span class="o">::</span><span class="na">create</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">);</span>
+    <span class="nv">$response</span> <span class="o">=</span> <span class="nv">$app</span><span class="o">-&gt;</span><span class="na">handle</span><span class="p">(</span><span class="nv">$subRequest</span><span class="p">,</span> <span class="nx">HttpKernelInterface</span><span class="o">::</span><span class="na">SUB_REQUEST</span><span class="p">,</span> <span class="k">false</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nv">$response</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Si quieres incorporar la respuesta como parte de una página más grande puedes llamar a <tt class="docutils literal"><span class="pre">Response::getContent</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$header</span> <span class="o">=</span> <span class="o">...</span><span class="p">;</span>
+<span class="nv">$footer</span> <span class="o">=</span> <span class="o">...</span><span class="p">;</span>
+<span class="nv">$body</span> <span class="o">=</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getContent</span><span class="p">();</span>
+
+<span class="k">return</span> <span class="nv">$header</span><span class="o">.</span><span class="nv">$body</span><span class="o">.</span><span class="nv">$footer</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reproduciendo-paginas-en-plantillas-de-twig">
+<h2>Reproduciendo páginas en plantillas de <em>Twig</em><a class="headerlink" href="#reproduciendo-paginas-en-plantillas-de-twig" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El <a class="reference internal" href="../providers/twig.html"><em>TwigServiceProvider</em></a> proporciona una función <tt class="docutils literal"><span class="pre">render</span></tt> que puedes utilizar en plantillas de <em>Twig</em>. Esta te ofrece una conveniente manera de incorporar páginas.</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">render</span><span class="o">(</span><span class="s1">&#39;/sidebar&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>Para detalles, consulta la documentación del <a class="reference internal" href="../providers/twig.html"><em>TwigServiceProvider</em></a>.</p>
+</div>
+<div class="section" id="inclusion-del-borde-lateral">
+<h2>Inclusión del borde lateral<a class="headerlink" href="#inclusion-del-borde-lateral" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Puedes utilizar cualquier <em>ESI</em> a través del <a class="reference internal" href="../providers/http_cache.html"><em>HttpCacheServiceProvider</em></a> o un delegado inverso de caché tal como <em>Varnish</em>. Este también te permite incorporar páginas, no obstante, también te da el beneficio de memorizar partes de la página.</p>
+<p>Este es un ejemplo de cómo debes incorporar una página vía <em>ESI</em>:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="x">&lt;esi:include src=&quot;/sidebar&quot; /&gt;</span>
+</pre></div>
+</div>
+<p>Para detalles, consulta la documentación del <a class="reference internal" href="../providers/http_cache.html"><em>HttpCacheServiceProvider</em></a>.</p>
+</div>
+<div class="section" id="tratando-con-la-url-base-de-la-peticion">
+<h2>Tratando con la <em>URL</em> base de la petición<a class="headerlink" href="#tratando-con-la-url-base-de-la-peticion" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Una cosa a tener en cuenta es la <em>URL</em> base. Si tu aplicación no está alojada en la raíz de tu servidor <em>web</em>, entonces puedes tener una <em>URL</em> como esta: <tt class="docutils literal"><span class="pre">http://ejemplo.org/foo/index.php/articles/42</span></tt>.</p>
+<p>En este caso, <tt class="docutils literal"><span class="pre">/foo/index.php</span></tt> es la ruta base de tu petición. <em>Silex</em> toma en cuenta este prefijo de la ruta en el proceso de enrutado, lo lee desde <tt class="docutils literal"><span class="pre">$request-&gt;server</span></tt>. En el contexto de las subpeticiones esto puede conducir a problemas, porque si no prefijas la ruta base de la petición podrías cortar equivocadamente una parte de la ruta que quieres emparejar como la ruta base.</p>
+<p>Puedes evitar que esto suceda prefijando siempre la ruta base al construir una petición:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="nv">$url</span> <span class="o">=</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getUriForPath</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+<span class="nv">$subRequest</span> <span class="o">=</span> <span class="nx">Request</span><span class="o">::</span><span class="na">create</span><span class="p">(</span><span class="nv">$url</span><span class="p">,</span>
+                              <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+                              <span class="k">array</span><span class="p">(),</span>
+                              <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">cookies</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">(),</span>
+                              <span class="k">array</span><span class="p">(),</span>
+                              <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">server</span><span class="o">-&gt;</span><span class="na">all</span><span class="p">()</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>Esto es algo de lo que debes estar consciente cuándo hagas subpeticiones manualmente.</p>
+</div>
+<div class="section" id="carencia-de-alcance-del-contenedor">
+<h2>Carencia de alcance del contenedor<a class="headerlink" href="#carencia-de-alcance-del-contenedor" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Si bien, las subpeticiones disponibles en <em>Silex</em> son bastante potentes, tienen sus límitaciones. La principal limitación/peligro en que incurrirás es la carencia de alcances en el contenedor <em>Pimple</em>.</p>
+<p>El contenedor es un concepto que es global a una aplicación <em>Silex</em>, debido a que el objeto <tt class="docutils literal"><span class="pre">aplicación</span></tt> <strong>es</strong> el contenedor. Cualquier petición que se esté ejecutando contra una aplicación reutilizará el mismo conjunto de servicios. Debido a que estos servicios son mutables, el código en una petición maestra puede afectar las subpeticiones y viceversa.
+Cualquier servicio que dependa del servicio <tt class="docutils literal"><span class="pre">request</span></tt> almacenará la primera petición que consiga (podría ser maestra o subpetición), y la seguirá utilizando, incluso si esa petición ya concluyó.</p>
+<p>Por ejemplo:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">ContentFormatNegotiator</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="nv">$request</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span> <span class="o">=</span> <span class="nv">$request</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">negotiateFormat</span><span class="p">(</span><span class="k">array</span> <span class="nv">$serverTypes</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$clientAcceptType</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">headers</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;Accept&#39;</span><span class="p">);</span>
+
+        <span class="o">...</span>
+
+        <span class="k">return</span> <span class="nv">$format</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Este ejemplo se ve inocuo, pero puede crecer. No tienes manera de saber qué regresará <tt class="docutils literal"><span class="pre">$request-&gt;headers-&gt;get()</span></tt>, porque <tt class="docutils literal"><span class="pre">$request</span></tt> bien podría ser la petición maestra o una subpetición. La respuesta en este caso es pasar la petición como un argumento de <tt class="docutils literal"><span class="pre">negotiateFormat</span></tt>. Luego, la puedes pasar de una ubicación donde ya tienes acceso seguro a la petición actual: un escucha o un controlador.</p>
+<p>Aquí están unas cuantas aproximaciones generales para trabajar en torno a este problema:</p>
+<ul class="simple">
+<li>Usa <em>ESI</em> con <em>Varnish</em>.</li>
+<li>Nunca inyectes la petición. Usa escuchas en su lugar, ya que estos pueden acceder a la petición sin almacenarla.</li>
+<li>Inyecta la aplicación <em>Silex</em> y recupera la petición desde ahí.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="https://github.com/fabpot/Silex"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://gitnacho.github.com/tnp/img/comun/bifurcame.png" alt="Bifúrcame en GitHub" /></a>
+  
+  <div style="width:740px;margin:10px auto;">
+    <div class="related">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="error_handler.html" title="Cómo convertir errores a excepciones"
+             >siguiente</a> |</li>
+        <li class="right" >
+          <a href="validator_yaml.html" title="Cómo usar YAML para configurar la validación"
+             >anterior</a> |</li>
+        <li><a href="../index.html">Silex en Español</a> &raquo;</li>
+          <li><a href="index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+  </div>
+
+
+   <div style="width: 740px; margin: 0 auto;">
+     <div id="disqus_thread"></div>
+     
+    <div class="footer">
+        &copy; Copyright 2010-2013 Fabien Potencier :: Traducido por Nacho Pacheco.
+      Creado con <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+   </div>
+   <script type="text/javascript">
+    var disqus_shortname = 'documentos-mx';
+    
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+   </script>
+   <noscript>
+     Por favor activa JavaScript para ver los <a href="http://disqus.com/?ref_noscript">comentarios accionados por Disqus.</a>
+   </noscript>
+
+  </body>
+</html>

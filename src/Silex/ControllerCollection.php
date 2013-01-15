@@ -32,9 +32,9 @@ class ControllerCollection
     /**
      * Constructor.
      */
-    public function __construct()
+    public function __construct(Route $defaultRoute)
     {
-        $this->defaultRoute = new Route('');
+        $this->defaultRoute = $defaultRoute;
     }
 
     /**
@@ -110,144 +110,16 @@ class ControllerCollection
         return $this->match($pattern, $to)->method('DELETE');
     }
 
-    /**
-     * Establece los requisitos para una ruta variable.
-     *
-     * @param string $variable El nombre variable
-     * @param string $regexp   La expresión regular por aplicar
-     *
-     * @return ControllerCollection $this The current Controller instance
-     */
-    public function assert($variable, $regexp)
+    public function __call($method, $arguments)
     {
-        $this->defaultRoute->assert($variable, $regexp);
-
-        foreach ($this->controllers as $controller) {
-            $controller->assert($variable, $regexp);
+        if (!method_exists($this->defaultRoute, $method)) {
+            throw new \BadMethodCallException(sprintf('Method "%s::%s" does not exist.', get_class($this->defaultRoute), $method));
         }
 
-        return $this;
-    }
-
-    /**
-     * Establece el valor predefinido para una variable de ruta.
-     *
-     * @param string $variable El nombre variable
-     * @param mixed  $default  El valor predeterminado
-     *
-     * @return ControllerCollection $this The current Controller instance
-     */
-    public function value($variable, $default)
-    {
-        $this->defaultRoute->value($variable, $default);
+        call_user_func_array(array($this->defaultRoute, $method), $arguments);
 
         foreach ($this->controllers as $controller) {
-            $controller->value($variable, $default);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Establece un convertidor para una variable de ruta.
-     *
-     * @param string $variable El nombre variable
-     * @param mixed  $callback Una retrollamada PHP que convierte el valor original
-     *
-     * @return ControllerCollection $this The current Controller instance
-     */
-    public function convert($variable, $callback)
-    {
-        $this->defaultRoute->convert($variable, $callback);
-
-        foreach ($this->controllers as $controller) {
-            $controller->convert($variable, $callback);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Establece los requisitos para el método HTTP.
-     *
-     * @param string $method El nombre del método HTTP. Puedes suplir múltiples métodos, delimitados por un carácter de tubería '|', p.e. 'GET|POST'
-     *
-     * @return ControllerCollection $this The current Controller instance
-     */
-    public function method($method)
-    {
-        $this->defaultRoute->method($method);
-
-        foreach ($this->controllers as $controller) {
-            $controller->method($method);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Establece los requisitos de HTTP (no HTTPS) en este controlador.
-     *
-     * @return ControllerCollection $this The current Controller instance
-     */
-    public function requireHttp()
-    {
-        $this->defaultRoute->requireHttp();
-
-        foreach ($this->controllers as $controller) {
-            $controller->requireHttp();
-        }
-
-        return $this;
-    }
-
-    /**
-     * Establece los requisitos HTTPS en este controlador.
-     *
-     * @return ControllerCollection $this The current Controller instance
-     */
-    public function requireHttps()
-    {
-        $this->defaultRoute->requireHttps();
-
-        foreach ($this->controllers as $controller) {
-            $controller->requireHttps();
-        }
-
-        return $this;
-    }
-
-    /**
-     * Establece una retrollamada para manipular retrollamadas de ruta before.
-     *
-     * @param mixed  $callback Una retrollamada PHP a lanzar cuando la ruta coincide,
-     *                         justo antes de la retrollamada de la ruta
-     * @return ControllerCollection $this The current ControllerCollection instance
-     */
-    public function before($callback)
-    {
-        $this->defaultRoute->before($callback);
-
-        foreach ($this->controllers as $controller) {
-            $controller->before($callback);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Define una retrollamada a manipular después de la retrollamada a la ruta.
-     *
-     * @param mixed $callback Una retrollamada PHP a lanzar después de la retrollamada a la ruta
-     *
-     * @return ControllerCollection $this The current ControllerCollection instance
-     */
-    public function after($callback)
-    {
-        $this->defaultRoute->after($callback);
-
-        foreach ($this->controllers as $controller) {
-            $controller->after($callback);
+            call_user_func_array(array($controller, $method), $arguments);
         }
 
         return $this;
