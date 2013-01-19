@@ -52,11 +52,11 @@ class Application extends \Pimple implements HttpKernelInterface, TerminableInte
     private $booted = false;
 
     /**
-     * Instantiate a new Application.
+     * Crea una instancia de una nueva Aplicación.
      *
-     * Objects and parameters can be passed as argument to the constructor.
+     * Puedes pasar objetos y parámetros como argumentos al constructor.
      *
-     * @param array $values The parameters or objects.
+     * @param array $values Los parámetros u objetos.
      */
     public function __construct(array $values = array())
     {
