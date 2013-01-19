@@ -128,7 +128,7 @@ Proveedor de controladores
 Cargando proveedores
 ~~~~~~~~~~~~~~~~~~~~
 
-Con el fin de cargar y usar un proveedor de controladores, debes "montar" tus controladores bajo una ruta::
+Con el fin de cargar y usar un proveedor de controladores, debes «montar» tus controladores bajo una ruta::
 
     $app = new Silex\Application();
 

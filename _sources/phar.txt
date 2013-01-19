@@ -47,7 +47,7 @@ Para actualizar ``silex.phar`` a la última versión, invoca la orden ``update``
 
     $ php silex.phar update
 
-Esto descargará automáticamente un nuevo ``silex.phar`` desde ``silex.sensiolabs.org`` y sustituirá al actual.
+Esto descargará automáticamente un nuevo ``silex.phar`` desde ``silex.sensiolabs.org`` y sustituirá el actual.
 
 Trampas
 -------

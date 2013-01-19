@@ -36,9 +36,9 @@ Registrando
 
 .. code-block:: php
 
-    $app->register(new Silex\Provider\SecurityServiceProvider(array(
-        'security.firewalls' => // ve abajo
-    )));
+    $app->register(new Silex\Provider\SecurityServiceProvider(), array(
+        'security.firewalls' => // see below
+    ));
 
 .. note::
 
@@ -219,7 +219,7 @@ Automáticamente se genera una ruta, basándose en la ruta configurada (todas la
 
 .. code-block:: jinja
 
-    <a href="{{ path('logout') }}">Logout</a>
+    <a href="{{ path('admin_logout') }}">Logout</a>
 
 Permitiendo usuarios anónimos
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

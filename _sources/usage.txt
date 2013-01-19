@@ -88,7 +88,7 @@ Un patrón de ruta se compone de:
 
 * *Pattern*: El patrón de ruta define una ruta que apunta a un recurso. El patrón puede incluir partes variables y tú podrás establecer los requisitos con expresiones regulares.
 
-* *Method*: Uno de los siguientes métodos *HTTP*: ``GET``, ``POST``, ``PUT`` o ``DELETE``. Este describe la interacción con el recurso. Normalmente sólo se utilizan ``GET`` y ``POST``, pero, también es posible utilizar los otros.
+* *Method*: Uno de los siguientes métodos *HTTP*: ``GET``, ``POST``, ``PUT`` o  ``DELETE``. Este describe la interacción con el recurso. Normalmente sólo se utilizan ``GET`` y ``POST``, pero, también es posible utilizar los otros.
 
 El controlador se define usando un cierre de esta manera:
 
@@ -337,7 +337,7 @@ Algunos proveedores (como ``UrlGeneratorProvider``) pueden usar rutas con nombre
 Controladores en clases
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Si no quieres utilizar funciones anónimas, también puedes definir tus controladores como métodos. Al utilizar la sintaxis ``ControllerClass::methodName``, le puedes decir a *Silex* que cree esa clase controlador de manera diferida::
+Si no quieres utilizar funciones anónimas, también puedes definir tus controladores como métodos. Al utilizar la sintaxis ``ControllerClass::methodName``, le puedes decir a *Silex* que cree por ti el objeto controlador de manera diferida::
 
     $app->get('/', 'Igorw\Foo::bar');
 
